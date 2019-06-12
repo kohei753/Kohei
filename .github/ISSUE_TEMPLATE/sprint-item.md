@@ -3,7 +3,7 @@ name: Sprint item
 about: スプリントバックログアイテムのテンプレ
 title: ''
 labels: ''
-assignees: b1017173, MasatakaKudou, KeitaTakahashi1024, KishikaMikasa, kohei753
+assignees: b1017173, KeitaTakahashi1024, KishikaMikasa, kohei753, MasatakaKudou
 
 ---
 
@@ -19,5 +19,7 @@ assignees: b1017173, MasatakaKudou, KeitaTakahashi1024, KishikaMikasa, kohei753
 > #number
 
 # 作業場所
+
+# 見積もり
 
 # その他
