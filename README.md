@@ -10,11 +10,13 @@
 >- 習得は困難  
 >([スクラムガイド](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&cad=rja&uact=8&ved=2ahUKEwiqzOKMqc_iAhXJurwKHULmAz8QFjAAegQIAhAC&url=https%3A%2F%2Fscrumguides.org%2Fdocs%2Fscrumguide%2Fv2017%2F2017-Scrum-Guide-Japanese.pdf&usg=AOvVaw0YeZNxm_MMr4wCd6GNXXuo)より)
 ## 本グループ(レポジトリ)について
-FW先・扱うもの：  
-開発予定システム：  
-対象OS：モバイル端末であることはきまった  
+FW先・扱うもの：市役所や給食所のある学校・給食を扱う  
+開発予定システム：給食の献立を知ることで給食に対して安心でき、家庭での食生活も少し良くなるアプリ  
+対象OS：Android, iOS  
 ### 依存環境
 開発を進めていく中で環境依存のコードを書いた場合はここに記述してください。  
+### Tab or Space
+Tab!
 ### 命名規則
 #### Branch
 **master**：リリース可能なもの  
