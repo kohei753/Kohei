@@ -1,111 +1,205 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  runApp(MaterialApp(
+    title: '給食アプリ(仮)',
+    theme: ThemeData(
+      primaryColor: Colors.deepOrangeAccent,
+    ),
+    /* 画面遷移スタックを名前で管理する */
+    home: Splash(), // スプラッシュ
+    routes: <String, WidgetBuilder>{
+      '/entry': (BuildContext context) => Entry(), // 初回起動時にのみ表示される画面
+      '/home': (BuildContext context) => Home(), // 1日の献立を表示する画面
+      '/detail': (BuildContext context) => Detail(), // 各料理の詳細画面を表示する画面
+      '/monthly-menu': (BuildContext context) => MonthlyMenu(), // 献立表を表示する画面
+      '/setting': (BuildContext context) => Setting(), // 設定画面
+      '/information': (BuildContext context) => Information(), // データ元などのインフォ画面
+    },
+  ));
+}
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+/* スプラッシュ画面 */
+class Splash extends StatefulWidget {
+  @override
+  _SplashState createState() => _SplashState();
+}
+
+class _SplashState extends State<Splash> {
+  /* スプラッシュ中の処理
+   * ネイティブでやった方が綺麗だし、本来の意味のスプラッシュとして
+   * 利用できると思うが、ここで多分初期情報とかを読み込むと思うから
+   * それをネイティブからやるの難しそうだったのでとりあえすここに書いてる */
+  @override
+  void initState() {
+    // 最初に読み込まれる
+    super.initState();
+
+    Future.delayed(const Duration(seconds: 2))
+        .then((value) => handleTimeout()); // ディレイは適当に2秒
+  }
+
+  /* スプラッシュで表示するアイコンだとかの処理はここ */
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
-    );
+    // TODO: implement build
+    return null;
+  }
+
+  /* タイムアウトした後の処理
+   * 今回はとりあえずホーム画面に移動させてる */
+  void handleTimeout() {
+    // ホーム画面へ
+    Navigator.pushReplacementNamed(context, '/home');
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
+/* 初期登録画面 */
+class Entry extends StatefulWidget {
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _EntryState createState() => _EntryState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class _EntryState extends State<Entry> {
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return null;
+  }
+}
 
-  void _incrementCounter() {
+/* ホーム画面 */
+class Home extends StatefulWidget {
+  @override
+  _HomeState createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  /* BottomNavigationBarで使用する諸々 */
+  int _selectedIndex = 0; // 選択中のタブ番号を管理
+  static const List<Widget> _widgetOptions = <Widget>[
+    /* TODO:ここに今日の献立の画面と献立表の画面のウィジェットをうまく管理する */
+    Text(
+      'Index 0: Home',
+    ),
+    Text(
+      'Index 1: 献立表',
+    ),
+  ];
+
+  void _onItemTapped(int index) {
+    // メニューがタップされた時更新
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
+      _selectedIndex = index;
     });
   }
 
+  /* 1日の献立画面のウィジェット */
+  Widget _buildHome() {
+    return null;
+  }
+
+  void _handleSetting() {
+    // 設定画面へ
+    Navigator.pushNamed(context, '/setting');
+  }
+
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        title: Text('日付'), // TODO:表示したい日付に変わる予定
+        actions: <Widget>[
+          // 設定ボタン
+          IconButton(
+            icon: Icon(Icons.settings),
+            onPressed: _handleSetting, // 設定画面に遷移
+          ),
+        ],
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
+      body: _widgetOptions.elementAt(_selectedIndex), // ListになってるWidgetを読み込む
+      bottomNavigationBar: BottomNavigationBar(
+        // タブバーの実装
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            // 1日の献立を表示する画面に遷移するアイコン
+            icon: Icon(
+              Icons.view_list,
+              size: 30,
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
+            title: Text('献立'),
+          ),
+          BottomNavigationBarItem(
+            // 献立表を表示する画面に遷移するアイコン
+            icon: Icon(
+              Icons.calendar_today,
+              size: 30,
             ),
-          ],
-        ),
+            title: Text('献立表'),
+          ),
+        ],
+        currentIndex: _selectedIndex, // 選択中の画面を管理
+        selectedItemColor: Colors.deepOrangeAccent, // 選択時の色
+        onTap: _onItemTapped, // タップすると更新
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+}
+
+/* 詳細画面 */
+class Detail extends StatefulWidget {
+  @override
+  _DetailState createState() => _DetailState();
+}
+
+class _DetailState extends State<Detail> {
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return null;
+  }
+}
+
+/* 献立表画面 */
+class MonthlyMenu extends StatefulWidget {
+  @override
+  _MonthlyMenuState createState() => _MonthlyMenuState();
+}
+
+class _MonthlyMenuState extends State<MonthlyMenu> {
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return null;
+  }
+}
+
+/* 設定画面 */
+class Setting extends StatefulWidget {
+  @override
+  _SettingState createState() => _SettingState();
+}
+
+class _SettingState extends State<Setting> {
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return null;
+  }
+}
+
+/* インフォメーション画面 */
+class Information extends StatefulWidget {
+  @override
+  _InformationState createState() => _InformationState();
+}
+
+class _InformationState extends State<Information> {
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return null;
   }
 }
