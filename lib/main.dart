@@ -2,6 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+import 'package:flutter_calendar_carousel/classes/event.dart'; // イベントクラスに関するやーつ
+import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
+    show CalendarCarousel; // 献立表のカレンダーに関するAPI
+
 void main() {
   runApp(MaterialApp(
     title: '給食アプリ(仮)',
@@ -45,7 +49,7 @@ class _SplashState extends State<Splash> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return null;
+    return FlutterLogo();
   }
 
   /* タイムアウトした後の処理
@@ -77,6 +81,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  String _title = '日付';
   /* BottomNavigationBarで使用する諸々 */
   int _selectedIndex = 0; // 選択中のタブ番号を管理
   static const List<Widget> _widgetOptions = <Widget>[
@@ -93,6 +98,7 @@ class _HomeState extends State<Home> {
     // メニューがタップされた時更新
     setState(() {
       _selectedIndex = index;
+      _title = (index != 0) ? 'X月の献立表' : '日付';
     });
   }
 
@@ -103,14 +109,20 @@ class _HomeState extends State<Home> {
 
   void _handleSetting() {
     // 設定画面へ
-    Navigator.pushNamed(context, '/setting');
+    Navigator.push(
+        context,
+        MaterialPageRoute<Null>(
+          settings: RouteSettings(name: '/setting'),
+          builder: (BuildContext context) => Setting(),
+          fullscreenDialog: true, // モーダルで表示
+        ));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('日付'), // TODO:表示したい日付に変わる予定
+        title: Text(_title), // TODO:表示したい日付に変わる予定
         actions: <Widget>[
           // 設定ボタン
           IconButton(
@@ -169,10 +181,34 @@ class MonthlyMenu extends StatefulWidget {
 }
 
 class _MonthlyMenuState extends State<MonthlyMenu> {
+  /* カレンダー部分の変数 */
+  DateTime _currentDate = DateTime.now();
+
+  /* カレンダーの更新用 */
+  void onDayPressed(DateTime date, List<Event> events) {
+    this.setState(() => _currentDate = date);
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return null;
+    return Scaffold(
+      body: Container(
+        margin: EdgeInsets.all(16.0),
+        child: CalendarCarousel<Event>(
+          onDayPressed: onDayPressed, // 日にちが選択された時の処理
+          weekendTextStyle: TextStyle(
+            // 土日の色変更
+            color: Colors.red,
+          ),
+          selectedDateTime: _currentDate, // 初期値として選択する日にち(今日を指定)
+          locale: 'JA', // 日本のカレンダーに設定
+          daysHaveCircularBorder: true, // 枠線を丸く設定
+          customGridViewPhysics:
+              NeverScrollableScrollPhysics(), // カレンダーの縦スクロールを固定
+        ),
+      ),
+    );
   }
 }
 
@@ -186,7 +222,11 @@ class _SettingState extends State<Setting> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return null;
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('設定'),
+      ),
+    );
   }
 }
 

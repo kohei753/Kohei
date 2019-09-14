@@ -1,7 +1,11 @@
 /* 1つのメニューに関するクラス */
+import 'package:json_annotation/json_annotation.dart';
 
 import 'foodStuff.dart';
 
+part 'dish.g.dart';
+
+@JsonSerializable(createToJson: false)
 class Dish {
   /* 変数宣言 */
   final List<FoodStuff> dish; // 使われている材料のリスト
@@ -10,6 +14,9 @@ class Dish {
   /* コンストラクター */
   Dish(this.dish,
        this.category);
+
+  /* JSONからの読み取り */
+  factory Dish.fromJson(Map<String, dynamic> json) => _$DishFromJson(json);
 
   /* 各パラメータgetter */
 

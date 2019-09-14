@@ -1,7 +1,24 @@
+import 'package:json_annotation/json_annotation.dart';
+
+part 'foodStuff.g.dart';
+
+/* 分量・個数に関するクラス */
+@JsonSerializable(createToJson: false)
+class Quantity {
+  /* 変数宣言 */
+  final double number;  // 個数(設定がない場合：null)
+  final double gram;  // 分量(g)
+
+  /* コンストラクター */
+  Quantity(this.number,
+      this.gram);
+
+  /* JSONからの読み取り */
+  factory Quantity.fromJson(Map<String, dynamic> json) => _$QuantityFromJson(json);
+}
+
 /* 各食材に関するクラス */
-
-import 'quanity.dart';
-
+@JsonSerializable(createToJson: false)
 class FoodStuff {
   /* 変数宣言 */
   final String name;  // 食品名
@@ -50,4 +67,7 @@ class FoodStuff {
       this.dietaryFiber,
       this.salt
       );
+
+  /* JSONからの読み取り */
+  factory FoodStuff.fromJson(Map<String, dynamic> json) => _$FoodStuffFromJson(json);
 }

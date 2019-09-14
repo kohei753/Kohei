@@ -1,7 +1,11 @@
 /* 一日の献立に関するクラス */
+import 'package:json_annotation/json_annotation.dart';
 
 import 'dish.dart';
 
+part 'menu.g.dart';
+
+@JsonSerializable(createToJson: false)
 class Menu {
   /* 変数宣言 */
   final DateTime day; // 日付
@@ -13,6 +17,9 @@ class Menu {
   Menu(this.day,
        this.school,
        this.menu);
+
+  /* JSONからの読み取り */
+  factory Menu.fromJson(Map<String, dynamic> json) => _$MenuFromJson(json);
 
   /* 各パラメータgetter */
 
