@@ -15,13 +15,13 @@ Quantity _$QuantityFromJson(Map<String, dynamic> json) {
 
 FoodStuff _$FoodStuffFromJson(Map<String, dynamic> json) {
   return FoodStuff(
-    json['name'] as String,
-    json['allergy'] as bool,
-    json['piece'] as bool,
+    json['material'] as String,
+    FoodStuff._parseBoolean(json['allergy']),
+    FoodStuff._parseBoolean(json['piece']),
     json['quantity'] == null
         ? null
         : Quantity.fromJson(json['quantity'] as Map<String, dynamic>),
-    json['heat'] as bool,
+    FoodStuff._parseBoolean(json['heat']),
     (json['energy'] as num)?.toDouble(),
     (json['protein'] as num)?.toDouble(),
     (json['lipid'] as num)?.toDouble(),

@@ -1,5 +1,10 @@
 /* 一日の献立に関するクラス */
-import 'package:json_annotation/json_annotation.dart';
+import 'dart:async';  // 非同期処理
+import 'dart:convert';  // JSON関係のコンバート
+
+import 'package:json_annotation/json_annotation.dart';  // JSONのシリアライズ
+import 'package:flutter/services.dart' show rootBundle; // ローカルファイルへのアクセス
+import 'package:intl/intl.dart';  // DateTimeのパース処理
 
 import 'dish.dart';
 
@@ -8,6 +13,7 @@ part 'menu.g.dart';
 @JsonSerializable(createToJson: false)
 class Menu {
   /* 変数宣言 */
+  @JsonKey(name: 'day', fromJson: _parseDay)
   final DateTime day; // 日付
   final String school;  // 学校
 
@@ -20,6 +26,9 @@ class Menu {
 
   /* JSONからの読み取り */
   factory Menu.fromJson(Map<String, dynamic> json) => _$MenuFromJson(json);
+
+  /* dayをパースして格納する関数 */
+  static DateTime _parseDay(dynamic value) => DateFormat('yyyy-MM-dd').parse(value);
 
   /* 各パラメータgetter */
 
@@ -143,4 +152,29 @@ class Menu {
     }
     return result;
   }
+}
+
+/* 全メニューを読みとるクラス */
+@JsonSerializable(createToJson: false)
+class Menus {
+  /* 変数宣言 */
+  final List<Menu> menus;
+
+  /* コンストラクター */
+  Menus(this.menus);
+
+  /* JSONからの読み取り */
+  factory Menus.fromJson(Map<String, dynamic> json) => _$MenusFromJson(json);
+}
+
+/* JSONを読み取り、マップにして返す */
+Future<Map<DateTime, Menu>> getMenus() async {
+  final Map<DateTime, Menu> _menus = {};
+  final _jsonMenus = await rootBundle.loadString('assets/august.json');
+  final _decodeMenus = json.decode(_jsonMenus);
+  for(var i = 0; i < _decodeMenus.length; i++) {
+    var menu = Menu.fromJson(_decodeMenus[i]);
+    _menus[menu.day] = menu;
+  }
+  return _menus;
 }

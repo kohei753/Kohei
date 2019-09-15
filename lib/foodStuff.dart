@@ -10,7 +10,8 @@ class Quantity {
   final double gram;  // 分量(g)
 
   /* コンストラクター */
-  Quantity(this.number,
+  Quantity(
+      this.number,
       this.gram);
 
   /* JSONからの読み取り */
@@ -21,11 +22,15 @@ class Quantity {
 @JsonSerializable(createToJson: false)
 class FoodStuff {
   /* 変数宣言 */
+  @JsonKey(name: 'material')
   final String name;  // 食品名
 
+  @JsonKey(name: 'allergy', fromJson: _parseBoolean)
   final bool allergy; // アレルギー食材か
+  @JsonKey(name: 'piece', fromJson: _parseBoolean)
   final bool piece;  // 個付きか
   final Quantity quantity;  //  分量
+  @JsonKey(name: 'heat', fromJson: _parseBoolean)
   final bool heat;  // 熱加工しているか
 
   final double energy; // エネルギー
@@ -70,4 +75,10 @@ class FoodStuff {
 
   /* JSONからの読み取り */
   factory FoodStuff.fromJson(Map<String, dynamic> json) => _$FoodStuffFromJson(json);
+
+  /* アレルギーのパース */
+  static bool _parseBoolean(dynamic value) {
+    if (value == null) return false;
+    return true;
+  }
 }

@@ -8,12 +8,12 @@ part 'dish.g.dart';
 @JsonSerializable(createToJson: false)
 class Dish {
   /* 変数宣言 */
+  final String name;
   final List<FoodStuff> dish; // 使われている材料のリスト
-  final String category;  // メニューのカテゴリー(主食・副菜など)
+  final String category; // メニューのカテゴリー(主食・副菜など)
 
   /* コンストラクター */
-  Dish(this.dish,
-       this.category);
+  Dish(this.name, this.dish, this.category);
 
   /* JSONからの読み取り */
   factory Dish.fromJson(Map<String, dynamic> json) => _$DishFromJson(json);
@@ -24,7 +24,7 @@ class Dish {
   List<FoodStuff> get allergies {
     List<FoodStuff> result = [];
     for (var i = 0; i < dish.length; i++) {
-      if(dish[i].allergy) result.add(dish[i]);
+      if (dish[i].allergy) result.add(dish[i]);
     }
     return result;
   }
@@ -33,7 +33,7 @@ class Dish {
   List<FoodStuff> get heats {
     List<FoodStuff> result = [];
     for (var i = 0; i < dish.length; i++) {
-      if(dish[i].heat) result.add(dish[i]);
+      if (dish[i].heat) result.add(dish[i]);
     }
     return result;
   }

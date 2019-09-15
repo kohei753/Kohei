@@ -1,10 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-
 import 'package:flutter_calendar_carousel/classes/event.dart'; // イベントクラスに関するやーつ
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
     show CalendarCarousel; // 献立表のカレンダーに関するAPI
+
+import 'menu.dart' as menus;
 
 void main() {
   runApp(MaterialApp(
@@ -41,8 +42,10 @@ class _SplashState extends State<Splash> {
     // 最初に読み込まれる
     super.initState();
 
-    Future.delayed(const Duration(seconds: 2))
-        .then((value) => handleTimeout()); // ディレイは適当に2秒
+    menus.getMenus().then((value) {
+      print("読み込めてるかーな"); // ok!
+      handleTimeout();
+    });
   }
 
   /* スプラッシュで表示するアイコンだとかの処理はここ */
