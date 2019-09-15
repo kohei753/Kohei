@@ -16,12 +16,3 @@ Menu _$MenuFromJson(Map<String, dynamic> json) {
         ?.toList(),
   );
 }
-
-Menus _$MenusFromJson(Map<String, dynamic> json) {
-  return Menus(
-    (json['menus'] as List)
-        ?.map(
-            (e) => e == null ? null : Menu.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
-  );
-}

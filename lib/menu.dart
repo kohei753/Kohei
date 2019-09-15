@@ -154,19 +154,6 @@ class Menu {
   }
 }
 
-/* 全メニューを読みとるクラス */
-@JsonSerializable(createToJson: false)
-class Menus {
-  /* 変数宣言 */
-  final List<Menu> menus;
-
-  /* コンストラクター */
-  Menus(this.menus);
-
-  /* JSONからの読み取り */
-  factory Menus.fromJson(Map<String, dynamic> json) => _$MenusFromJson(json);
-}
-
 /* JSONを読み取り、マップにして返す */
 Future<Map<DateTime, Menu>> getMenus() async {
   final Map<DateTime, Menu> _menus = {};
