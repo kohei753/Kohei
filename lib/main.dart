@@ -1,4 +1,4 @@
-import 'dart:async';
+import 'dart:async';  // 非同期処理関係
 
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart'; // イベントクラスに関するやーつ
@@ -37,13 +37,18 @@ class _SplashState extends State<Splash> {
    * ネイティブでやった方が綺麗だし、本来の意味のスプラッシュとして
    * 利用できると思うが、ここで多分初期情報とかを読み込むと思うから
    * それをネイティブからやるの難しそうだったのでとりあえすここに書いてる */
+  static var allMenu = {};  // jsonのメニューを格納する変数
+
   @override
   void initState() {
     // 最初に読み込まれる
     super.initState();
 
+    // 献立データを取得 => value
     menus.getMenus().then((value) {
+      allMenu = value;
       print("読み込めてるかーな"); // ok!
+      // TODO: 各画面に読み込んだデータを受け渡しつつ遷移
       handleTimeout();
     });
   }

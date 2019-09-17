@@ -8,7 +8,7 @@ part 'dish.g.dart';
 @JsonSerializable(createToJson: false)
 class Dish {
   /* 変数宣言 */
-  final String name;
+  final String name;  // 料理名
   final List<FoodStuff> dish; // 使われている材料のリスト
   final String category; // メニューのカテゴリー(主食・副菜など)
 
