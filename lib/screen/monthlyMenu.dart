@@ -3,8 +3,8 @@ import 'package:flutter_calendar_carousel/classes/event.dart'; // イベント�
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
     show CalendarCarousel; // 献立表のカレンダーに関するAPI
 
-import 'menu.dart' as menus;
-import 'child.dart' as child;
+import 'package:sample/data/menu.dart' as menus;
+import 'package:sample/data/child.dart' as child;
 
 /* 献立表画面 */
 class MonthlyMenu extends StatefulWidget {

@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'foodStuff.g.dart';
+part 'package:sample/data/foodStuff.g.dart';
 
 /* 分量・個数に関するクラス */
 @JsonSerializable(createToJson: false)

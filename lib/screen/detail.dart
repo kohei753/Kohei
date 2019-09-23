@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart'; // マテリアルデザインしようぜのやーつ
 
-import 'menu.dart' as menus;
-import 'child.dart' as child;
+import 'package:sample/data/menu.dart' as menus;
+import 'package:sample/data/child.dart' as child;
 
 /* 詳細画面 */
 class Detail extends StatefulWidget {

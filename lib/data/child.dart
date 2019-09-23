@@ -5,7 +5,7 @@ import 'dart:io'; // ファイル関係
 import 'package:json_annotation/json_annotation.dart'; // JSONのシリアライズ
 import 'package:path_provider/path_provider.dart'; // ローカルパスにアクセス
 
-part 'child.g.dart';
+part 'package:sample/data/child.g.dart';
 
 /* 個人情報を扱うクラス */
 @JsonSerializable()

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart'; // マテリアルデザインしようぜのやーつ
 
-import 'menu.dart' as menus;
-import 'child.dart' as child;
-import 'dailyMenu.dart';
-import 'monthlyMenu.dart';
-import 'setting.dart';
+import 'package:sample/data/menu.dart' as menus;
+import 'package:sample/data/child.dart' as child;
+import 'package:sample/screen/dailyMenu.dart';
+import 'package:sample/screen/monthlyMenu.dart';
+import 'package:sample/screen/setting.dart';
 
 /* ホーム画面 */
 class Home extends StatefulWidget {

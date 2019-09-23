@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart'; // マテリアルデザインしようぜのやーつ
 
-import 'menu.dart' as menus;
-import 'child.dart' as child;
+import 'package:sample/data/menu.dart' as menus;
+import 'package:sample/data/child.dart' as child;
 
 /* 一日の献立画面 */
 class DailyMenu extends StatefulWidget {
@@ -13,6 +13,6 @@ class _DailyMenuState extends State<DailyMenu> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return null;
+    return Text('今日の献立♡');
   }
 }

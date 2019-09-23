@@ -6,9 +6,9 @@ import 'package:json_annotation/json_annotation.dart';  // JSONのシリアラ�
 import 'package:flutter/services.dart' show rootBundle; // ローカルファイルへのアクセス
 import 'package:intl/intl.dart';  // DateTimeのパース処理
 
-import 'dish.dart';
+import 'package:sample/data/dish.dart';
 
-part 'menu.g.dart';
+part 'package:sample/data/menu.g.dart';
 
 @JsonSerializable(createToJson: false)
 class Menu {

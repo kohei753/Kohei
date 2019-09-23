@@ -3,7 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 import 'foodStuff.dart';
 
-part 'dish.g.dart';
+part 'package:sample/data/dish.g.dart';
 
 @JsonSerializable(createToJson: false)
 class Dish {
