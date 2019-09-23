@@ -1,11 +1,10 @@
-import 'dart:async';  // 非同期処理関係
-
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart'; // マテリアルデザインしようぜのやーつ
 import 'package:flutter_calendar_carousel/classes/event.dart'; // イベントクラスに関するやーつ
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
     show CalendarCarousel; // 献立表のカレンダーに関するAPI
 
 import 'menu.dart' as menus;
+import 'child.dart' as child;
 
 void main() {
   runApp(MaterialApp(
@@ -15,7 +14,7 @@ void main() {
     ),
     /* 画面遷移スタックを名前で管理する */
     home: Splash(), // スプラッシュ
-    routes: <String, WidgetBuilder>{
+    routes: <String, WidgetBuilder> {
       '/entry': (BuildContext context) => Entry(), // 初回起動時にのみ表示される画面
       '/home': (BuildContext context) => Home(), // 1日の献立を表示する画面
       '/detail': (BuildContext context) => Detail(), // 各料理の詳細画面を表示する画面
@@ -37,7 +36,8 @@ class _SplashState extends State<Splash> {
    * ネイティブでやった方が綺麗だし、本来の意味のスプラッシュとして
    * 利用できると思うが、ここで多分初期情報とかを読み込むと思うから
    * それをネイティブからやるの難しそうだったのでとりあえすここに書いてる */
-  static var allMenu = {};  // jsonのメニューを格納する変数
+  var allMenu = {};  // jsonのメニューを格納する変数
+  var myChild;
 
   @override
   void initState() {
@@ -49,7 +49,16 @@ class _SplashState extends State<Splash> {
       allMenu = value;
       print("読み込めてるかーな"); // ok!
       // TODO: 各画面に読み込んだデータを受け渡しつつ遷移
-      handleTimeout();
+    });
+
+    // 登録データを取得
+    child.readInfo().then((value) {
+      myChild = value;
+      if (myChild.name == null) {
+        handleToEntry();
+      } else {
+        handleToHome();
+      }
     });
   }
 
@@ -60,10 +69,13 @@ class _SplashState extends State<Splash> {
     return FlutterLogo();
   }
 
-  /* タイムアウトした後の処理
-   * 今回はとりあえずホーム画面に移動させてる */
-  void handleTimeout() {
-    // ホーム画面へ
+  /* 初期登録への遷移 */
+  void handleToEntry() {
+    Navigator.pushReplacementNamed(context, '/entry');
+  }
+
+  /* ホームへの遷移 */
+  void handleToHome() {
     Navigator.pushReplacementNamed(context, '/home');
   }
 }
@@ -75,10 +87,30 @@ class Entry extends StatefulWidget {
 }
 
 class _EntryState extends State<Entry> {
+  /* 入力情報を登録 */
+  void entryInfo() {
+    // TODO: 入力された情報を記録する関数
+    child.writeInfo(child.Child('太郎', '函館中学校', 7, 'men'));
+    handleToHome();
+  }
+
+  /* ホーム画面への遷移 */
+  void handleToHome() {
+    Navigator.pushReplacementNamed(context, '/home');
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return null;
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('登録'),
+      ),
+      floatingActionButton: IconButton(
+          icon: Icon(Icons.check),
+          onPressed: entryInfo,
+      ),
+    );
   }
 }
 

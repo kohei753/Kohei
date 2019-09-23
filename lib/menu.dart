@@ -157,10 +157,10 @@ class Menu {
 /* JSONを読み取り、マップにして返す */
 Future<Map<DateTime, Menu>> getMenus() async {
   final Map<DateTime, Menu> _menus = {};
-  final _jsonMenus = await rootBundle.loadString('assets/august.json');
-  final _decodeMenus = json.decode(_jsonMenus);
+  final _jsonMenus = await rootBundle.loadString('assets/august.json'); // ファイル読み込み
+  final _decodeMenus = json.decode(_jsonMenus); // String => json
   for(var i = 0; i < _decodeMenus.length; i++) {
-    var menu = Menu.fromJson(_decodeMenus[i]);
+    var menu = Menu.fromJson(_decodeMenus[i]);  // json => Menu
     _menus[menu.day] = menu;
   }
   return _menus;
