@@ -54,7 +54,6 @@ Future<Child> readInfo() async {
 
     return child;
   } catch (e) {
-    // TODO: 失敗した時(初起動時)は空のChildクラスを返す
     return Child(null, null, null, null);
   }
 }
