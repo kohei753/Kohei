@@ -2,6 +2,7 @@ import 'package:flutter/material.dart'; // マテリアルデザインしよう�
 
 import 'menu.dart' as menus;
 import 'child.dart' as child;
+import 'dailyMenu.dart';
 import 'monthlyMenu.dart';
 import 'setting.dart';
 
@@ -16,11 +17,8 @@ class _HomeState extends State<Home> {
   /* BottomNavigationBarで使用する諸々 */
   int _selectedIndex = 0; // 選択中のタブ番号を管理
   List<Widget> _widgetOptions = <Widget>[
-    /* TODO:ここに今日の献立の画面と献立表の画面のウィジェットをうまく管理する */
-    Text(
-      'Index 0: Home',
-    ),
-    MonthlyMenu(),
+    DailyMenu(),  // 1日の献立画面
+    MonthlyMenu(),  // 献立表画面
   ];
 
   void _onItemTapped(int index) {
@@ -29,11 +27,6 @@ class _HomeState extends State<Home> {
       _selectedIndex = index;
       _title = (index != 0) ? 'X月の献立表' : '日付';
     });
-  }
-
-  /* 1日の献立画面のウィジェット */
-  Widget _buildHome() {
-    return null;
   }
 
   void _handleSetting() {

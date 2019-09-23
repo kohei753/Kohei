@@ -26,7 +26,7 @@ class _MonthlyMenuState extends State<MonthlyMenu> {
     // TODO: implement build
     return Scaffold(
       body: Container(
-        margin: EdgeInsets.all(16.0),
+        margin: EdgeInsets.symmetric(horizontal: 16.0),
         child: CalendarCarousel<Event>(
           onDayPressed: onDayPressed, // 日にちが選択された時の処理
           weekendTextStyle: TextStyle(
