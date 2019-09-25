@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart'; // マテリアルデザインしようぜのやーつ
 
-import 'package:sample/data/menu.dart' as menus;
-import 'package:sample/data/child.dart' as child;
+import 'package:sample/data/menu.dart';
+import 'package:sample/data/child.dart';
 import 'package:sample/screen/dailyMenu.dart';
 import 'package:sample/screen/monthlyMenu.dart';
 import 'package:sample/screen/setting.dart';
 
 /* ホーム画面 */
 class Home extends StatefulWidget {
+  final Map<DateTime, Menu> menus;
+  final Child child;
+  Home({Key key, this.menus, this.child}) : super(key: key);
+
   @override
   _HomeState createState() => _HomeState();
 }
@@ -33,12 +37,13 @@ class _HomeState extends State<Home> {
     // 設定画面へ
     Navigator.push(
         context,
-        MaterialPageRoute<Null>(
+        MaterialPageRoute(
           settings: RouteSettings(name: '/setting'),
           builder: (BuildContext context) => Setting(),
           fullscreenDialog: true, // モーダルで表示
         ));
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +80,7 @@ class _HomeState extends State<Home> {
           ),
         ],
         currentIndex: _selectedIndex, // 選択中の画面を管理
-        selectedItemColor: Colors.deepOrangeAccent, // 選択時の色
+        selectedItemColor: Theme.of(context).primaryColor, // 選択時の色
         onTap: _onItemTapped, // タップすると更新
       ),
     );

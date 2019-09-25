@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart'; // マテリアルデザインしようぜのやーつ
 
-import 'package:sample/data/menu.dart' as menus;
+import 'package:sample/data/menu.dart' as menu;
 import 'package:sample/data/child.dart' as child;
+import 'entry.dart';
+import 'home.dart';
 
 /* スプラッシュ画面 */
 class Splash extends StatefulWidget {
@@ -14,28 +16,43 @@ class _SplashState extends State<Splash> {
    * ネイティブでやった方が綺麗だし、本来の意味のスプラッシュとして
    * 利用できると思うが、ここで多分初期情報とかを読み込むと思うから
    * それをネイティブからやるの難しそうだったのでとりあえすここに書いてる */
-  var allMenu = {};  // jsonのメニューを格納する変数
-  var myChild;
+  Map<DateTime, menu.Menu> menus = {}; // jsonのメニューを格納する変数
+  child.Child myChild; // 登録情報
+
+  bool isGetMenu = false; // メニューリストを取得できたか
+  bool isGetInfo = false; // 登録情報を取得できたか
 
   @override
   void initState() {
     // 最初に読み込まれる
     super.initState();
 
-    // 献立データを取得 => value
-    menus.getMenus().then((value) {
-      allMenu = value;
-      print("読み込めてるかーな"); // ok!
+    // 献立データを取得
+    menu.getMenus().then((value) {
+      menus = value;
       // TODO: 各画面に読み込んだデータを受け渡しつつ遷移
+      isGetMenu = true;
+
+      if (isGetInfo) {
+        if (myChild.name == null) {
+          handleToEntry();
+        } else {
+          handleToHome();
+        }
+      }
     });
 
     // 登録データを取得
     child.readInfo().then((value) {
       myChild = value;
-      if (myChild.name == null) {
-        handleToEntry();
-      } else {
-        handleToHome();
+      isGetInfo = true;
+
+      if (isGetMenu) {
+        if (myChild.name == null) {
+          handleToEntry();
+        } else {
+          handleToHome();
+        }
       }
     });
   }
@@ -49,11 +66,21 @@ class _SplashState extends State<Splash> {
 
   /* 初期登録への遷移 */
   void handleToEntry() {
-    Navigator.pushReplacementNamed(context, '/entry');
+    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          settings: RouteSettings(name: '/entry'),
+          builder: (BuildContext context) => Entry(),
+        ));
   }
 
   /* ホームへの遷移 */
   void handleToHome() {
-    Navigator.pushReplacementNamed(context, '/home');
+    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          settings: RouteSettings(name: '/home'),
+          builder: (BuildContext context) => Home(menus: menus, child: myChild),
+        ));
   }
 }
