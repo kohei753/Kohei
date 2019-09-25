@@ -4,6 +4,7 @@ import 'package:sample/data/menu.dart' as menu;
 import 'package:sample/data/child.dart' as child;
 import 'entry.dart';
 import 'home.dart';
+import 'detail.dart';
 
 /* スプラッシュ画面 */
 class Splash extends StatefulWidget {
@@ -81,6 +82,7 @@ class _SplashState extends State<Splash> {
         MaterialPageRoute(
           settings: RouteSettings(name: '/home'),
           builder: (BuildContext context) => Home(menus: menus, child: myChild),
+//          builder: (BuildContext context) => Detail(dailyMenu: menus[DateTime(2019, 8, 19)], child: myChild),  // デバッグ用
         ));
   }
 }

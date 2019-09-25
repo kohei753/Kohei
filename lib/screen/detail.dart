@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart'; // マテリアルデザインしようぜのやーつ
 
 import 'package:sample/data/menu.dart';
+import 'package:sample/data/dish.dart';
 import 'package:sample/data/child.dart';
 
 /* 詳細画面 */
 class Detail extends StatefulWidget {
-  final Map<DateTime, Menu> menus;
+  final Menu dailyMenu;
+
   final Child child;
-  Detail({Key key, this.menus, this.child}) : super(key: key);
+  Detail({Key key, this.dailyMenu, this.child}) : super(key: key);
 
   @override
   _DetailState createState() => _DetailState();
@@ -15,16 +17,27 @@ class Detail extends StatefulWidget {
 
 class _DetailState extends State<Detail> {
   /* 献立データ */
-  var dailyMenu = {};
+  Menu _dailyMenu; // 表示する日のメニューデータ
+
+  /* サイドバー関係 */
+  int _selectedIndex = 0; // 選択中のタブ番号管理
 
   /* カラーリスト */
-  Map<String, Color> _detailColors = {
-    'deRed': Color(0xFFE06777),
-    'deBlue': Color(0xFF67a8e0),
-    'deYellow': Color(0xFFd8e067),
-    'dePurple': Color(0xFFb867e0),
-    'deGreen': Color(0xFF67e088),
-  };
+  List<Color> _detailColors = [
+    Colors.deepOrangeAccent,
+    Color(0xFFE06777),
+    Color(0xFF67e088),
+    Color(0xFFd8e067),
+    Color(0xFF67a8e0),
+    Color(0xFFb867e0),
+  ];
+
+  /* 読み込まれた時にデータを取得する */
+  @override
+  void initState() {
+    super.initState();
+    _dailyMenu = widget.dailyMenu;
+  }
 
   /* サイドメニューを生成 */
   Widget _buildDrawer() {
@@ -32,17 +45,26 @@ class _DetailState extends State<Detail> {
       child: ListView.builder(
         // 中身はリスト表示
         padding: EdgeInsets.zero,
-        itemCount: dailyMenu.length,
-        itemBuilder: (context, i) {},
-//        children: <Widget>[
-//          DrawerHeader(
-//            // ヘッダー
-//            child: Text('選択中の料理'),
-//            decoration: BoxDecoration(
-//              color: _detailColors['deRed'],
-//            ),
-//          ),
-//        ],
+        itemCount: _dailyMenu.menu.length,
+        itemBuilder: (context, i) {
+          if (i == _selectedIndex) return _buildDrawerHeader(_dailyMenu.menu[i]);
+          return Container(
+            color: _detailColors[i],
+            child: ListTile(
+              title: Text(_dailyMenu.menu[i].name),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  /* 選択中のサイドメニュー */
+  Widget _buildDrawerHeader(Dish dish) {
+    return DrawerHeader(
+      child: Text(dish.name),
+      decoration: BoxDecoration(
+        color: _detailColors[_selectedIndex],
       ),
     );
   }
