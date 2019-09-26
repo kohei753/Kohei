@@ -81,8 +81,8 @@ class _SplashState extends State<Splash> {
         context,
         MaterialPageRoute(
           settings: RouteSettings(name: '/home'),
-          builder: (BuildContext context) => Home(menus: menus, child: myChild),
-//          builder: (BuildContext context) => Detail(dailyMenu: menus[DateTime(2019, 8, 19)], child: myChild),  // デバッグ用
+//          builder: (BuildContext context) => Home(menus: menus, child: myChild),
+          builder: (BuildContext context) => Detail(dailyMenu: menus[DateTime(2019, 8, 19)], child: myChild),  // デバッグ用
         ));
   }
 }

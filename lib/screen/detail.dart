@@ -39,19 +39,27 @@ class _DetailState extends State<Detail> {
     _dailyMenu = widget.dailyMenu;
   }
 
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   /* サイドメニューを生成 */
   Widget _buildDrawer() {
     return Drawer(
       child: ListView.builder(
         // 中身はリスト表示
-        padding: EdgeInsets.zero,
-        itemCount: _dailyMenu.menu.length,
+        padding: EdgeInsets.zero, // 余白を消去
+        itemCount: _dailyMenu.menu.length + 1,  // +1はヘッダーを作成するため
         itemBuilder: (context, i) {
-          if (i == _selectedIndex) return _buildDrawerHeader(_dailyMenu.menu[i]);
+          if (i == 0) return _buildDrawerHeader();  // 一番上にヘッダーを作成
+          final index = i - 1; // ヘッダーを抜いた真実のindex
           return Container(
-            color: _detailColors[i],
+            color: _detailColors[index],  // 色変えてるけどダセェから多分変える
             child: ListTile(
-              title: Text(_dailyMenu.menu[i].name),
+              title: Text(_dailyMenu.menu[index].name), // とりあえず名前だしてるだけ
+              onTap: () => _onItemTapped(index),  // タップしたら切り替えるように
             ),
           );
         },
@@ -60,11 +68,11 @@ class _DetailState extends State<Detail> {
   }
 
   /* 選択中のサイドメニュー */
-  Widget _buildDrawerHeader(Dish dish) {
+  Widget _buildDrawerHeader() {
     return DrawerHeader(
-      child: Text(dish.name),
+      child: Text(_dailyMenu.day.toIso8601String()),  // 今は日付とかだしてるだけ
       decoration: BoxDecoration(
-        color: _detailColors[_selectedIndex],
+        color: _detailColors[_selectedIndex], // 色も変えられるよ
       ),
     );
   }
@@ -74,7 +82,8 @@ class _DetailState extends State<Detail> {
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
-        title: Text('料理名'),
+        title: Text(_dailyMenu.menu[_selectedIndex].name),  // 選択した料理名に
+        backgroundColor: _detailColors[_selectedIndex],
       ),
       endDrawer: _buildDrawer(), // サイドメニュー
     );
