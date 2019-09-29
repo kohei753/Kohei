@@ -24,12 +24,22 @@ class _DetailState extends State<Detail> {
 
   /* カラーリスト */
   List<Color> _detailColors = [
-    Colors.deepOrangeAccent,
-    Color(0xFFE06777),
-    Color(0xFF67e088),
-    Color(0xFFd8e067),
-    Color(0xFF67a8e0),
-    Color(0xFFb867e0),
+    Color(0xFFf6f183),
+    Color(0xFF82c1f5),
+    Color(0xFF87f582),
+    Color(0xFFf58287),
+    Color(0xFFffba66),
+    Color(0xFFb682f5),
+  ];
+
+  /* サイドバーの各メニューのアイコン */
+  List<String> _menuIcon = [
+    'assets/staple.png',
+    'assets/drink.png',
+    'assets/side_green.png',
+    'assets/side_red.png',
+    'assets/side_orenge.png',
+    'assets/side_purple.png',
   ];
 
   /* 読み込まれた時にデータを取得する */
@@ -51,16 +61,18 @@ class _DetailState extends State<Detail> {
       child: ListView.builder(
         // 中身はリスト表示
         padding: EdgeInsets.zero, // 余白を消去
-        itemCount: _dailyMenu.menu.length + 1,  // +1はヘッダーを作成するため
+        itemCount: _dailyMenu.menu.length + 1, // +1はヘッダーを作成するため
         itemBuilder: (context, i) {
-          if (i == 0) return _buildDrawerHeader();  // 一番上にヘッダーを作成
-          final index = i - 1; // ヘッダーを抜いた真実のindex
-          return Container(
-            color: _detailColors[index],  // 色変えてるけどダセェから多分変える
-            child: ListTile(
-              title: Text(_dailyMenu.menu[index].name), // とりあえず名前だしてるだけ
-              onTap: () => _onItemTapped(index),  // タップしたら切り替えるように
+          if (i == 0) return _buildDrawerHeader(); // 一番上にヘッダーを作成
+          final index = i - 1; // ヘッダーを抜いた真のindex
+          return ListTile(
+            leading: Image.asset(
+              _menuIcon[index],
+              width: 45,
+              height: 45,
             ),
+            title: Text(_dailyMenu.menu[index].name), // とりあえず名前だしてるだけ
+            onTap: () => _onItemTapped(index), // タップしたら切り替えるように
           );
         },
       ),
@@ -70,7 +82,7 @@ class _DetailState extends State<Detail> {
   /* 選択中のサイドメニュー */
   Widget _buildDrawerHeader() {
     return DrawerHeader(
-      child: Text(_dailyMenu.day.toIso8601String()),  // 今は日付とかだしてるだけ
+      child: Text(_dailyMenu.day.toIso8601String()), // 今は日付とかだしてるだけ
       decoration: BoxDecoration(
         color: _detailColors[_selectedIndex], // 色も変えられるよ
       ),
@@ -82,7 +94,10 @@ class _DetailState extends State<Detail> {
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
-        title: Text(_dailyMenu.menu[_selectedIndex].name),  // 選択した料理名に
+        title: Text(
+          _dailyMenu.menu[_selectedIndex].name,
+          style: TextStyle(color: Colors.black54),
+        ), // 選択した料理名に
         backgroundColor: _detailColors[_selectedIndex],
       ),
       endDrawer: _buildDrawer(), // サイドメニュー
