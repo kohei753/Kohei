@@ -17,13 +17,31 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  /* 引き継いだメニューと登録情報 */
+  Map<DateTime, Menu> menus;
+  Child child;
+
   String _title = '日付';
+
   /* BottomNavigationBarで使用する諸々 */
+  List<Widget> _widgetOptions;  // タブのリスト
   int _selectedIndex = 0; // 選択中のタブ番号を管理
-  List<Widget> _widgetOptions = <Widget>[
-    DailyMenu(),  // 1日の献立画面
-    MonthlyMenu(),  // 献立表画面
-  ];
+
+  /* 初期化処理 */
+  @override
+  void initState() {
+    super.initState();
+    /* メニューと登録情報の取得 */
+    menus = widget.menus;
+    child = widget.child;
+
+    /* widgetリストの中身作成 */
+    _widgetOptions = [
+      // TODO: 選択日を受け渡す
+      DailyMenu(menu: menus[DateTime(2019, 8, 19)], child: child),
+      MonthlyMenu(menus: menus, child: child),
+    ];
+  }
 
   void _onItemTapped(int index) {
     // メニューがタップされた時更新
@@ -43,7 +61,6 @@ class _HomeState extends State<Home> {
           fullscreenDialog: true, // モーダルで表示
         ));
   }
-
 
   @override
   Widget build(BuildContext context) {

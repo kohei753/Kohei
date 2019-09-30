@@ -54,8 +54,7 @@ class _MonthlyMenuState extends State<MonthlyMenu> {
           selectedDateTime: _currentDate, // 初期値として選択する日にち(今日を指定)
           locale: 'JA', // 日本のカレンダーに設定
           daysHaveCircularBorder: true, // 枠線を丸く設定
-          customGridViewPhysics:
-          NeverScrollableScrollPhysics(), // カレンダーの縦スクロールを固定
+          customGridViewPhysics: NeverScrollableScrollPhysics(), // カレンダーの縦スクロールを固定
         ),
       ),
     );
