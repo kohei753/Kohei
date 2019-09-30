@@ -20,7 +20,6 @@ class _HomeState extends State<Home> {
   /* 引き継いだメニューと登録情報 */
   Map<DateTime, Menu> menus;
   Child child;
-
   String _title = '日付';
 
   /* BottomNavigationBarで使用する諸々 */
