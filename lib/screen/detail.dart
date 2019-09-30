@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart'; // マテリアルデザインしようぜのやーつ
+import 'package:intl/intl.dart';  // DateTimeのフォーマットに使う
 
 import 'package:sample/data/menu.dart';
 import 'package:sample/data/dish.dart';
@@ -16,8 +17,9 @@ class Detail extends StatefulWidget {
 }
 
 class _DetailState extends State<Detail> {
-  /* 献立データ */
+  /* 諸々データ */
   Menu _dailyMenu; // 表示する日のメニューデータ
+  var formatter = DateFormat("yyyy/MM/dd(E)"); // 日付をフォーマットするやつ
 
   /* サイドバー関係 */
   int _selectedIndex = 0; // 選択中のタブ番号管理
@@ -32,7 +34,8 @@ class _DetailState extends State<Detail> {
     Color(0xFFb682f5),
   ];
 
-  /* サイドバーの各メニューのアイコン */
+  /* サイドバーの各メニューのアイコン
+  *  色が上のカラーリストと対応している */
   List<String> _menuIcon = [
     'assets/staple.png',
     'assets/drink.png',
@@ -67,9 +70,10 @@ class _DetailState extends State<Detail> {
           final index = i - 1; // ヘッダーを抜いた真のindex
           return ListTile(
             leading: Image.asset(
+              // メニューの横のアイコン
               _menuIcon[index],
-              width: 45,
-              height: 45,
+              width: 50,
+              height: 50,
             ),
             title: Text(_dailyMenu.menu[index].name), // とりあえず名前だしてるだけ
             onTap: () => _onItemTapped(index), // タップしたら切り替えるように
@@ -79,12 +83,32 @@ class _DetailState extends State<Detail> {
     );
   }
 
-  /* 選択中のサイドメニュー */
+  /* サイドメニューのヘッダー */
   Widget _buildDrawerHeader() {
-    return DrawerHeader(
-      child: Text(_dailyMenu.day.toIso8601String()), // 今は日付とかだしてるだけ
+    return UserAccountsDrawerHeader(
+      accountName: Text(
+        // メニュー名
+        _dailyMenu.menu[_selectedIndex].name,
+        style: TextStyle(
+          color: Colors.black54,
+          fontSize: 20, // ちょっと大きめに
+        ),
+      ),
+      accountEmail: Text(
+        // 日付
+        formatter.format(_dailyMenu.day),
+        style: TextStyle(
+          color: Colors.black54,
+          fontSize: 15,
+        ),
+      ),
+      currentAccountPicture: CircleAvatar(
+        // 画像
+        backgroundColor: Colors.black26,
+        child: Image.asset(_menuIcon[_selectedIndex]),
+      ),
       decoration: BoxDecoration(
-        color: _detailColors[_selectedIndex], // 色も変えられるよ
+        color: _detailColors[_selectedIndex], // 背景色も変えられるよ
       ),
     );
   }
