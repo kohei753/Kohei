@@ -42,6 +42,7 @@ class _DailyMenuState extends State<DailyMenu> {
     "食物繊維",
     "食塩相当量"
   ];
+  var dailyMenuNutrient = [];
 
   /* 初期化処理 */
   @override
@@ -73,6 +74,24 @@ class _DailyMenuState extends State<DailyMenu> {
   /*栄養素コンソール表示*/
   void testMenuNutrient() {
     print(_menus[firstDay].menuEnergy);
+  }
+
+  void addMenuNutrient() {
+    dailyMenuNutrient.add(_menus[firstDay].menuEnergy);
+    dailyMenuNutrient.add(_menus[firstDay].menuProtein);
+    dailyMenuNutrient.add(_menus[firstDay].menuLipid);
+    dailyMenuNutrient.add(_menus[firstDay].menuCarbohydrate);
+    dailyMenuNutrient.add(_menus[firstDay].menuSodium);
+    dailyMenuNutrient.add(_menus[firstDay].menuCalcium);
+    dailyMenuNutrient.add(_menus[firstDay].menuMagnesium);
+    dailyMenuNutrient.add(_menus[firstDay].menuIron);
+    dailyMenuNutrient.add(_menus[firstDay].menuZinc);
+    dailyMenuNutrient.add(_menus[firstDay].menuRetinol);
+    dailyMenuNutrient.add(_menus[firstDay].menuVitaminB1);
+    dailyMenuNutrient.add(_menus[firstDay].menuVitaminB2);
+    dailyMenuNutrient.add(_menus[firstDay].menuVitaminC);
+    dailyMenuNutrient.add(_menus[firstDay].menuDietaryFiber);
+    dailyMenuNutrient.add(_menus[firstDay].menuSalt);
   }
 
   /*カテゴリー表示*/
@@ -109,7 +128,7 @@ class _DailyMenuState extends State<DailyMenu> {
         padding: EdgeInsets.all(8.0),
         child: ListTile(
           title: Text(dailyMenuName[i]),
-//          subtitle: Text(dailyMenuNutrient[i].toString()),
+          subtitle: Text(dailyMenuNutrient[i].toString()),
         ),
       )
     );
@@ -119,6 +138,7 @@ class _DailyMenuState extends State<DailyMenu> {
   Widget build(BuildContext context) {
     testMenuName();
     testMenuNutrient();
+    addMenuNutrient();
     // TODO: implement build
     return SingleChildScrollView(
       child: Column(
