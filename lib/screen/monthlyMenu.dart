@@ -51,13 +51,14 @@ class _MonthlyMenuState extends State<MonthlyMenu> {
             onDayPressed: onDayPressed, // 日にちが選択された時の処理
             showOnlyCurrentMonthDate: true, // 一ヶ月のみ表示
             showHeader: false,  // ヘッダー(xx年yy月)を隠す
+            weekFormat: false,
             weekendTextStyle: TextStyle(
               // 土日の色変更
               color: Colors.red,
             ),
 
             //カレンダーの高さ
-            height: size.height * 1/2,
+             height: size.height * 1/2,
 
             /* 今日の処理をなくす */
             todayBorderColor: null,
@@ -190,5 +191,4 @@ class _MonthlyMenuState extends State<MonthlyMenu> {
         )
     );
   }
-
 }
