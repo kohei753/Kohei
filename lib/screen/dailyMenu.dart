@@ -1,11 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart'; // マテリアルデザインしようぜのやーつ
-import 'package:sample/data/foodStuff.dart';
-import 'package:sample/data/dish.dart';
 import 'package:sample/data/menu.dart';
-//import 'package:sample/data/menu.dart' as menus;
 import 'package:sample/data/child.dart';
 import 'detail.dart';
+import 'package:spider_chart/spider_chart.dart';
 import 'package:intl/intl.dart';
 
 /* 一日の献立画面 */
@@ -42,9 +40,9 @@ class _DailyMenuState extends State<DailyMenu> {
     "食物繊維",
     "食塩相当量"
   ];
-  var dailyMenuNutrient = [];
 
-  /* 初期化処理 */
+  var _dailyMenuNutrient = [];
+
   @override
   void initState() {
     super.initState();
@@ -64,6 +62,37 @@ class _DailyMenuState extends State<DailyMenu> {
     );
   }
 
+  /*グラフ用栄養素の作成*/
+  double get graphProtein{
+    var result = 0.0;
+    result = _menus[firstDay].menuProtein;
+    return result;
+  }
+  double get graphVitamin{
+    var result = 0.0;
+    result = _menus[firstDay].menuRetinol + _menus[firstDay].menuVitaminB1 +
+        _menus[firstDay].menuVitaminB2 + _menus[firstDay].menuVitaminC;
+    return result;
+  }
+  double get graphMineral{
+    var result = 0.0;
+    result = _menus[firstDay].menuCalcium + _menus[firstDay].menuSodium +
+        _menus[firstDay].menuIron + _menus[firstDay].menuMagnesium +
+        _menus[firstDay].menuZinc + _menus[firstDay].menuSalt;
+    return result;
+  }
+  double get graphCarbohydrate{
+    var result = 0.0;
+    result = _menus[firstDay].menuDietaryFiber + _menus[firstDay].menuCarbohydrate;
+    return result;
+  }
+  double get graphLipid{
+    var result = 0.0;
+    result = _menus[firstDay].menuLipid;
+    return result;
+  }
+
+
   /*献立コンソール表示*/
   void testMenuName() {
     for(int i=0; i<_menus[firstDay].menu.length; i++) {
@@ -73,25 +102,30 @@ class _DailyMenuState extends State<DailyMenu> {
 
   /*栄養素コンソール表示*/
   void testMenuNutrient() {
-    print(_menus[firstDay].menuEnergy);
+    print('タンパク質: ' + graphProtein.toString());
+    print('ビタミン: ' + graphVitamin.toString());
+    print('ミネラル: ' + graphMineral.toString());
+    print('炭水化物: ' + graphCarbohydrate.toString());
+    print('脂質: ' + graphLipid.toString());
   }
 
+  /*栄養素の合計値の塊作成*/
   void addMenuNutrient() {
-    dailyMenuNutrient.add(_menus[firstDay].menuEnergy);
-    dailyMenuNutrient.add(_menus[firstDay].menuProtein);
-    dailyMenuNutrient.add(_menus[firstDay].menuLipid);
-    dailyMenuNutrient.add(_menus[firstDay].menuCarbohydrate);
-    dailyMenuNutrient.add(_menus[firstDay].menuSodium);
-    dailyMenuNutrient.add(_menus[firstDay].menuCalcium);
-    dailyMenuNutrient.add(_menus[firstDay].menuMagnesium);
-    dailyMenuNutrient.add(_menus[firstDay].menuIron);
-    dailyMenuNutrient.add(_menus[firstDay].menuZinc);
-    dailyMenuNutrient.add(_menus[firstDay].menuRetinol);
-    dailyMenuNutrient.add(_menus[firstDay].menuVitaminB1);
-    dailyMenuNutrient.add(_menus[firstDay].menuVitaminB2);
-    dailyMenuNutrient.add(_menus[firstDay].menuVitaminC);
-    dailyMenuNutrient.add(_menus[firstDay].menuDietaryFiber);
-    dailyMenuNutrient.add(_menus[firstDay].menuSalt);
+    _dailyMenuNutrient.add(_menus[firstDay].menuEnergy.toString() + ' kcal');
+    _dailyMenuNutrient.add(_menus[firstDay].menuProtein.toString() + ' g');
+    _dailyMenuNutrient.add(_menus[firstDay].menuLipid.toString() + ' g');
+    _dailyMenuNutrient.add(_menus[firstDay].menuCarbohydrate.toString() + ' g');
+    _dailyMenuNutrient.add(_menus[firstDay].menuSodium.toString() + ' g');
+    _dailyMenuNutrient.add(_menus[firstDay].menuCalcium.toString() + ' g');
+    _dailyMenuNutrient.add(_menus[firstDay].menuMagnesium.toString() + ' g');
+    _dailyMenuNutrient.add(_menus[firstDay].menuIron.toString() + ' g');
+    _dailyMenuNutrient.add(_menus[firstDay].menuZinc.toString() + ' g');
+    _dailyMenuNutrient.add(_menus[firstDay].menuRetinol.toString() + ' g');
+    _dailyMenuNutrient.add(_menus[firstDay].menuVitaminB1.toString() + ' g');
+    _dailyMenuNutrient.add(_menus[firstDay].menuVitaminB2.toString() + ' g');
+    _dailyMenuNutrient.add(_menus[firstDay].menuVitaminC.toString() + ' g');
+    _dailyMenuNutrient.add(_menus[firstDay].menuDietaryFiber.toString() + ' g');
+    _dailyMenuNutrient.add(_menus[firstDay].menuSalt.toString() + ' g');
   }
 
   /*カテゴリー表示*/
@@ -103,6 +137,7 @@ class _DailyMenuState extends State<DailyMenu> {
     );
   }
 
+  /*メニュー名表示*/
   Widget dailyMenuNameList() {
     return ListView.builder(
       itemCount: _menus[firstDay].menu.length,
@@ -116,6 +151,7 @@ class _DailyMenuState extends State<DailyMenu> {
     );
   }
 
+  /*栄養素の合計値表示*/
   Widget dailyMenuNutrientList() {
     return ListView.separated(
       itemCount: dailyMenuName.length,
@@ -128,17 +164,45 @@ class _DailyMenuState extends State<DailyMenu> {
         padding: EdgeInsets.all(8.0),
         child: ListTile(
           title: Text(dailyMenuName[i]),
-          subtitle: Text(dailyMenuNutrient[i].toString()),
+          subtitle: Text(_dailyMenuNutrient[i].toString()),
         ),
       )
     );
   }
 
+  /*栄養素の合計値をグラフ表示*/
+  Widget dailyMenuNutrientGraph() {
+    return Center(
+        child: Container(
+          padding: EdgeInsets.only(top: 20,bottom: 20),
+          width: 300,
+          height: 300,
+          child: SpiderChart(
+            data: [
+              7,
+              5,
+              10,
+              7,
+              4,
+            ],
+            maxValue: 100,
+            colors: <Color>[
+              Colors.red,
+              Colors.green,
+              Colors.blue,
+              Colors.yellow,
+              Colors.indigo,
+            ],
+          ),
+        ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    addMenuNutrient();
     testMenuName();
     testMenuNutrient();
-    addMenuNutrient();
     // TODO: implement build
     return SingleChildScrollView(
       child: Column(
@@ -147,8 +211,7 @@ class _DailyMenuState extends State<DailyMenu> {
           Container(
             padding: EdgeInsets.only(left: 10,right: 10),
             child: Column(
-              children: <Widget>[
-                dailyMenuNameList()
+              children: <Widget>[dailyMenuNameList()
               ],
             ),
           ),
@@ -160,7 +223,8 @@ class _DailyMenuState extends State<DailyMenu> {
                 dailyMenuNutrientList()
               ],
             ),
-          )
+          ),
+          dailyMenuNutrientGraph(),
         ],
       ),
     );
