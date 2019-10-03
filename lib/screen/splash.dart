@@ -71,7 +71,7 @@ class _SplashState extends State<Splash> {
         context,
         MaterialPageRoute(
           settings: RouteSettings(name: '/entry'),
-          builder: (BuildContext context) => Entry(),
+          builder: (BuildContext context) => Entry(menus: menus),
         ));
   }
 
