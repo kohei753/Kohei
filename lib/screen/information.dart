@@ -14,7 +14,7 @@ class _InformationState extends State<Information> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Information'),
+        title: Text('Information'), // タイトル
       ),
       body: Center(
         child: Column(
