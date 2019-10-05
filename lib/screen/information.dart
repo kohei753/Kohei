@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart'; // マテリアルデザインしようぜのやーつ
 
-import 'package:sample/data/menu.dart' as menu;
-import 'package:sample/data/child.dart' as child;
+import 'package:sample/data/menu.dart';
+import 'package:sample/data/child.dart';
 
 /* インフォメーション画面 */
 class Information extends StatefulWidget {
@@ -13,6 +13,8 @@ class _InformationState extends State<Information> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return null;
+    return Scaffold(
+      appBar: AppBar(),
+    );
   }
 }
