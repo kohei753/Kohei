@@ -3,6 +3,7 @@ import 'package:flutter/material.dart'; // マテリアルデザインしよう�
 import 'package:sample/data/menu.dart';
 import 'package:sample/data/child.dart';
 import 'home.dart';
+import 'account.dart';
 import 'origin.dart';
 import 'information.dart';
 import 'help.dart';
@@ -32,11 +33,22 @@ class _SettingState extends State<Setting> {
     child = widget.child;
 
     _itemList = [
-      _buildEntryTile(),  // 登録情報
-      _buildTile(origin, Icon(Icons.location_on)),  // 原産地
+      _buildEntryTile(), // 登録情報
+      _buildTile(origin, Icon(Icons.location_on)), // 原産地
       _buildTile(info, Icon(Icons.info)), // インフォ
       _buildTile(help, Icon(Icons.help)), // ヘルプ
     ];
+  }
+
+  /* 登録情報の確認・更新画面へ */
+  void handleToAccount() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        settings: RouteSettings(name: '/account'),
+        builder: (BuildContext context) => Account(child: child),
+      ),
+    );
   }
 
   /* リストタイルの遷移先への遷移 */
@@ -45,7 +57,8 @@ class _SettingState extends State<Setting> {
       context,
       MaterialPageRoute(
         settings: RouteSettings(name: '/$title'),
-        builder: (BuildContext context) => nextWidget(title), // 遷移先をtitleによって変える
+        builder: (BuildContext context) =>
+            nextWidget(title), // 遷移先をtitleによって変える
       ),
     );
   }
@@ -78,12 +91,14 @@ class _SettingState extends State<Setting> {
       child: ListTile(
         contentPadding: EdgeInsets.symmetric(horizontal: 12.0),
         leading: Container(
-          child: Icon(  // 人のアイコン
+          child: Icon(
+            // 人のアイコン
             Icons.person,
             size: 50,
             color: Colors.white,
           ),
-          decoration: BoxDecoration(  // アイコン丸で囲みたかった
+          decoration: BoxDecoration(
+            // アイコン丸で囲みたかった
             shape: BoxShape.circle,
             color: Colors.black26,
           ),
@@ -97,7 +112,7 @@ class _SettingState extends State<Setting> {
         ),
         subtitle: Text('巴中学校'),
         trailing: Icon(Icons.keyboard_arrow_right), // 右端の矢印
-        onTap: () {},
+        onTap: () => handleToAccount(),
       ),
     );
   }
@@ -111,8 +126,8 @@ class _SettingState extends State<Setting> {
         leading: icon,
         title: Text(title),
         trailing: Icon(Icons.keyboard_arrow_right),
-        onTap: () => handleToKey(title),  // 各画面への遷移
-        dense: true,  // 余白を詰める
+        onTap: () => handleToKey(title), // 各画面への遷移
+        dense: true, // 余白を詰める
       ),
     );
   }
