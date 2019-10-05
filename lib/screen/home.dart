@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart'; // マテリアルデザインしようぜのやーつ
+import 'package:intl/intl.dart';
 
 import 'package:sample/data/menu.dart';
 import 'package:sample/data/child.dart';
@@ -19,9 +20,10 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   /* 引き継いだメニューと登録情報 */
   Map<DateTime, Menu> menus;
+  static final now = DateTime.now();
+  static var formatter = DateFormat("MM月dd日").format(now);
   Child child;
-  String _title = '日付';
-
+  String _title = formatter;
   /* BottomNavigationBarで使用する諸々 */
   List<Widget> _widgetOptions;  // タブのリスト
   int _selectedIndex = 0; // 選択中のタブ番号を管理
@@ -46,7 +48,7 @@ class _HomeState extends State<Home> {
     // メニューがタップされた時更新
     setState(() {
       _selectedIndex = index;
-      _title = (index != 0) ? 'X月の献立表' : '日付';
+      _title = (index != 0) ? 'X月の献立表' : formatter;
     });
   }
 
