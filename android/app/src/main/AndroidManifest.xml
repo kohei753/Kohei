@@ -1,9 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-<<<<<<< HEAD
     package="com.swift.sample">
-=======
-    package="com.example.calender_app">
->>>>>>> 856627de632213a2ed7f904b48a5a2b634d0e1fe
 
     <!-- io.flutter.app.FlutterApplication is an android.app.Application that
          calls FlutterMain.startInitialization(this); in its onCreate method.
@@ -12,11 +8,7 @@
          FlutterApplication and put your custom class here. -->
     <application
         android:name="io.flutter.app.FlutterApplication"
-<<<<<<< HEAD
         android:label="sample"
-=======
-        android:label="calender_app"
->>>>>>> 856627de632213a2ed7f904b48a5a2b634d0e1fe
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
