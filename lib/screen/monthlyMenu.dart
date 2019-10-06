@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart'; // マテリアルデザインしようぜのやーつ
+import 'package:intl/intl.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart'; // イベントクラスに関するやーつ
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
     show CalendarCarousel; // 献立表のカレンダーに関するAPI
@@ -18,177 +20,130 @@ class MonthlyMenu extends StatefulWidget {
 
 class _MonthlyMenuState extends State<MonthlyMenu> {
   /* カレンダー部分の変数 */
-  DateTime _currentDate = DateTime.now();
+  static DateTime testDate1 = DateTime(2019, 8, 19);
+  static DateTime testDate2 = testDate1.add(Duration(days: 1));
+  static DateTime pickDate = testDate1;
+  static String formattedDate = DateFormat('M月d日').format(
+      testDate1); //日付をフォーマット
+
+  static bool checkHolidays = false; //Todo　取得した日付でtrue/falseを決める。
+
+  Map<DateTime, Menu> _menus; //引き継いでる変数から持ってきた
+
+  /*読み込まれた時に遷移されてきた変数を代入*/
+  @override
+  void initState() {
+    super.initState();
+    _menus = widget.menus;
+  }
 
   /* カレンダーの更新用 */
   void onDayPressed(DateTime date, List<Event> events) {
-    this.setState(() => _currentDate = date);
+    String selectedDate = DateFormat('M月d日').format(date);
+    setState(() {
+      formattedDate = selectedDate;
+
+      if (_menus[date].menu != null) {
+        pickDate = date;
+      } else {
+        checkHolidays = true;
+      }
+    });
   }
 
   @override
-  Widget build(BuildContext context) {//画面の設定
+  Widget build(BuildContext context) {
     return Scaffold(
-        appBar: new AppBar(
-          title: new Text('カレンダー画面'),
+      body: Container(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            _calenderScreen(context),
+            _lunchScreen(),
+          ],
         ),
-        body: Container(
-          margin: const EdgeInsets.all(16.0),
-          child: Column(
-            //crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              _calenderScreen(context),
-              _schoollunchScreen(),
-            ],
-          ),
-        )
+      ),
     );
   }
 
-  Widget _calenderScreen(BuildContext context) {//カレンダーの画面
-    final Size size = MediaQuery.of(context).size;//画面のサイズを取得する
+  Widget _calenderScreen(BuildContext context) {
+    final Size size = MediaQuery
+        .of(context)
+        .size;
     return Container(
-      child: CalendarCarousel<Event>( // カレンダー部分
-            onDayPressed: onDayPressed, // 日にちが選択された時の処理
-            showOnlyCurrentMonthDate: true, // 一ヶ月のみ表示
-            showHeader: false,  // ヘッダー(xx年yy月)を隠す
-            weekFormat: false,
-            weekendTextStyle: TextStyle(
-              // 土日の色変更
-              color: Colors.red,
-            ),
-
-            //カレンダーの高さ
-             height: size.height * 1/2,
-
-            /* 今日の処理をなくす */
-            todayBorderColor: null,
-            todayButtonColor: null,
-            todayTextStyle: TextStyle(
-              color: Colors.black,
-            ),
-
-            /* 選択した日の処理 */
-            selectedDayBorderColor: Color.fromARGB(0, 0, 0, 255), // 無色(nullだとエラー出る)
-            selectedDayButtonColor: Theme.of(context).primaryColor,
-
-            selectedDateTime: _currentDate, // 初期値として選択する日にち(今日を指定)
-            locale: 'JA', // 日本のカレンダーに設定
-            daysHaveCircularBorder: true, // 枠線を丸く設定
-            customGridViewPhysics:
-            NeverScrollableScrollPhysics(), // カレンダーの縦スクロールを固定
-          ),
-        );
+      margin: EdgeInsets.only(top: 16.0),
+      child: CalendarCarousel<Event>(
+        onDayPressed: onDayPressed,
+        showOnlyCurrentMonthDate: true,
+        showHeader: false,
+        weekFormat: false,
+        weekendTextStyle: TextStyle(
+          color: Colors.red,
+        ),
+        height: (size.height * 2 / 5) + size.height / 80,
+        todayBorderColor: null,
+        todayButtonColor: null,
+        todayTextStyle: TextStyle(
+          color: Colors.black,
+        ),
+        selectedDayBorderColor: Color.fromARGB(0, 0, 0, 255),
+        selectedDayButtonColor: Theme
+            .of(context)
+            .primaryColor,
+        selectedDateTime: pickDate,
+        locale: 'JA',
+        daysHaveCircularBorder: true,
+        customGridViewPhysics: NeverScrollableScrollPhysics(),
+      ),
+    );
   }
 
-  Widget _schoollunchScreen(){//下の献立表を出力する画面
-    // List<String> listDish = [];//メニューを格納するリスト
-//    for (var i = 0; i < todayDish.length; i++) {//todayDishから順番に料理名を取り出しlistDishに格納している
-//      listDish.add(todayDish[i].dishName);
-//    }
-//    if(listDish.length < 6){//最大6品なので5品目しかない時に6個目を追加!ここのところをもう少しスマートに描きたい...
-//      listDish.add("");
-//    }
+  Widget _lunchScreen() {
     return Container(
-        margin: EdgeInsets.all(16.0),
-        child:Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            SizedBox(//○月○日の献立と表示させるためのboxの設定
-              width: 500.0,
-              height: 50.0,
-              child:  RaisedButton(//ボタン
-                onPressed: () {
-                  Navigator.pushNamed(context, '/details');
-                },
-                child:  Text(
-                  'その日の献立',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize:16.0,
-                  ),
+      margin: const EdgeInsets.all(16.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          SizedBox(
+            width: 300.0,
+            height: 50.0,
+            child: RaisedButton(
+              child: Text(
+                '$formattedDate' + 'の献立',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16.0,
+                  color: Colors.white,
                 ),
               ),
+              color: Colors.deepOrangeAccent,
+              shape: StadiumBorder(),
+              elevation: 8.0,
+              onPressed: () {
+                Navigator.pushNamed(context, 'dailyMenu');
+              },
             ),
-            Container(//主食のメニュー
-              margin: EdgeInsets.only(left:50.0,top:20.0),
-              child: Row(
-                  children:<Widget>[
-                    Text(
-                      '主食   ',//ここら辺を変える必要がある
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize:20.0,
-                      ),
-                    ),
-                    Container(
-                      child: Column(
-                        children: <Widget>[
-                          Text(
-                            'ご飯',//ここら辺をmenuとかに置き換える？
-                            style: TextStyle(
-                              fontSize:16.0,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ]
-              ),
+          ),
+          Container(
+            margin: EdgeInsets.only(top: 20.0),
+            child: ListView.builder(
+              itemCount: _menus[pickDate].menu.length,
+              shrinkWrap: true,
+              itemBuilder: (context, i) {
+                return Text(
+                  _menus[pickDate].menu[i].name,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 18.0,
+                    color: Colors.black87,
+                    //fontWeight: FontWeight.bold,
+                  ),
+                );
+              },
             ),
-            Container(//副食のメニュー・もう少し中をスマートに描きたい...
-              margin: EdgeInsets.only(left:50.0),
-              child: Row(
-                  children:<Widget>[
-                    Text(
-                      '副食   ',
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize:20.0,
-                      ),
-                    ),
-                    Container(
-                      child: Column(
-                        children: <Widget>[
-                          Text(
-                            'おかず1',//ここら辺をmenuとかに置き換える？
-                            style: TextStyle(
-                              fontSize:16.0,
-                            ),
-                          ),
-                          Text(
-                            'おかず2',//ここら辺をmenuとかに置き換える？
-                            style: TextStyle(
-                              fontSize:16.0,
-                            ),
-                          ),
-                          Text(
-                            'おかず3',//ここら辺をmenuとかに置き換える？
-                            style: TextStyle(
-                              fontSize:16.0,
-                            ),
-                          ),
-                          Text(
-                            'おかず4',//ここら辺をmenuとかに置き換える？
-                            style: TextStyle(
-                              fontSize:16.0,
-                            ),
-                          ),
-                          Text(
-                            'おかず5',//ここら辺をmenuとかに置き換える？
-                            style: TextStyle(
-                              fontSize:16.0,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ]
-              ),
-            ),
-          ],
-        )
+          ),
+        ],
+      ),
     );
   }
 }

@@ -11,7 +11,6 @@ void main() {
         primaryColor: Colors.deepOrangeAccent,
         // primaryColor: Color(0xFFe1a067), // 一応チームカラー(汚かった)
       ),
-      /* 画面遷移スタックを名前で管理する */
       home: Splash(), // スプラッシュ
     ),
   );

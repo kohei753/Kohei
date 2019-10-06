@@ -31,6 +31,8 @@ dependencies:
   json_annotation: ^3.0.0
   # Use to get a local path
   path_provider: ^1.3.0
+  # Use to format Date
+  intl: ^0.15.7
 
 dev_dependencies:
   flutter_test:

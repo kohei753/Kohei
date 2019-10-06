@@ -2,15 +2,14 @@ import 'package:flutter/material.dart'; // マテリアルデザインしよう�
 import 'package:intl/intl.dart';  // DateTimeのフォーマットに使う
 
 import 'package:sample/data/menu.dart';
-import 'package:sample/data/dish.dart';
 import 'package:sample/data/child.dart';
 
 /* 詳細画面 */
 class Detail extends StatefulWidget {
   final Menu dailyMenu;
-
   final Child child;
-  Detail({Key key, this.dailyMenu, this.child}) : super(key: key);
+  final int menuNum;  // 選択されたメニューの番号
+  Detail({Key key, this.dailyMenu, this.child, this.menuNum}) : super(key: key);
 
   @override
   _DetailState createState() => _DetailState();
@@ -50,6 +49,7 @@ class _DetailState extends State<Detail> {
   void initState() {
     super.initState();
     _dailyMenu = widget.dailyMenu;
+    if (widget.menuNum != null) _selectedIndex = widget.menuNum;
   }
 
   void _onItemTapped(int index) {
