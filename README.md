@@ -1,6 +1,12 @@
+<<<<<<< HEAD
 # sample
 
 給食のアプリで使えそうなクラスとかの扱いをやってみる
+=======
+# calender_app
+
+A new Flutter application.
+>>>>>>> 856627de632213a2ed7f904b48a5a2b634d0e1fe
 
 ## Getting Started
 

@@ -1,5 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<<<<<<< HEAD
     package="com.swift.sample">
+=======
+    package="com.example.calender_app">
+>>>>>>> 856627de632213a2ed7f904b48a5a2b634d0e1fe
     <!-- Flutter needs it to communicate with the running application
          to allow setting breakpoints, to provide hot reload, etc.
     -->
