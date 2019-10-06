@@ -1,10 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart'; // マテリアルデザインしようぜのやーつ
+import 'detail.dart';
+import 'package:multi_charts/multi_charts.dart';
+
 import 'package:sample/data/menu.dart';
 import 'package:sample/data/child.dart';
-import 'detail.dart';
-import 'package:spider_chart/spider_chart.dart';
-import 'package:intl/intl.dart';
+import 'package:sample/screen/detail.dart';
 
 /* 一日の献立画面 */
 class DailyMenu extends StatefulWidget {
@@ -131,6 +132,7 @@ class _DailyMenuState extends State<DailyMenu> {
   /*カテゴリー表示*/
   Widget todayCategory(String category) {
     return Container(
+      padding: EdgeInsets.only(left: 10,top: 5,bottom: 5),
       width: double.infinity,
       color: Colors.orangeAccent,
       child: Text(category, style: TextStyle(fontSize: 25)),
@@ -170,38 +172,40 @@ class _DailyMenuState extends State<DailyMenu> {
     );
   }
 
-  /*栄養素の合計値をグラフ表示*/
-  Widget dailyMenuNutrientGraph() {
+  /*栄養素をグラフ表示*/
+  Widget dailyMenuNutrientGraph(double x, double y) {
     return Center(
-        child: Container(
-          padding: EdgeInsets.only(top: 20,bottom: 20),
-          width: 300,
-          height: 300,
-          child: SpiderChart(
-            data: [
-              7,
-              5,
-              10,
-              7,
-              4,
-            ],
-            maxValue: 100,
-            colors: <Color>[
-              Colors.red,
-              Colors.green,
-              Colors.blue,
-              Colors.yellow,
-              Colors.indigo,
-            ],
-          ),
+      child: Container(
+        width: x,
+        height: y,
+        child: RadarChart(
+          values: [
+            graphProteinPercentage,
+            graphLipidPercentage,
+            graphCarbohydratePercentage,
+            graphVitaminPercentage,
+            graphMineralPercentage,
+          ],
+          labels: [
+            "タンパク質\n(" + graphProteinPercentage.toStringAsFixed(0) + "％)",
+            "脂質\n(" + graphLipidPercentage.toStringAsFixed(0) + "％)",
+            "炭水化物\n(" + graphCarbohydratePercentage.toStringAsFixed(0) + "％)",
+            "ビタミン\n(" + graphVitaminPercentage.toStringAsFixed(0) + "％)",
+            "ミネラル\n(" + graphMineralPercentage.toStringAsFixed(0) + "％)",
+          ],
+          maxValue: 100,
+          fillColor: Colors.orange,
+          animate: false,
         ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
+//    judgeChild();
     addMenuNutrient();
-    testMenuName();
+//    testMenuName();
     testMenuNutrient();
     // TODO: implement build
     return SingleChildScrollView(
@@ -224,9 +228,8 @@ class _DailyMenuState extends State<DailyMenu> {
               ],
             ),
           ),
-          dailyMenuNutrientGraph(),
+          dailyMenuNutrientGraph(size.width*0.65, size.height*0.65),
         ],
-      ),
+      )
     );
-  }
 }
