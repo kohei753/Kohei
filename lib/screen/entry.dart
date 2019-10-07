@@ -15,7 +15,7 @@ class Entry extends StatefulWidget {
 
 class _EntryState extends State<Entry> {
   Map<DateTime, Menu> menus;  // JSONから取得したメニュー情報(この画面では使わないが、次の画面に引き渡すために必要)
-  child.Child myChild = child.Child('太郎', '函館中学校', 7, 'men'); // 登録情報
+  child.Child myChild = child.Child('太郎', '函館中学校', 7, 0); // 登録情報
 
   /* 入力情報を登録 */
   void entryInfo() {

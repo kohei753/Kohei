@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart'; // マテリアルデザインしようぜのやーつ
 
-import 'package:sample/data/menu.dart';
 import 'package:sample/data/child.dart';
 import 'home.dart';
 import 'account.dart';

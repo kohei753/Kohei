@@ -11,7 +11,7 @@ Child _$ChildFromJson(Map<String, dynamic> json) {
     json['name'] as String,
     json['school'] as String,
     json['schoolYear'] as int,
-    json['sex'] as String,
+    json['sex'] as int,
   );
 }
 

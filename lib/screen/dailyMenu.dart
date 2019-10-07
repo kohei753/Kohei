@@ -41,7 +41,7 @@ class _DailyMenuState extends State<DailyMenu> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
+    //TODO: implement build
     return RaisedButton(
       child: Text('詳細画面'),
       onPressed: handleToDetail,

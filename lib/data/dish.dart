@@ -1,9 +1,9 @@
 /* 1つのメニューに関するクラス */
 import 'package:json_annotation/json_annotation.dart';
 
-import 'foodStuff.dart';
+import 'package:sample/data/foodStuff.dart';
 
-part 'package:sample/data/dish.g.dart';
+part 'dish.g.dart';
 
 @JsonSerializable(createToJson: false)
 class Dish {
