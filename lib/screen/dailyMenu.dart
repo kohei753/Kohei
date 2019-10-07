@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart'; // マテリアルデザインしようぜのやーつ
-import 'detail.dart';
 import 'package:multi_charts/multi_charts.dart';
 
 import 'package:sample/data/menu.dart';
@@ -18,13 +17,9 @@ class DailyMenu extends StatefulWidget {
 }
 
 class _DailyMenuState extends State<DailyMenu> {
-  /* 引っ張ってきたデータちゃん */
-  Menu menu;
-  Child child;
-  Map<DateTime, Menu> _menus;
-//  Menu menuList = _menus[DateTime(2019, 8, 19)];
   ScrollController _controller = new ScrollController();
-  Child _child;
+  Menu menu; //引き継いでる変数を移すための変数
+  Child child;
   static var firstDay = DateTime(2019, 8, 19); //デバック用
   var dailyMenuName = [
     "エネルギー",
@@ -43,9 +38,9 @@ class _DailyMenuState extends State<DailyMenu> {
     "食物繊維",
     "食塩相当量"
   ];
-
   var _dailyMenuNutrient = [];
 
+  /*読み込まれた時に遷移されてきた変数を代入*/
   @override
   void initState() {
     super.initState();
@@ -53,44 +48,32 @@ class _DailyMenuState extends State<DailyMenu> {
     child = widget.child;
   }
 
-  /* 詳細画面への遷移 */
-  void handleToDetail() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        settings: RouteSettings(name: '/detail'),
-        builder: (BuildContext context) =>
-            Detail(dailyMenu: menu, child: child, menuNum: 2,),
-      )
-    );
-  }
-
   /*グラフ用栄養素の作成*/
   double get graphProteinPercentage {
     var graphProtein = 0.0;
     var result = 0.0;
-    graphProtein = _menus[firstDay].menuProtein; //摂取タンパク質
+    graphProtein = menu.menuProtein; //摂取タンパク質
     result = (graphProtein / 60) * 100; // (摂取タンパク質/推奨タンパク質)*100
     return result;
   }
 
   double get graphVitaminPercentage {
-    var graphRetional = _menus[firstDay].menuRetinol / 800 * 100;
-    var graphVitaminB1 = _menus[firstDay].menuVitaminB1 / 1.4 * 100;
-    var graphVitaminB2 = _menus[firstDay].menuVitaminB2 / 1.6 * 100;
-    var graphVitaminC = _menus[firstDay].menuVitaminC / 95 * 100;
+    var graphRetional = menu.menuRetinol / 800 * 100;
+    var graphVitaminB1 = menu.menuVitaminB1 / 1.4 * 100;
+    var graphVitaminB2 = menu.menuVitaminB2 / 1.6 * 100;
+    var graphVitaminC = menu.menuVitaminC / 95 * 100;
     var result =
         (graphRetional + graphVitaminB1 + graphVitaminB2 + graphVitaminC) / 4;
     return result;
   }
 
   double get graphMineralPercentage {
-    var graphCalcium = _menus[firstDay].menuCalcium / 1000 * 100;
-    var graphSodium = _menus[firstDay].menuSodium / 1000 / 8 * 100;
-    var graphIron = _menus[firstDay].menuIron / 11.5 * 100;
-    var graphMagnesium = _menus[firstDay].menuMagnesium / 290 * 100;
-    var graphZinc = _menus[firstDay].menuZinc / 9 * 100;
-    var graphSalt = _menus[firstDay].menuSalt / 8 * 100;
+    var graphCalcium = menu.menuCalcium / 1000 * 100;
+    var graphSodium = menu.menuSodium / 1000 / 8 * 100;
+    var graphIron = menu.menuIron / 11.5 * 100;
+    var graphMagnesium = menu.menuMagnesium / 290 * 100;
+    var graphZinc = menu.menuZinc / 9 * 100;
+    var graphSalt = menu.menuSalt / 8 * 100;
     var result = (graphCalcium +
             graphSodium +
             graphIron +
@@ -102,11 +85,11 @@ class _DailyMenuState extends State<DailyMenu> {
   }
 
   double get graphCarbohydratePercentage {
-    var graphCarbohydrate = _menus[firstDay].menuCarbohydrate *
+    var graphCarbohydrate = menu.menuCarbohydrate *
         4 /
         2600 *
         100; //((炭水化物エネルギー比率=炭水化物*4)/総エネルギー)×100
-    var graphDietaryFiber = _menus[firstDay].menuDietaryFiber;
+    var graphDietaryFiber = menu.menuDietaryFiber;
     var result =
         ((graphCarbohydrate / 60 * 100) + (graphDietaryFiber / 17 * 100)) / 2;
     return result;
@@ -115,75 +98,77 @@ class _DailyMenuState extends State<DailyMenu> {
   double get graphLipidPercentage {
     var graphLipid = 0.0;
     var result = 0.0;
-    graphLipid = _menus[firstDay].menuLipid *
-        9 /
-        2600 *
-        100; //脂肪エネルギー比率＝((脂質*9)／総エネルギー)×100
+    graphLipid =
+        menu.menuLipid * 9 / 2600 * 100; //脂肪エネルギー比率＝((脂質*9)／総エネルギー)×100
     result = (graphLipid / 25) * 100; // (摂取した脂肪エネルギー比率/推奨脂肪エネルギー比率)*100
     return result;
   }
 
   /*グラフ用の%数値の作成*/
   void judgeChild() {
-    print(_child.name);
-    print(_child.school);
-    print(_child.schoolYear);
-    print(_child.sex);
-    if (_child.sex == "men") {
-      if (_child.schoolYear == 7) {
+    print(child.name);
+    print(child.school);
+    print(child.schoolYear);
+    print(child.sex);
+    if (child.sex == "men") {
+      if (child.schoolYear == 7) {
       } else {}
     } else {}
   }
 
   /*献立コンソール表示*/
   void testMenuName() {
-    for (int i = 0; i < _menus[firstDay].menu.length; i++) {
-      print(_menus[firstDay].menu[i].name);
+    for (int i = 0; i < menu.menu.length; i++) {
+      print(menu.menu[i].name);
     }
   }
 
-  /*栄養素コンソール表示*/
-  void testMenuNutrient() {
-    print('タンパク質: ' + graphProteinPercentage.toString());
-    print('ビタミン: ' + graphVitaminPercentage.toString());
-    print('ミネラル: ' + graphMineralPercentage.toString());
-    print('炭水化物: ' + graphCarbohydratePercentage.toString());
-    print('脂質: ' + graphLipidPercentage.toString());
-  }
+  /*5大栄養素コンソール表示*/
+//  void testMenuNutrient() {
+//    print('タンパク質: ' + graphProteinPercentage.toString());
+//    print('ビタミン: ' + graphVitaminPercentage.toString());
+//    print('ミネラル: ' + graphMineralPercentage.toString());
+//    print('炭水化物: ' + graphCarbohydratePercentage.toString());
+//    print('脂質: ' + graphLipidPercentage.toString());
+//  }
 
   /*栄養素の合計値の塊作成*/
   void addMenuNutrient() {
-    _dailyMenuNutrient.add(_menus[firstDay].menuEnergy.toString() + ' kcal');
-    _dailyMenuNutrient.add(_menus[firstDay].menuProtein.toString() + ' g');
-    _dailyMenuNutrient.add(_menus[firstDay].menuLipid.toString() + ' g');
-    _dailyMenuNutrient.add(_menus[firstDay].menuCarbohydrate.toString() + ' g');
-    _dailyMenuNutrient.add(_menus[firstDay].menuSodium.toString() + ' g');
-    _dailyMenuNutrient.add(_menus[firstDay].menuCalcium.toString() + ' g');
-    _dailyMenuNutrient.add(_menus[firstDay].menuMagnesium.toString() + ' g');
-    _dailyMenuNutrient.add(_menus[firstDay].menuIron.toString() + ' g');
-    _dailyMenuNutrient.add(_menus[firstDay].menuZinc.toString() + ' g');
-    _dailyMenuNutrient.add(_menus[firstDay].menuRetinol.toString() + ' g');
-    _dailyMenuNutrient.add(_menus[firstDay].menuVitaminB1.toString() + ' g');
-    _dailyMenuNutrient.add(_menus[firstDay].menuVitaminB2.toString() + ' g');
-    _dailyMenuNutrient.add(_menus[firstDay].menuVitaminC.toString() + ' g');
-    _dailyMenuNutrient.add(_menus[firstDay].menuDietaryFiber.toString() + ' g');
-    _dailyMenuNutrient.add(_menus[firstDay].menuSalt.toString() + ' g');
+    _dailyMenuNutrient.add(menu.menuEnergy.toStringAsFixed(2) + ' kcal');
+    _dailyMenuNutrient.add(menu.menuProtein.toStringAsFixed(2) + ' g');
+    _dailyMenuNutrient.add(menu.menuLipid.toStringAsFixed(2) + ' g');
+    _dailyMenuNutrient.add(menu.menuCarbohydrate.toStringAsFixed(2) + ' g');
+    _dailyMenuNutrient.add(menu.menuSodium.toStringAsFixed(2) + ' mg');
+    _dailyMenuNutrient.add(menu.menuCalcium.toStringAsFixed(2) + ' mg');
+    _dailyMenuNutrient.add(menu.menuMagnesium.toStringAsFixed(2) + ' mg');
+    _dailyMenuNutrient.add(menu.menuIron.toStringAsFixed(2) + ' mg');
+    _dailyMenuNutrient.add(menu.menuZinc.toStringAsFixed(2) + ' mg');
+    _dailyMenuNutrient.add(menu.menuRetinol.toStringAsFixed(2) + ' µg');
+    _dailyMenuNutrient.add(menu.menuVitaminB1.toStringAsFixed(2) + ' mg');
+    _dailyMenuNutrient.add(menu.menuVitaminB2.toStringAsFixed(2) + ' mg');
+    _dailyMenuNutrient.add(menu.menuVitaminC.toStringAsFixed(2) + ' mg');
+    _dailyMenuNutrient.add(menu.menuDietaryFiber.toStringAsFixed(2) + ' g');
+    _dailyMenuNutrient.add(menu.menuSalt.toStringAsFixed(2) + ' g');
   }
 
-  void _handleDetail() {
-    // 詳細画面へ
+  void handleToDetail(int x) {
     Navigator.push(
-        context,
-        MaterialPageRoute(
-          settings: RouteSettings(name: '/detail'),
-          builder: (BuildContext context) => Detail(),
-        ));
+      context,
+      MaterialPageRoute(
+        settings: RouteSettings(name: '/detail'),
+        builder: (BuildContext context) => Detail(
+          dailyMenu: menu,
+          child: child,
+          menuNum: x,
+        ),
+      ),
+    );
   }
 
   /*カテゴリー表示*/
   Widget todayCategory(String category) {
     return Container(
-      padding: EdgeInsets.only(left: 10,top: 5,bottom: 5),
+      padding: EdgeInsets.only(left: 10, top: 5, bottom: 5),
       width: double.infinity,
       color: Colors.orangeAccent,
       child: Text(category, style: TextStyle(fontSize: 25)),
@@ -193,31 +178,47 @@ class _DailyMenuState extends State<DailyMenu> {
   /*メニュー名表示*/
   Widget dailyMenuNameList() {
     return Column(
-        children: List.generate(_menus[firstDay].menu.length, (int i) {
-      return InputChip(
-        label: Text(_menus[firstDay].menu[i].name),
-        onPressed: _handleDetail,
-      );
-    }));
+      children: <Widget>[
+        Wrap(
+          spacing: 10.0,
+          runSpacing: 10.0,
+          children: List.generate(menu.menu.length, (int i) {
+            return InputChip(
+              label: Text(menu.menu[i].name),
+              onPressed: () {
+                handleToDetail(i);
+              },
+            );
+          }),
+        ),
+      ],
+    );
   }
 
   /*栄養素の合計値表示*/
   Widget dailyMenuNutrientList() {
     return Column(
         children: List.generate(dailyMenuName.length, (int i) {
-          return Container(
-            child: Column(
+      return Container(
+        child: Column(
+          children: <Widget>[
+            Row(
               children: <Widget>[
-                ListTile(
-                  title: Text(dailyMenuName[i]),
-                  subtitle: Text(_dailyMenuNutrient[i].toString()),
+                Expanded(
+                  flex: 7,
+                  child: Text(dailyMenuName[i]),
                 ),
-                Divider(color: Colors.black),
+                Expanded(
+                  flex: 3,
+                  child: Text(_dailyMenuNutrient[i]),
+                ),
               ],
             ),
-          );
-        })
-    );
+            Divider(color: Colors.black),
+          ],
+        ),
+      );
+    }));
   }
 
   /*栄養素をグラフ表示*/
@@ -255,7 +256,7 @@ class _DailyMenuState extends State<DailyMenu> {
 //    judgeChild();
     addMenuNutrient();
 //    testMenuName();
-    testMenuNutrient();
+//    testMenuNutrient();
     // TODO: implement build
     return ListView(
       physics: const AlwaysScrollableScrollPhysics(),
@@ -263,21 +264,18 @@ class _DailyMenuState extends State<DailyMenu> {
       children: <Widget>[
         todayCategory("料理名"),
         Container(
-          padding: EdgeInsets.only(left: 10, right: 10),
-          child: Column(
-            children: <Widget>[dailyMenuNameList()],
-          ),
+          padding: EdgeInsets.only(top: 10, bottom: 10),
+          child: dailyMenuNameList(),
         ),
         todayCategory("栄養素"),
         Container(
-          padding: EdgeInsets.only(left: 10, right: 10),
+          padding: EdgeInsets.only(left: 10, right: 10, top: 5),
           child: Column(
             children: <Widget>[dailyMenuNutrientList()],
           ),
         ),
-        dailyMenuNutrientGraph(size.width*0.65, size.height*0.65),
-      ]
+        dailyMenuNutrientGraph(size.width * 0.65, size.height * 0.65),
+      ],
     );
   }
-
 }
