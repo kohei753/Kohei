@@ -20,6 +20,25 @@ class _DetailState extends State<Detail> {
   Menu _dailyMenu; // 表示する日のメニューデータ
   var formatter = DateFormat("yyyy/MM/dd(E)"); // 日付をフォーマットするやつ
 
+  ScrollController _controller = new ScrollController();
+  var dailyMenuName = [
+    "エネルギー",
+    "タンパク質",
+    "脂質",
+    "炭水化物",
+    "ナトリウム",
+    "カルシウム",
+    "マグネシウム",
+    "鉄分",
+    "亜鉛",
+    "ビタミンA",
+    "ビタミンB1",
+    "ビタミンB2",
+    "ビタミンC",
+    "食物繊維",
+    "食塩相当量"
+  ];
+
   /* サイドバー関係 */
   int _selectedIndex = 0; // 選択中のタブ番号管理
 
@@ -56,6 +75,61 @@ class _DetailState extends State<Detail> {
     setState(() {
       _selectedIndex = index;
     });
+  }
+
+  /*カテゴリー表示*/
+  Widget detailCategory(String category) {
+    return Container(
+      padding: EdgeInsets.only(left: 10, top: 5, bottom: 5),
+      width: double.infinity,
+      color: Colors.orangeAccent,
+      child: Text(category, style: TextStyle(fontSize: 25)),
+    );
+  }
+
+  /*材料名表示*/
+  Widget detailNameList() {
+    return Column(
+        children: List.generate(_dailyMenu.menu[_selectedIndex].dish.length, (int i) {
+          return Container(
+            child: Column(
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    Text(_dailyMenu.menu[_selectedIndex].dish[i].name),
+                  ],
+                ),
+                Divider(color: Colors.black),
+              ],
+            ),
+          );
+        }));
+  }
+
+  /*栄養素の合計値表示*/
+  Widget detailNutrientList() {
+    return Column(
+        children: List.generate(_dailyMenu.menu[_selectedIndex].dish.length, (int i) {
+          return Container(
+            child: Column(
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      flex: 7,
+                      child: Text(dailyMenuName[i]),
+                    ),
+                    Expanded(
+                      flex: 3,
+                      child: Text("a"),
+                    ),
+                  ],
+                ),
+                Divider(color: Colors.black),
+              ],
+            ),
+          );
+        }));
   }
 
   /* サイドメニューを生成 */
@@ -125,6 +199,22 @@ class _DetailState extends State<Detail> {
         backgroundColor: _detailColors[_selectedIndex],
       ),
       endDrawer: _buildDrawer(), // サイドメニュー
+      body: ListView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        controller: _controller,
+        children: <Widget>[
+          detailCategory("料理名"),
+          Container(
+            padding: EdgeInsets.all(10),
+            child: detailNameList()
+          ),
+          detailCategory("栄養素"),
+          Container(
+              padding: EdgeInsets.only(top: 10, bottom: 10,left: 10),
+              child: detailNutrientList()
+          ),
+        ],
+      )
     );
   }
 }
