@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart'; // マテリアルデザインしようぜのやーつ
 import 'package:intl/intl.dart';  // DateTimeのフォーマットに使う
+import 'package:multi_charts/multi_charts.dart';
 
 import 'package:sample/data/menu.dart';
 import 'package:sample/data/child.dart';
@@ -151,6 +152,35 @@ class _DetailState extends State<Detail> {
         }));
   }
 
+  /*栄養素をグラフ表示*/
+  Widget dailyDishNutrientGraph(double x, double y) {
+    return Center(
+      child: Container(
+        width: x,
+        height: y,
+        child: RadarChart(
+          values: [
+            50,
+            30,
+            70,
+            80,
+            10
+          ],
+          labels: [
+            "タンパク質\n(" + "50" + "％)",
+            "脂質\n(" + "30" + "％)",
+            "炭水化物\n(" + "70" + "％)",
+            "ビタミン\n(" + "20" + "％)",
+            "ミネラル\n(" + "10" + "％)",
+          ],
+          maxValue: 100,
+          fillColor: Colors.orange,
+          animate: false,
+        ),
+      ),
+    );
+  }
+
   /* サイドメニューを生成 */
   Widget _buildDrawer() {
     return Drawer(
@@ -208,6 +238,7 @@ class _DetailState extends State<Detail> {
 
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
     addDishNutrient();
     // TODO: implement build
     return Scaffold(
@@ -233,6 +264,7 @@ class _DetailState extends State<Detail> {
               padding: EdgeInsets.only(top: 10, bottom: 10,left: 10),
               child: detailNutrientList()
           ),
+          dailyDishNutrientGraph(size.width * 0.65, size.height * 0.65)
         ],
       )
     );
