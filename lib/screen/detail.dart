@@ -38,6 +38,7 @@ class _DetailState extends State<Detail> {
     "食物繊維",
     "食塩相当量"
   ];
+  var _detailDishNutrient = [];
 
   /* サイドバー関係 */
   int _selectedIndex = 0; // 選択中のタブ番号管理
@@ -77,6 +78,24 @@ class _DetailState extends State<Detail> {
     });
   }
 
+  void addDishNutrient() {
+    _detailDishNutrient.add(_dailyMenu.menu[_selectedIndex].dishEnergy.toStringAsFixed(2) + ' kcal');
+    _detailDishNutrient.add(_dailyMenu.menu[_selectedIndex].dishProtein.toStringAsFixed(2) + ' g');
+    _detailDishNutrient.add(_dailyMenu.menu[_selectedIndex].dishLipid.toStringAsFixed(2) + ' g');
+    _detailDishNutrient.add(_dailyMenu.menu[_selectedIndex].dishCarbohydrate.toStringAsFixed(2) + ' g');
+    _detailDishNutrient.add(_dailyMenu.menu[_selectedIndex].dishSodium.toStringAsFixed(2) + ' mg');
+    _detailDishNutrient.add(_dailyMenu.menu[_selectedIndex].dishCalcium.toStringAsFixed(2) + ' mg');
+    _detailDishNutrient.add(_dailyMenu.menu[_selectedIndex].dishMagnesium.toStringAsFixed(2) + ' mg');
+    _detailDishNutrient.add(_dailyMenu.menu[_selectedIndex].dishIron.toStringAsFixed(2) + ' mg');
+    _detailDishNutrient.add(_dailyMenu.menu[_selectedIndex].dishZinc.toStringAsFixed(2) + ' mg');
+    _detailDishNutrient.add(_dailyMenu.menu[_selectedIndex].dishRetinol.toStringAsFixed(2) + ' µg');
+    _detailDishNutrient.add(_dailyMenu.menu[_selectedIndex].dishVitaminB1.toStringAsFixed(2) + ' mg');
+    _detailDishNutrient.add(_dailyMenu.menu[_selectedIndex].dishVitaminB2.toStringAsFixed(2) + ' mg');
+    _detailDishNutrient.add(_dailyMenu.menu[_selectedIndex].dishVitaminC.toStringAsFixed(2) + ' mg');
+    _detailDishNutrient.add(_dailyMenu.menu[_selectedIndex].dishDietaryFiber.toStringAsFixed(2) + ' g');
+    _detailDishNutrient.add(_dailyMenu.menu[_selectedIndex].dishSalt.toStringAsFixed(2) + ' g');
+  }
+
   /*カテゴリー表示*/
   Widget detailCategory(String category) {
     return Container(
@@ -109,7 +128,7 @@ class _DetailState extends State<Detail> {
   /*栄養素の合計値表示*/
   Widget detailNutrientList() {
     return Column(
-        children: List.generate(_dailyMenu.menu[_selectedIndex].dish.length, (int i) {
+        children: List.generate(dailyMenuName.length, (int i) {
           return Container(
             child: Column(
               children: <Widget>[
@@ -121,7 +140,7 @@ class _DetailState extends State<Detail> {
                     ),
                     Expanded(
                       flex: 3,
-                      child: Text("a"),
+                      child: Text(_detailDishNutrient[i]),
                     ),
                   ],
                 ),
@@ -189,6 +208,7 @@ class _DetailState extends State<Detail> {
 
   @override
   Widget build(BuildContext context) {
+    addDishNutrient();
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
