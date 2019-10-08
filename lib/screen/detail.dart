@@ -157,7 +157,7 @@ class _DetailState extends State<Detail> {
     return Container(
       padding: EdgeInsets.only(left: 10, top: 5, bottom: 5),
       width: double.infinity,
-      color: Colors.orangeAccent,
+      color: _detailColors[_selectedIndex],
       child: Text(category, style: TextStyle(fontSize: 25)),
     );
   }
