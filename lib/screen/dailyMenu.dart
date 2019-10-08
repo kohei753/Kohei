@@ -57,45 +57,36 @@ class _DailyMenuState extends State<DailyMenu> {
     var graphProtein = 0.0;
     var result = 0.0;
     graphProtein = menu.menuProtein; //摂取タンパク質
-    result = (graphProtein / 60) * 100; // (摂取タンパク質/推奨タンパク質)*100
+    result = (graphProtein / dri.getNutrient(child)["protein"]) * 100; // (摂取タンパク質/推奨タンパク質)*100
     return result;
   }
 
   double get graphVitaminPercentage {
-    var graphRetional = menu.menuRetinol / 800 * 100;
-    var graphVitaminB1 = menu.menuVitaminB1 / 1.4 * 100;
-    var graphVitaminB2 = menu.menuVitaminB2 / 1.6 * 100;
-    var graphVitaminC = menu.menuVitaminC / 95 * 100;
+    var graphRetinol = menu.menuRetinol / dri.getNutrient(child)["retinol"] * 100;
+    var graphVitaminB1 = menu.menuVitaminB1 / dri.getNutrient(child)["vitaminB1"] * 100;
+    var graphVitaminB2 = menu.menuVitaminB2 / dri.getNutrient(child)["vitaminB2"] * 100;
+    var graphVitaminC = menu.menuVitaminC / dri.getNutrient(child)["vitaminC"] * 100;
     var result =
-        (graphRetional + graphVitaminB1 + graphVitaminB2 + graphVitaminC) / 4;
+        (graphRetinol + graphVitaminB1 + graphVitaminB2 + graphVitaminC) / 4;
     return result;
   }
 
   double get graphMineralPercentage {
-    var graphCalcium = menu.menuCalcium / 1000 * 100;
-    var graphSodium = menu.menuSodium / 1000 / 8 * 100;
-    var graphIron = menu.menuIron / 11.5 * 100;
-    var graphMagnesium = menu.menuMagnesium / 290 * 100;
-    var graphZinc = menu.menuZinc / 9 * 100;
-    var graphSalt = menu.menuSalt / 8 * 100;
+    var graphCalcium = menu.menuCalcium / dri.getNutrient(child)["calcium"] * 100;
+    var graphIron = menu.menuIron / dri.getNutrient(child)["iron"] * 100;
+    var graphMagnesium = menu.menuMagnesium / dri.getNutrient(child)["magnesium"] * 100;
+    var graphZinc = menu.menuZinc / dri.getNutrient(child)["zinc"] * 100;
     var result = (graphCalcium +
-            graphSodium +
             graphIron +
             graphMagnesium +
-            graphZinc +
-            graphSalt) /
-        6;
+            graphZinc) / 4;
     return result;
   }
 
   double get graphCarbohydratePercentage {
-    var graphCarbohydrate = menu.menuCarbohydrate *
-        4 /
-        2600 *
-        100; //((炭水化物エネルギー比率=炭水化物*4)/総エネルギー)×100
-    var graphDietaryFiber = menu.menuDietaryFiber;
-    var result =
-        ((graphCarbohydrate / 60 * 100) + (graphDietaryFiber / 17 * 100)) / 2;
+    var graphCarbohydrate = menu.menuCarbohydrate / dri.getNutrient(child)["carbohydrate"] *100;
+    var graphDietaryFiber = menu.menuDietaryFiber / dri.getNutrient(child)["dietaryFiber"] * 100;
+    var result = (graphCarbohydrate + graphDietaryFiber) /  2;
     return result;
   }
 
@@ -103,21 +94,19 @@ class _DailyMenuState extends State<DailyMenu> {
     var graphLipid = 0.0;
     var result = 0.0;
     graphLipid =
-        menu.menuLipid * 9 / 2600 * 100; //脂肪エネルギー比率＝((脂質*9)／総エネルギー)×100
-    result = (graphLipid / 25) * 100; // (摂取した脂肪エネルギー比率/推奨脂肪エネルギー比率)*100
+        menu.menuLipid / dri.getNutrient(child)["lipid"] * 100 ; //脂肪エネルギー比率＝((脂質*9)／総エネルギー)×100
+    if(graphLipid >= 100) {
+      graphLipid = 100;
+    }
+    result = graphLipid; // (摂取した脂肪エネルギー比率/推奨脂肪エネルギー比率)*100
     return result;
   }
 
   /*グラフ用の%数値の作成*/
   void judgeChild() {
-    print(child.name);
-    print(child.school);
-    print(child.schoolYear);
-    print(child.sex);
-    if (child.sex == "men") {
-      if (child.schoolYear == 7) {
-      } else {}
-    } else {}
+    dri.getNutrient(child);
+    print(dri.getNutrient(child));
+    print(menu.menuLipid);
   }
 
   /*献立コンソール表示*/
@@ -126,15 +115,6 @@ class _DailyMenuState extends State<DailyMenu> {
       print(menu.menu[i].name);
     }
   }
-
-  /*5大栄養素コンソール表示*/
-//  void testMenuNutrient() {
-//    print('タンパク質: ' + graphProteinPercentage.toString());
-//    print('ビタミン: ' + graphVitaminPercentage.toString());
-//    print('ミネラル: ' + graphMineralPercentage.toString());
-//    print('炭水化物: ' + graphCarbohydratePercentage.toString());
-//    print('脂質: ' + graphLipidPercentage.toString());
-//  }
 
   /*栄養素の合計値の塊作成*/
   void addMenuNutrient() {
@@ -257,10 +237,9 @@ class _DailyMenuState extends State<DailyMenu> {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-//    judgeChild();
+    judgeChild();
     addMenuNutrient();
 //    testMenuName();
-//    testMenuNutrient();
     // TODO: implement build
     return ListView(
       physics: const AlwaysScrollableScrollPhysics(),
