@@ -51,7 +51,7 @@ class _HomeState extends State<Home> {
     });
   }
 
-  void _handleSetting() {
+  void handleToSetting() {
     // 設定画面へ
     Navigator.push(
         context,
@@ -71,7 +71,7 @@ class _HomeState extends State<Home> {
           // 設定ボタン
           IconButton(
             icon: Icon(Icons.settings),
-            onPressed: _handleSetting, // 設定画面に遷移
+            onPressed: handleToSetting, // 設定画面に遷移
           ),
         ],
       ),

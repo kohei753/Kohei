@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart'; // マテリアルデザインしようぜのやーつ
 
-/* インフォメーション画面 */
-class Information extends StatefulWidget {
+/* ヘルプ画面 */
+class Help extends StatefulWidget {
   @override
-  _InformationState createState() => _InformationState();
+  _HelpState createState() => _HelpState();
 }
 
-class _InformationState extends State<Information> {
+class _HelpState extends State<Help> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
