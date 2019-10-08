@@ -69,6 +69,54 @@ class _DetailState extends State<Detail> {
     'assets/side_purple.png',
   ];
 
+  /*グラフ用栄養素の作成*/
+  double get graphDetailProtein {
+    var graphProtein = 0.0;
+    var result = 0.0;
+    graphProtein = _dailyMenu.menu[_selectedIndex].dishProtein / dri.getNutrient(child)["protein"]; //摂取タンパク質
+    result = graphProtein * 100;
+    return result;
+  }
+
+  double get graphDetailVitamin {
+    var graphRetinol = _dailyMenu.menu[_selectedIndex].dishRetinol / dri.getNutrient(child)["retinol"] * 100;
+    var graphVitaminB1 = _dailyMenu.menu[_selectedIndex].dishVitaminB1 / dri.getNutrient(child)["vitaminB1"] * 100;
+    var graphVitaminB2 = _dailyMenu.menu[_selectedIndex].dishVitaminB2 / dri.getNutrient(child)["vitaminB2"] * 100;
+    var graphVitaminC = _dailyMenu.menu[_selectedIndex].dishVitaminC / dri.getNutrient(child)["vitaminC"] * 100;
+    var result =
+        (graphRetinol + graphVitaminB1 + graphVitaminB2 + graphVitaminC) / 4;
+    return result;
+  }
+
+  double get graphDetailMineral {
+    var graphCalcium = _dailyMenu.menu[_selectedIndex].dishCalcium / dri.getNutrient(child)["calcium"] * 100;
+    var graphIron = _dailyMenu.menu[_selectedIndex].dishIron / dri.getNutrient(child)["iron"] * 100;
+    var graphMagnesium = _dailyMenu.menu[_selectedIndex].dishMagnesium / dri.getNutrient(child)["magnesium"] * 100;
+    var graphZinc = _dailyMenu.menu[_selectedIndex].dishZinc / dri.getNutrient(child)["zinc"] * 100;
+    var result = (graphCalcium +
+        graphIron +
+        graphMagnesium +
+        graphZinc) / 4;
+    return result;
+  }
+
+  double get graphDetailCarbohydrate {
+    var graphCarbohydrate = _dailyMenu.menu[_selectedIndex].dishCarbohydrate / dri.getNutrient(child)["carbohydrate"] *100;
+    var graphDietaryFiber = _dailyMenu.menu[_selectedIndex].dishDietaryFiber / dri.getNutrient(child)["dietaryFiber"] * 100;
+    var result = (graphCarbohydrate + graphDietaryFiber) /  2;
+    return result;
+  }
+
+  double get graphDetailLipid {
+    var graphLipid = 0.0;
+    graphLipid = _dailyMenu.menu[_selectedIndex].dishLipid / dri.getNutrient(child)["lipid"] * 100 ; //脂肪エネルギー比率＝((脂質*9)／総エネルギー)×100
+    if(graphLipid >= 100) {
+      graphLipid = 100;
+    }
+    var result = graphLipid; // (摂取した脂肪エネルギー比率/推奨脂肪エネルギー比率)*100
+    return result;
+  }
+
   /* 読み込まれた時にデータを取得する */
   @override
   void initState() {
@@ -82,6 +130,7 @@ class _DetailState extends State<Detail> {
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
+      _detailDishNutrient = [];
     });
   }
 
@@ -166,18 +215,18 @@ class _DetailState extends State<Detail> {
         height: y,
         child: RadarChart(
           values: [
-            50,
-            30,
-            70,
-            80,
-            10
+            graphDetailProtein,
+            graphDetailLipid,
+            graphDetailCarbohydrate,
+            graphDetailVitamin,
+            graphDetailMineral
           ],
           labels: [
-            "タンパク質\n(" + "50" + "％)",
-            "脂質\n(" + "30" + "％)",
-            "炭水化物\n(" + "70" + "％)",
-            "ビタミン\n(" + "20" + "％)",
-            "ミネラル\n(" + "10" + "％)",
+            "タンパク質\n(" + graphDetailProtein.toStringAsFixed(0) + "％)",
+            "脂質\n(" + graphDetailLipid.toStringAsFixed(0) + "％)",
+            "炭水化物\n(" + graphDetailCarbohydrate.toStringAsFixed(0) + "％)",
+            "ビタミン\n(" + graphDetailVitamin.toStringAsFixed(0) + "％)",
+            "ミネラル\n(" + graphDetailMineral.toStringAsFixed(0) + "％)",
           ],
           maxValue: 100,
           fillColor: Colors.orange,

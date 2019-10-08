@@ -102,12 +102,12 @@ class _DailyMenuState extends State<DailyMenu> {
     return result;
   }
 
-  /*グラフ用の%数値の作成*/
-  void judgeChild() {
-    dri.getNutrient(child);
-    print(dri.getNutrient(child));
-    print(menu.menuLipid);
-  }
+//  /*グラフ用の%数値の作成*/
+//  void judgeChild() {
+//    dri.getNutrient(child);
+//    print(dri.getNutrient(child));
+//    print(menu.menuLipid);
+//  }
 
   /*献立コンソール表示*/
   void testMenuName() {
@@ -141,6 +141,7 @@ class _DailyMenuState extends State<DailyMenu> {
       MaterialPageRoute(
         settings: RouteSettings(name: '/detail'),
         builder: (BuildContext context) => Detail(
+          dri: dri,
           dailyMenu: menu,
           child: child,
           menuNum: x,
@@ -237,7 +238,6 @@ class _DailyMenuState extends State<DailyMenu> {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-    judgeChild();
     addMenuNutrient();
 //    testMenuName();
     // TODO: implement build
