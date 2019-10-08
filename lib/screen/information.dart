@@ -14,7 +14,7 @@ class _InformationState extends State<Information> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Information'), // タイトル
+        title: Text('インフォメーション'), // タイトル
       ),
       body: Center(
         child: Column(
@@ -24,17 +24,53 @@ class _InformationState extends State<Information> {
               'このアプリについて',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                height: 3.0,
+                height: 2.0,
                 fontSize: 22,
               ),
             ),
             Text(
-              '　函館市で提供されているオープンデータと、函館市の小中学校からいただいたデータを使っています。',
+              '　オープンデータと函館市の小中学校からいただいたデータを使っています。',
               style: TextStyle(
                 height: 1.0,
                 fontSize: 18,
               ),
-            )
+            ),
+            Text(
+              '使っているオープンデータ',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                height: 2.0,
+                fontSize: 20,
+              ),
+            ),
+            Text(
+              '・函館の給食の放射能検査について''https://www.city.hakodate.hokkaido.jp/docs/2014031600182/',
+              style: TextStyle(
+                height: 1.0,
+                fontSize: 18,
+              ),
+            ),
+            Text(
+              '・函館の給食の原産地について''https://www.city.hakodate.hokkaido.jp/docs/2014031600120/',
+              style: TextStyle(
+                height: 1.0,
+                fontSize: 18,
+              ),
+            ),
+            Text(
+              '・もうちょっと',
+              style: TextStyle(
+                height: 1.0,
+                fontSize: 18,
+              ),
+            ),
+            Text(
+              '製作者の連絡先',
+              style: TextStyle(
+                height: 2.0,
+                fontSize: 18,
+              ),
+            ),
           ],
         ),
       ),
