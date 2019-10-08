@@ -5,12 +5,14 @@ import 'package:multi_charts/multi_charts.dart';
 import 'package:sample/data/menu.dart';
 import 'package:sample/data/child.dart';
 import 'package:sample/screen/detail.dart';
+import 'package:sample/data/dri.dart';
 
 /* 一日の献立画面 */
 class DailyMenu extends StatefulWidget {
   final Menu menu;
   final Child child;
-  DailyMenu({Key key, this.menu, this.child}) : super(key: key);
+  final DRI dri;
+  DailyMenu({Key key, this.menu, this.child, this.dri}) : super(key: key);
 
   @override
   _DailyMenuState createState() => _DailyMenuState();
@@ -39,6 +41,7 @@ class _DailyMenuState extends State<DailyMenu> {
     "食塩相当量"
   ];
   var _dailyMenuNutrient = [];
+  DRI dri;
 
   /*読み込まれた時に遷移されてきた変数を代入*/
   @override
@@ -46,6 +49,7 @@ class _DailyMenuState extends State<DailyMenu> {
     super.initState();
     menu = widget.menu;
     child = widget.child;
+    dri = widget.dri;
   }
 
   /*グラフ用栄養素の作成*/

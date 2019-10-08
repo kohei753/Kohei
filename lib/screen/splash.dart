@@ -5,7 +5,6 @@ import 'package:sample/data/child.dart' as child;
 import 'package:sample/data/dri.dart' as dri;
 import 'entry.dart';
 import 'home.dart';
-import 'detail.dart';
 
 /* スプラッシュ画面 */
 class Splash extends StatefulWidget {
@@ -37,7 +36,6 @@ class _SplashState extends State<Splash> {
     // 献立データを取得
     menu.getMenus().then((value) {
       menus = value;
-      // TODO: 各画面に読み込んだデータを受け渡しつつ遷移
       acquired['menu'] = true;
 
       handleToNext();
@@ -51,6 +49,7 @@ class _SplashState extends State<Splash> {
       handleToNext();
     });
 
+    // 食事摂取基準データを取得
     dri.getDRI().then((value) {
       DRI = value;
       acquired['DRI'] = true;
@@ -90,7 +89,7 @@ class _SplashState extends State<Splash> {
         context,
         MaterialPageRoute(
           settings: RouteSettings(name: '/entry'),
-          builder: (BuildContext context) => Entry(menus: menus),
+          builder: (BuildContext context) => Entry(menus: menus, dri: DRI),
         ));
   }
 
@@ -100,7 +99,7 @@ class _SplashState extends State<Splash> {
         context,
         MaterialPageRoute(
           settings: RouteSettings(name: '/home'),
-          builder: (BuildContext context) => Home(menus: menus, child: myChild),
+          builder: (BuildContext context) => Home(menus: menus, child: myChild, dri: DRI),
         ));
   }
 }

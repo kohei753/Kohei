@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 
 import 'package:sample/data/menu.dart';
 import 'package:sample/data/child.dart';
+import 'package:sample/data/dri.dart';
 import 'package:sample/screen/dailyMenu.dart';
 import 'package:sample/screen/monthlyMenu.dart';
 import 'package:sample/screen/setting.dart';
@@ -11,7 +12,8 @@ import 'package:sample/screen/setting.dart';
 class Home extends StatefulWidget {
   final Map<DateTime, Menu> menus;
   final Child child;
-  Home({Key key, this.menus, this.child}) : super(key: key);
+  final DRI dri;
+  Home({Key key, this.menus, this.child, this.dri}) : super(key: key);
 
   @override
   _HomeState createState() => _HomeState();
@@ -24,6 +26,7 @@ class _HomeState extends State<Home> {
   static var formatter = DateFormat("MM月dd日").format(now);
   Child child;
   String _title = formatter;
+  DRI dri;
   /* BottomNavigationBarで使用する諸々 */
   List<Widget> _widgetOptions;  // タブのリスト
   int _selectedIndex = 0; // 選択中のタブ番号を管理
@@ -32,14 +35,15 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    /* メニューと登録情報の取得 */
+    /* 引き継いだ情報の取得 */
     menus = widget.menus;
     child = widget.child;
+    dri = widget.dri;
 
     /* widgetリストの中身作成 */
     _widgetOptions = [
       // TODO: 選択日を受け渡す
-      DailyMenu(menu: menus[DateTime(2019, 8, 19)], child: child),
+      DailyMenu(menu: menus[DateTime(2019, 8, 19)], child: child, dri: dri),
       MonthlyMenu(menus: menus, child: child),
     ];
   }
