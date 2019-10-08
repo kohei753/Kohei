@@ -48,7 +48,7 @@ class DRI {
   factory DRI.fromJson(Map<String, dynamic> json) => _$DRIFromJson(json);
 
   /* Childデータを入力すると各栄養素をキーとした食事摂取基準Mapを取得 */
-  Map<String, double> nutrient(Child child) {
+  Map<String, double> getNutrient(Child child) {
     Map<String, double> fittedData = {};
     if ((child.name == null) || (child.schoolYear > 10) || (child.sex > 3))
       return fittedData;
