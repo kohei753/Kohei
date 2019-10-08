@@ -3,13 +3,15 @@ import 'package:intl/intl.dart';  // DateTimeのフォーマットに使う
 
 import 'package:sample/data/menu.dart';
 import 'package:sample/data/child.dart';
+import 'package:sample/data/dri.dart';
 
 /* 詳細画面 */
 class Detail extends StatefulWidget {
   final Menu dailyMenu;
   final Child child;
+  final DRI dri;
   final int menuNum;  // 選択されたメニューの番号
-  Detail({Key key, this.dailyMenu, this.child, this.menuNum}) : super(key: key);
+  Detail({Key key, this.dailyMenu, this.child, this.dri, this.menuNum}) : super(key: key);
 
   @override
   _DetailState createState() => _DetailState();
@@ -18,6 +20,8 @@ class Detail extends StatefulWidget {
 class _DetailState extends State<Detail> {
   /* 諸々データ */
   Menu _dailyMenu; // 表示する日のメニューデータ
+  Child child;
+  DRI dri;
   var formatter = DateFormat("yyyy/MM/dd(E)"); // 日付をフォーマットするやつ
 
   /* サイドバー関係 */
@@ -49,6 +53,8 @@ class _DetailState extends State<Detail> {
   void initState() {
     super.initState();
     _dailyMenu = widget.dailyMenu;
+    child = widget.child;
+    dri = widget.dri;
     if (widget.menuNum != null) _selectedIndex = widget.menuNum;
   }
 

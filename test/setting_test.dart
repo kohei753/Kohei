@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 import 'package:flutter_test/flutter_test.dart';
@@ -7,7 +8,7 @@ import 'package:sample/data/child.dart';
 
 void main() {
   group('transition', () {
-    test('Child infomatio should be taken over in setting', () {
+    test('Child infomation should be taken over in setting', () {
       final setting = Setting(child: Child('高橋圭太', '本通中学校', 8, 0));
 
       expect('高橋圭太', setting.child.name);
@@ -16,16 +17,27 @@ void main() {
       expect(0, setting.child.sex);
     });
 
-    testWidgets('The correct menu should exist', (WidgetTester tester) async {
+    testWidgets('State class is generated correctly', (WidgetTester tester) async {
       Key settingKey = Key('setting');
-      Setting settingTest = Setting(key: settingKey, child: Child('けいた', '巴中学校', 1, 1));
+      Setting settingTest = Setting(
+          key: settingKey, child: Child('けいた', '巴中学校', 1, 1));
 
-      await tester.pumpWidget(settingTest);
+      await tester.pumpWidget(MaterialApp(home: settingTest));
 
-      final StatefulElement settingElement = tester.element(find.byKey(settingKey));
+      final StatefulElement settingElement = tester.element(
+          find.byKey(settingKey));
       final settingElementState = settingElement.state;
-      
+
+      // StateWidgetが生成されているか
+      expect(find.byKey(settingKey), findsOneWidget);
+      // Stateに値を引き継いでいるか
       expect(settingElementState.widget, equals(settingTest));
+
+      // 各メニューのテキストが正しく表示されているか
+      expect(find.text('登録情報'), findsOneWidget);
+      expect(find.text('原産地'), findsOneWidget);
+      expect(find.text('このアプリについて'), findsOneWidget);
+      expect(find.text('ヘルプ'), findsOneWidget);
     });
   });
 }
