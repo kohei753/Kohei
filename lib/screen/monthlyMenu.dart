@@ -20,7 +20,6 @@ class MonthlyMenu extends StatefulWidget {
 }
 
 class _MonthlyMenuState extends State<MonthlyMenu> {
-
   static DateTime testDate1 = DateTime(2019, 8, 19); // テスト用の日付1
   static DateTime testDate2 = testDate1.add(Duration(days: 1)); // テスト用の日付2
   static DateTime pickDate = testDate1; // 選択した日を格納する変数
