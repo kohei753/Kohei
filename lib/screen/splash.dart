@@ -2,9 +2,9 @@ import 'package:flutter/material.dart'; // マテリアルデザインしよう�
 
 import 'package:sample/data/menu.dart' as menu;
 import 'package:sample/data/child.dart' as child;
+import 'package:sample/data/dri.dart' as dri;
 import 'entry.dart';
 import 'home.dart';
-import 'detail.dart';
 
 /* スプラッシュ画面 */
 class Splash extends StatefulWidget {
@@ -19,9 +19,14 @@ class _SplashState extends State<Splash> {
    * それをネイティブからやるの難しそうだったのでとりあえすここに書いてる */
   Map<DateTime, menu.Menu> menus = {}; // jsonのメニューを格納する変数
   child.Child myChild; // 登録情報
+  dri.DRI DRI;  // 食事摂取基準
 
-  bool isGetMenu = false; // メニューリストを取得できたか
-  bool isGetInfo = false; // 登録情報を取得できたか
+  // 取得するべき情報を取得できたかを管理する連想配列
+  Map<String, bool> acquired = {
+    'menu': false,
+    'info': false,
+    'DRI': false,
+  };
 
   @override
   void initState() {
@@ -31,30 +36,25 @@ class _SplashState extends State<Splash> {
     // 献立データを取得
     menu.getMenus().then((value) {
       menus = value;
-      // TODO: 各画面に読み込んだデータを受け渡しつつ遷移
-      isGetMenu = true;
+      acquired['menu'] = true;
 
-      if (isGetInfo) {
-        if (myChild.name == null) {
-          handleToEntry();
-        } else {
-          handleToHome();
-        }
-      }
+      handleToNext();
     });
 
     // 登録データを取得
     child.readInfo().then((value) {
       myChild = value;
-      isGetInfo = true;
+      acquired['info'] = true;
 
-      if (isGetMenu) {
-        if (myChild.name == null) {
-          handleToEntry();
-        } else {
-          handleToHome();
-        }
-      }
+      handleToNext();
+    });
+
+    // 食事摂取基準データを取得
+    dri.getDRI().then((value) {
+      DRI = value;
+      acquired['DRI'] = true;
+
+      handleToNext();
     });
   }
 
@@ -65,13 +65,31 @@ class _SplashState extends State<Splash> {
     return FlutterLogo();
   }
 
+  /* 全てのデータを取得している場合は次の画面へ遷移する */
+  void handleToNext() {
+    if (isAllFinish()) {
+      if (myChild.name == null) { handleToEntry(); }
+        else { handleToHome(); }
+    }
+  }
+
+  /* 全ての非同期処理が終了したかを判断 */
+  bool isAllFinish() {
+    bool allFinished = true;
+    acquired.forEach((String key, bool value) {
+      if (!value) allFinished = false;
+    });
+
+    return allFinished;
+  }
+
   /* 初期登録への遷移 */
   void handleToEntry() {
     Navigator.pushReplacement(
         context,
         MaterialPageRoute(
           settings: RouteSettings(name: '/entry'),
-          builder: (BuildContext context) => Entry(menus: menus),
+          builder: (BuildContext context) => Entry(menus: menus, dri: DRI),
         ));
   }
 
@@ -81,7 +99,7 @@ class _SplashState extends State<Splash> {
         context,
         MaterialPageRoute(
           settings: RouteSettings(name: '/home'),
-          builder: (BuildContext context) => Home(menus: menus, child: myChild),
+          builder: (BuildContext context) => Home(menus: menus, child: myChild, dri: DRI),
         ));
   }
 }

@@ -5,7 +5,7 @@ import 'dart:io'; // ファイル関係
 import 'package:json_annotation/json_annotation.dart'; // JSONのシリアライズ
 import 'package:path_provider/path_provider.dart'; // ローカルパスにアクセス
 
-part 'package:sample/data/child.g.dart';
+part 'child.g.dart';
 
 /* 個人情報を扱うクラス */
 @JsonSerializable()
@@ -13,8 +13,8 @@ class Child {
   /* 変数宣言 */
   final String name; // 名前
   final String school; // 通ってる学校
-  final int schoolYear; // 学年
-  final String sex; // 性別
+  final int schoolYear; // 学年(中学校は7 ~ 9)
+  final int sex; // 性別(男：0, 女：1)
 
   /* コンストラクター */
   Child(this.name, this.school, this.schoolYear, this.sex);
@@ -54,7 +54,7 @@ Future<Child> readInfo() async {
 
     return child;
   } catch (e) {
-    return Child(null, null, null, null);
+    return Child(null, null, 0, 2);
   }
 }
 
