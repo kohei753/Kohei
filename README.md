@@ -1,112 +1,16 @@
-# Civic_Tech
-市民情報サービスのデザイン(2019)
-## 本プロジェクトについて
-本プロジェクトはフィールドワーク(FW)をもとに実課題の解決を目的としたシステム開発を行うプロジェクトです。  
-主にスクラム(Scrum)を用いたシステム開発を行います。  
->スクラム（名詞）：複雑で変化の激しい問題に対応するためのフレームワークであり、可能な限り価値の高いプロダクトを生産的かつ創造的に届けるためのものである。  
->スクラムとは、以下のようなものである。  
->- 軽量  
->- 理解が容易  
->- 習得は困難  
->([スクラムガイド](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&cad=rja&uact=8&ved=2ahUKEwiqzOKMqc_iAhXJurwKHULmAz8QFjAAegQIAhAC&url=https%3A%2F%2Fscrumguides.org%2Fdocs%2Fscrumguide%2Fv2017%2F2017-Scrum-Guide-Japanese.pdf&usg=AOvVaw0YeZNxm_MMr4wCd6GNXXuo)より)
-## 本グループ(レポジトリ)について
-FW先・扱うもの：市役所や給食所のある学校・給食を扱う  
-開発予定システム：給食の献立を知ることで給食に対して安心でき、家庭での食生活も少し良くなるアプリ  
-対象OS：Android, iOS  
-### 依存環境
-開発を進めていく中で環境依存のコードを書いた場合はここに記述してください。  
-## コーディング規約
-### インテント
-普段のインデントは、tabキー 1回。  
-継続インデントは、tabキー 2回。  
-空行のインデントは、インデントを維持しない（スペースを削除する）。  
-ifなど後に()来るものは、スペースを開けてから()を書く。  
-### 改行
-引数が1つの場合は、1行で書く。（Widgetの場合は複数行で書く）  
-引数が2つ以上のWidgetは複数行で書く。  
-Widgetの引数が1つでも、その子Widgetが複数行の場合は、改行する。  
-つまり、1行でWidgetを書くのは、Widgetツリーの末端のみとなる。  
-例外的に、EdgeInsetsは複数の引数があっても1行でよい。  
-また、引数が1つでも、長くなる場合は改行して複数行とする。目安として1行が80文字を超えないことが望ましい。  
-### 括弧
-括弧の開始のあとに改行した場合、中身の最終行の次の行で括弧を閉じる。  
-なお、インデントはブロック開始時と同じにする。  
-関数の呼び出しで引数がなくても改行して子と親をわかりやすくする。  
-関数の呼び出しで「名前あり引数」の場合は、Widgetと同様に記述する。  
-### カンマ
-オブジェクトや関数呼び出しの引数で、末尾のカンマは省略せずに記述する。  
-### デフォルト引数
-イコールで設定する（推奨）。  
-※以前のDartではコロンだったが Deprecated のためイコールを使う。  
-### 文字列
-文字列はシングルクォート。  
-変数の文字列埋め込みでは、＋を使用する。  
-### コメント
-`//` と `/* ... */` はどちらを使ってもよい。
-普段は`//` これを使う。
-Widget、関数の説明は`/* ... */`を使う。
-コメントの末尾にはピリオドや句点はつけない。
-### import
-４ブロックに分けて書く。 
-各ブロックの間は改行を入れる。
-- 標準フラッターパッケージ
-> 'package:flutter/material.dart'など
-- 標準ダートパッケージ
-> 'dart:convert'など
-- 外部パッケージ（dependencies書き加えたやつ）
-> 'package:json_annotation/json_annotation.dart'など
-- ローカルファイル
-### クラス
-インスタンス変数へのアクセスは、不要な場合は this を使わない。  
-#### new / const
-オブジェクト生成時のnew は省略する。  
-動かさない数字の時は、constを使おう。  
-以前のFlutterはDart 1だったので new が残っているが、新しくコードを書く場合は省略する（推奨）。  
-#### var / final
-finalは一回の代入で済む時に使う。（要するに最初の宣言だけ）  
-varが何度も代入できる。  
-### 三項演算子
-2つの値のどちらかを得るだけの場合など、単純な場合は使用してよい。  
-結果にさらに式を含まないようにすること。  
-三項演算子のなかで使うものをあらかじめ計算するか、別のメソッドなどに切り分ける。  
-### 命名規則
-#### 命名方式
-キャメルケース (ローワーキャメルケース)  
-  複合語の先頭を、小文字で書き始める。  
-  例) getInputReader  
-パスカルケース (アッパーキャメルケース)  
-  複合語の先頭を、大文字で書き始める。  
-  例) GetInputReader  
-スネークケース  
-  アンダースコア (_) を区切記号として単語をつなげる。  
-  例) quoted_printable_encode  
-チェインケース   
-  ハイフン (-) を区切記号として単語をつなげる。  
-  例) Get-Process  
-#### 関数名、オブジェクトのキー名、ファイル名、変数名
-キャメルケース  
-#### クラス名
-パスカルケース  
-#### Branch
-**master**：リリース可能なもの  
-**develop**：開発の主軸となるブランチ  
-複数人がdevelopを行うときは**開発者/develop/開発部分**としてください。  
-**feature**：機能追加及び機能修正を行うブランチ  
-複数人がfeatureを行うときは**開発者/feature/開発機能**としてください。  
-### Pull Request/Push/Commit
-グループでルールを定めたら記述してください。  
-### commitメッセージ
-頭にコミット内容の分類をつける。 
-[add]：機能の拡張  
-[feat] ：(feature) 新しい機能の追加  
-[fix] ：bugの修正   
-[docs] ：documentのみの追加   
-[style] ：細かいとこ(空白の削除,フォーマットなど   
-[refactor] ：プログラムの動きを変えないでソースコードを変更 するとき、ライブラリのアップデートでやったりする   
-[pref] : パフォーマンスを上げるコミットなど   
-[test] ：テストの追加やテストの修正など   
-[chore] : その他  
-## wikiについて
-GitHubProjectやIssueについては大体wikiに必要事項が書いてあります。  
-不明点がある場合はその都度スクラムマスターや先生、TAの方々に積極的に聞いてください。
->⇒[Wiki](https://github.com/funswift/Civic_Tech/wiki)  
+# sample
+
+給食のアプリで使えそうなクラスとかの扱いをやってみる
+
+## Getting Started
+
+This project is a starting point for a Flutter application.
+
+A few resources to get you started if this is your first Flutter project:
+
+- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
+- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+
+For help getting started with Flutter, view our
+[online documentation](https://flutter.dev/docs), which offers tutorials,
+samples, guidance on mobile development, and a full API reference.
