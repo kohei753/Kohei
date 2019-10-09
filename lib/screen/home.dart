@@ -23,6 +23,7 @@ class _HomeState extends State<Home> {
   Map<DateTime, Menu> menus;
   Child child;
   DRI dri;
+  Map<String, double> nutrient = {};
 
   String _title = '日付';
 
@@ -38,6 +39,7 @@ class _HomeState extends State<Home> {
     menus = widget.menus;
     child = widget.child;
     dri = widget.dri;
+    nutrient = dri.getNutrient(child);
 
     /* widgetリストの中身作成 */
     _widgetOptions = [
