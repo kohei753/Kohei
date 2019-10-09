@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart'; // マテリアルデザインしようぜのやーつ
+import 'package:sample/screen/entry.dart';
 
 /* 各画面をインポート */
 import 'package:sample/screen/splash.dart';
@@ -11,7 +12,8 @@ void main() {
         primaryColor: Colors.deepOrangeAccent,
         // primaryColor: Color(0xFFe1a067), // 一応チームカラー(汚かった)
       ),
-      home: Splash(), // スプラッシュ
+      // home: Splash(), // スプラッシュ
+      home: Entry(),
     ),
   );
 }
