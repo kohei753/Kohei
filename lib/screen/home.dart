@@ -27,6 +27,7 @@ class _HomeState extends State<Home> {
   Child child;
   String _title = formatter;
   DRI dri;
+  Map<String, double> nutrient = {};
   /* BottomNavigationBarで使用する諸々 */
   List<Widget> _widgetOptions;  // タブのリスト
   int _selectedIndex = 0; // 選択中のタブ番号を管理
@@ -39,6 +40,7 @@ class _HomeState extends State<Home> {
     menus = widget.menus;
     child = widget.child;
     dri = widget.dri;
+    nutrient = dri.getNutrient(child);
 
     /* widgetリストの中身作成 */
     _widgetOptions = [
