@@ -38,8 +38,7 @@ class _InformationState extends State<Information> {
                 '使っているオープンデータ',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  //height: 2.0,
-                  //height: 2.0,
+                  height: 2.0,
                   fontSize: 20,
                 ),
               ),
@@ -53,17 +52,24 @@ class _InformationState extends State<Information> {
                 ),
               ),
               Text(
-                '製作者の連絡先 \n xxx@xxx.jp',
+                '製作者の連絡先',
                 style: TextStyle(
                   height: 2.0,
+                  fontSize: 20,
+                ),
+              ),
+              Text(
+                'xxx@xxx.jp',
+                style: TextStyle(
+                  height: 1.0,
                   fontSize: 18,
                 ),
               ),
               Text(
                 '協力してくださった方',
                 style: TextStyle(
-                  height: 1.0,
-                  fontSize: 18,
+                  height: 2.0,
+                  fontSize: 20,
                 ),
               ),
             ],
