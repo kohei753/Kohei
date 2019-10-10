@@ -64,8 +64,7 @@ class _HomeState extends State<Home> {
         context,
         MaterialPageRoute(
           settings: RouteSettings(name: '/setting'),
-          builder: (BuildContext context) => Information(), // きしかデバッグ用
-//          builder: (BuildContext context) => Setting(),
+          builder: (BuildContext context) => Setting(),
           fullscreenDialog: true, // モーダルで表示
         ));
   }

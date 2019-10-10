@@ -9,7 +9,6 @@ class Information extends StatefulWidget {
 class _InformationState extends State<Information> {
   @override
   Widget build(BuildContext context) {
-//<<<<<<< HEAD
     return Scaffold(
       appBar: AppBar(
         title: Text('インフォメーション'), // タイトル
@@ -17,7 +16,6 @@ class _InformationState extends State<Information> {
       body: Center(
         child: SingleChildScrollView(
           child: Column(
-            //mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text(
                 'このアプリについて',
@@ -76,11 +74,6 @@ class _InformationState extends State<Information> {
           ),
         )
       ),
-//=======
-//    // TODO: implement build
-//    return Scaffold(
-//      appBar: AppBar(),
-//>>>>>>> f37d2371c269997088f2c2479114ff8309a35c5c
     );
   }
 }
