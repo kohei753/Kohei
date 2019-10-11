@@ -45,7 +45,7 @@ class _HomeState extends State<Home> {
     _widgetOptions = [
       // TODO: 選択日を受け渡す
       DailyMenu(menu: menus[DateTime(2019, 8, 19)], child: child, dri: dri),
-      MonthlyMenu(menus: menus, child: child),
+      MonthlyMenu(menus: menus, child: child, dri: dri),
     ];
   }
 

@@ -14,7 +14,8 @@ import 'package:sample/screen/home.dart';
 class MonthlyMenu extends StatefulWidget {
   final Map<DateTime, Menu> menus;
   final Child child;
-  MonthlyMenu({Key key, this.menus, this.child}) : super(key: key);
+  final DRI dri;
+  MonthlyMenu({Key key, this.menus, this.child, this.dri}) : super(key: key);
 
   @override
   _MonthlyMenuState createState() => _MonthlyMenuState();
@@ -36,6 +37,7 @@ class _MonthlyMenuState extends State<MonthlyMenu> {
     super.initState();
     _menus = widget.menus;
     _child = widget.child;
+    _dri = widget.dri;
   }
 
   /* カレンダーの更新用 */
