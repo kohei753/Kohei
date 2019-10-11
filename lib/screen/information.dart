@@ -14,7 +14,7 @@ class _InformationState extends State<Information> {
         title: Text('インフォメーション'), // タイトル
       ),
       body: Center(
-        child: SingleChildScrollView(
+        child: SingleChildScrollView( //スクロールできるようにする
           child: Column(
             children: <Widget>[
               Text(
