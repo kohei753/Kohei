@@ -7,6 +7,7 @@ import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
 
 import 'package:sample/data/menu.dart';
 import 'package:sample/data/child.dart';
+import 'package:sample/data/dri.dart';
 import 'package:sample/screen/home.dart';
 
 /* 献立表画面 */
@@ -27,6 +28,7 @@ class _MonthlyMenuState extends State<MonthlyMenu> {
 
   Map<DateTime, Menu> _menus; //引き継いでる変数から持ってきた
   Child _child;
+  DRI _dri;
 
   /*読み込まれた時に遷移されてきた変数を代入*/
   @override
@@ -54,7 +56,7 @@ class _MonthlyMenuState extends State<MonthlyMenu> {
         context,
         MaterialPageRoute(
           settings: RouteSettings(name: '/home'),
-          builder: (BuildContext context) => Home(menus: _menus, child: _child),
+          builder: (BuildContext context) => Home(menus: _menus, child: _child, dri: _dri),
         )
     );
   }
@@ -145,7 +147,6 @@ class _MonthlyMenuState extends State<MonthlyMenu> {
                   style: TextStyle(// 文字の設定
                     fontSize: 18.0,
                     color: Colors.black87,
-                    //fontWeight: FontWeight.bold,
                   ),
                 );
               },
