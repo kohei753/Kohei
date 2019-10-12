@@ -4,6 +4,7 @@ import 'package:sample/data/menu.dart';
 import 'package:sample/data/child.dart';
 import 'package:sample/data/dri.dart';
 import 'package:sample/screen/dailyMenu.dart';
+import 'package:sample/screen/information.dart';
 import 'package:sample/screen/monthlyMenu.dart';
 import 'package:sample/screen/setting.dart';
 

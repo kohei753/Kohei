@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart'; // マテリアルデザインしようぜのやーつ
+import 'package:sample/screen/entry.dart';
 
 /* 各画面をインポート */
 import 'package:sample/screen/splash.dart';
