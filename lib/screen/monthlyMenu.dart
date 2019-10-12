@@ -22,10 +22,9 @@ class MonthlyMenu extends StatefulWidget {
 }
 
 class _MonthlyMenuState extends State<MonthlyMenu> {
-  static DateTime testDate1 = DateTime(2019, 8, 19); // テスト用の日付1
-  static DateTime testDate2 = testDate1.add(Duration(days: 1)); // テスト用の日付2
-  static DateTime pickDate = testDate1; // 選択した日を格納する変数
-  static String formattedDate = DateFormat('M月d日').format(testDate1); //日付をフォーマットしたのを格納する変数
+  static DateTime today = DateTime(2019, 8, 19); // 今日の日付
+  static DateTime pickDate = today; // 選択した日を格納する変数
+  static String formattedDate = DateFormat('M月d日').format(today); //日付をフォーマットしたのを格納する変数
 
   Map<DateTime, Menu> _menus; //引き継いでる変数から持ってきた
   Child _child;
