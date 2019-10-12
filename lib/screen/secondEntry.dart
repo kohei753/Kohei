@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart'; // マテリアルデザインしようぜのやーつ
 
 import 'package:sample/data/menu.dart';
@@ -11,7 +12,8 @@ class SecondEntry extends StatefulWidget {
   final DRI dri;
   final String name;
   final int sex;
-  SecondEntry({Key key, this.menus, this.dri, this.name, this.sex}) : super(key: key);
+  SecondEntry({Key key, this.menus, this.dri, this.name, this.sex})
+      : super(key: key);
 
   @override
   _SecondEntryState createState() => _SecondEntryState();
@@ -24,6 +26,7 @@ class _SecondEntryState extends State<SecondEntry> {
   int sex;
 
   child.Child myChild;
+
 
   /* ホーム画面への遷移 */
   void handleToHome() {
@@ -39,6 +42,10 @@ class _SecondEntryState extends State<SecondEntry> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Scaffold();
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('登録'),
+      ),
+    );
   }
 }
