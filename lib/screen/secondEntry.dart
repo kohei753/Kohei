@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';   //  マテリアルデザインしよ�
 import 'package:sample/data/menu.dart';
 import 'package:sample/data/child.dart' as child;
 import 'package:sample/data/dri.dart';
-import 'home.dart';
+import 'checkEntry.dart';
 
-/* 初期登録画面 */
+/* 学校・学年登録画面 */
 class SecondEntry extends StatefulWidget {
   final Map<DateTime, Menu> menus;
   final DRI dri;
@@ -22,20 +22,18 @@ class SecondEntry extends StatefulWidget {
 class _SecondEntryState extends State<SecondEntry> {
   Map<DateTime, Menu> menus = {};
   DRI dri;
-  String name;
-  int sex;
 
   /* 登録する情報 */
-  child.Child myChild;  // childと言う名前でimportしてきたChild型のmyChildというクラスを宣言
   String school = '学校を選択';  // デフォルトの選択内容を'学校を選択'にしている
   int schoolYear = 0; // 内部の登録学年(内部では1-9で設定)
   
   /* この中だけで使う変数 */
   String schoolYearLabel = '学年を選択';
+  String errorElement = '学校・学年';
+  Color errorTextColor = Color.fromARGB(0, 0, 0, 255);
   List<String> _schoolName = [  // _schoolNameという配列を作成
     '--- 学校を選択 ---',  // 0番目
     '巴中学校',  // 1番目
-    '２個目の選択',  // 2番目　
   ];
 
   List<String> _schoolYearList = [  //  表面上の学年
@@ -98,29 +96,71 @@ class _SecondEntryState extends State<SecondEntry> {
     });  // ifが存在しているのは'学校を選択'を一度ホイールを回せば設定できなくさせるため
   }
 
-  /* ホーム画面への遷移 */
-  void handleToHome() {
-    Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          settings: RouteSettings(name: '/home'),
-          builder: (BuildContext context) =>
-              Home(menus: menus, child: myChild, dri: dri),
-        ));
-  }
-
   /* Body */
   Widget _buildBody() {
     return Container(
-      padding: EdgeInsets.only(top: 30.0),
+      padding: EdgeInsets.only(top: 30.0,),
       child: Column(
         children: <Widget>[
           _buildSchoolSelect(),
           _buildYearSelect(),
+          Row(
+            children: <Widget>[
+              SizedBox(
+                height: 40.0,
+                width: 30.0,
+              ),
+              Text(
+                errorElement + 'を選択してください',
+                style: TextStyle(
+                  fontSize: 12.0,
+                  color: errorTextColor,
+                ),
+              ),
+            ],
+          ),
+//          Row(
+//            children: <Widget>[
+//              SizedBox(
+//                width: 30.0,
+//              ),
+//              Text(
+//                '学年を選択してください',
+//                style: TextStyle(
+//                  fontSize: 12.0,
+//                  color: Theme.of(context).errorColor,
+//                ),
+//              ),
+//            ],
+//          ),
+          SizedBox(height: 20), // 縦の間の余白の大きさ
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end, // 右端行くやつ
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.only(right: 16.0),
+                child: ButtonTheme(
+                  // ボタンの大きさ
+                  minWidth: 100, //必要最小限度の幅
+                  height: 40, //長さ
+                  child: RaisedButton(
+                    //ボタンについての設定
+                    onPressed:  entryInfo, //押した時のエフェクト
+                    color: Theme.of(context).primaryColor,
+                    textColor: Colors.white, //ボタンの文字
+                    shape: StadiumBorder(),
+                    child: Text('次へ'), //ボタン内の文字
+                  ),
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );
   }
+
+
 
   /* 学校選択のWidget */
   Widget _buildSchoolSelect() {
@@ -173,7 +213,44 @@ class _SecondEntryState extends State<SecondEntry> {
     );
   }
 
+  void entryInfo() {
+    //  入力情報の確認
+    bool schoolCheck = false;
+    for (var i = 1; i < _schoolName.length; i++) {
+      if (school == _schoolName[i]) schoolCheck = true;
+    }
+    setState(() {
+      if (schoolCheck && schoolYear != 0) {
+        errorTextColor = Color.fromARGB(0, 0, 0, 255);
+        menus = widget.menus;
+        dri = widget.dri;
 
+        child.writeInfo(child.Child(widget.name, school, schoolYear, widget.sex));
+
+        handleToCheck();
+      } else if (0 < schoolYear && schoolYear < 10) {
+        errorTextColor = Theme.of(context).errorColor;
+        errorElement = '学校';
+      } else if (schoolCheck) {
+        errorTextColor = Theme.of(context).errorColor;
+        errorElement = '学年';
+      } else {
+        errorTextColor = Theme.of(context).errorColor;
+        errorElement = '学校・学年';
+      }
+    });
+  }
+
+  void handleToCheck() {  //  確認画面への遷移
+    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          settings: RouteSettings(name: '/checkEntry'),
+          builder: (BuildContext context) =>
+              CheckEntry(menus: menus, dri: dri, child: child.Child(widget.name, school, schoolYear, widget.sex)),
+        ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -186,3 +263,4 @@ class _SecondEntryState extends State<SecondEntry> {
     );
   }
 }
+

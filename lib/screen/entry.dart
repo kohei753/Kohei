@@ -173,7 +173,7 @@ class _EntryState extends State<Entry> {
   /* 入力情報を登録 */
   void entryInfo() {
     // 入力情報のチェック
-    if (_formKey.currentState.validate() && (gender == 0 || gender == 1)) {
+    if (_formKey.currentState.validate() && (gender == 0 || gender == 1)) { //何かがフォームに記入されてる(validate)or男女がどちらか選択されていればok
       _formKey.currentState.save();
 
       menus = widget.menus;
