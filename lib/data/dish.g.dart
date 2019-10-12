@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'package:sample/data/dish.dart';
+part of 'dish.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
