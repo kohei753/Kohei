@@ -21,11 +21,13 @@ class DailyMenu extends StatefulWidget {
 class _DailyMenuState extends State<DailyMenu> {
   /*スクロール可能なコントローラ作成*/
   ScrollController _controller;
+
   /*引き継いでる変数を移すための変数*/
   Menu _menu;
   static Child _child;
   static DRI _dri;
   Map<String, double> _myChildDRI; //子供に合わせた基準栄養素
+
   /*それぞれの栄養素の名前*/
   List<String> _nutrientName = [
     "エネルギー",
@@ -44,8 +46,10 @@ class _DailyMenuState extends State<DailyMenu> {
     "食物繊維",
     "食塩相当量"
   ];
+
   /*メニューの栄養素*/
   var _menuNutrient = [];
+
   /*読み込まれた時に遷移されてきた変数を代入*/
   @override
   void initState() {
