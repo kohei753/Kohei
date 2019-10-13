@@ -22,7 +22,8 @@ class MonthlyMenu extends StatefulWidget {
 }
 
 class _MonthlyMenuState extends State<MonthlyMenu> {
-  static DateTime today = DateTime(2019, 8, 19); // 今日の日付
+  static DateTime today = DateTime.now(); // 今日の日付
+  //static DateTime today = DateTime(2019, 8, 19); // 今日の日付
   static DateTime pickDate = today; // 選択した日を格納する変数
   static String formattedDate = DateFormat('M月d日').format(today); //日付をフォーマットしたのを格納する変数
 
@@ -42,13 +43,18 @@ class _MonthlyMenuState extends State<MonthlyMenu> {
   /* カレンダーの更新用 */
   void onDayPressed(DateTime date, List<Event> events) {
     String selectedDate = DateFormat('M月d日').format(date);// 日付をX月X日にフォーマットし文字列にする
+    pickDate = date;
     setState(() {
       formattedDate = selectedDate;// 選択した日付にする
-
-      if (_menus[date].menu != null) {// 選択した日付が献立に含まれていれば、選択した日付にする
-        pickDate = date;
-      }
     });
+  }
+  /* ListViewのitemCountを決める関数 */
+  int checkLunch(DateTime day) {
+    int result = 1;
+    if(_menus[day] == null){
+      return result;
+    }
+    return _menus[day].menu.length;
   }
 
   /* ホームへの遷移 */
@@ -86,7 +92,6 @@ class _MonthlyMenuState extends State<MonthlyMenu> {
         onDayPressed: onDayPressed,//日付を押した時の処理
         showOnlyCurrentMonthDate: true,// 今月だけ表示
         showHeader: false,// ヘッダーの表示
-        weekFormat: false,// 1週間ごとの表示
         weekendTextStyle: TextStyle(//土日の表示スタイル
           color: Colors.red,
         ),
@@ -121,7 +126,7 @@ class _MonthlyMenuState extends State<MonthlyMenu> {
             height: 50.0,
             child: RaisedButton(// ボタン
               child: Text(
-                '$formattedDate' + 'の献立',//　選択した日を出力
+                formattedDate + 'の献立',//　選択した日を出力
                 style: TextStyle(// 文字設定
                   fontWeight: FontWeight.bold,
                   fontSize: 16.0,
@@ -139,17 +144,28 @@ class _MonthlyMenuState extends State<MonthlyMenu> {
           Container(
             margin: EdgeInsets.only(top: 20.0),
             child: ListView.builder(// 献立をリストと表示する
-              itemCount: _menus[pickDate].menu.length,// リストの長さ
+              itemCount: checkLunch(pickDate),// リストの長さ
               shrinkWrap: true,
               itemBuilder: (context, i) {
-                return Text(
-                  _menus[pickDate].menu[i].name,//献立を表示
-                  textAlign: TextAlign.center,
-                  style: TextStyle(// 文字の設定
-                    fontSize: 18.0,
-                    color: Colors.black87,
-                  ),
-                );
+                if( _menus[pickDate] == null){
+                  return Text(
+                    formattedDate + "の給食はありません",//献立を表示
+                    textAlign: TextAlign.center,
+                    style: TextStyle(// 文字の設定
+                      fontSize: 18.0,
+                      color: Colors.black87,
+                    ),
+                  );
+                } else {
+                  return Text(
+                    _menus[pickDate].menu[i].name,//献立を表示
+                    textAlign: TextAlign.center,
+                    style: TextStyle(// 文字の設定
+                      fontSize: 18.0,
+                      color: Colors.black87,
+                    ),
+                  );
+                }
               },
             ),
           ),
