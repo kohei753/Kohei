@@ -21,8 +21,8 @@ class Menu {
 
   /* コンストラクター */
   Menu(this.day,
-       this.school,
-       this.menu);
+      this.school,
+      this.menu);
 
   /* JSONからの読み取り */
   factory Menu.fromJson(Map<String, dynamic> json) => _$MenuFromJson(json);
