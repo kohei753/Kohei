@@ -28,24 +28,24 @@ class _DailyMenuState extends State<DailyMenu> {
   ScrollController _controller;
   Map<String, double> _myChildDRI; // 子供に合わせた基準栄養素
   var menuNutrient = [];
-  
+
   /* それぞれの栄養素の名前 */
   List<String> _nutrientName = [
-    "エネルギー",
-    "タンパク質",
-    "脂質",
-    "炭水化物",
-    "ナトリウム",
-    "カルシウム",
-    "マグネシウム",
-    "鉄分",
-    "亜鉛",
-    "ビタミンA",
-    "ビタミンB1",
-    "ビタミンB2",
-    "ビタミンC",
-    "食物繊維",
-    "食塩相当量"
+    'エネルギー',
+    'タンパク質',
+    '脂質',
+    '炭水化物',
+    'ナトリウム',
+    'カルシウム',
+    'マグネシウム',
+    '鉄分',
+    '亜鉛',
+    'レチノール',
+    'ビタミンB1',
+    'ビタミンB2',
+    'ビタミンC',
+    '食物繊維',
+    '食塩相当量'
   ];
 
   /* 読み込まれた時に遷移されてきた変数を代入 */
@@ -56,53 +56,55 @@ class _DailyMenuState extends State<DailyMenu> {
     child = widget.child;
     dri = widget.dri;
 
-    _myChildDRI =  dri.getNutrient(child);
+    _myChildDRI = dri.getNutrient(child);
   }
 
   /* グラフ用栄養素の作成 */
   /* タンパク質 */
   double get _graphMenuProtein {
-    double graphProtein = menu.menuProtein / _myChildDRI["protein"] * 100; //摂取タンパク質
-    double result = graphProtein;
-    return result;
+    double protein = menu.menuProtein / _myChildDRI['protein'] * 100;
+    if (protein < 100) return protein;
+    return 100.0;
   }
+
   /* ビタミン */
   double get _graphMenuVitamin {
-    double graphRetinol = menu.menuRetinol / _myChildDRI["retinol"] * 100;
-    double graphVitaminB1 = menu.menuVitaminB1 / _myChildDRI["vitaminB1"] * 100;
-    double graphVitaminB2 = menu.menuVitaminB2 / _myChildDRI["vitaminB2"] * 100;
-    double graphVitaminC = menu.menuVitaminC / _myChildDRI["vitaminC"] * 100;
-    double result =
-        (graphRetinol + graphVitaminB1 + graphVitaminB2 + graphVitaminC) / 4;
-    return result;
+    double retinol = menu.menuRetinol / _myChildDRI['retinol'] * 100;
+    double vitaminB1 = menu.menuVitaminB1 / _myChildDRI['vitaminB1'] * 100;
+    double vitaminB2 = menu.menuVitaminB2 / _myChildDRI['vitaminB2'] * 100;
+    double vitaminC = menu.menuVitaminC / _myChildDRI['vitaminC'] * 100;
+    double vitamin = (retinol + vitaminB1 + vitaminB2 + vitaminC) / 4;
+    if (vitamin < 100) return vitamin;
+    return 100.0;
   }
+
   /* ミネラル */
   double get _graphMenuMineral {
-    double graphCalcium = menu.menuCalcium / _myChildDRI["calcium"] * 100;
-    double graphIron = menu.menuIron / _myChildDRI["iron"] * 100;
-    double graphMagnesium = menu.menuMagnesium / _myChildDRI["magnesium"] * 100;
-    double graphZinc = menu.menuZinc / _myChildDRI["zinc"] * 100;
-    double result = (graphCalcium +
-            graphIron +
-            graphMagnesium +
-            graphZinc) / 4;
-    return result;
+    double calcium = menu.menuCalcium / _myChildDRI['calcium'] * 100;
+    double iron = menu.menuIron / _myChildDRI['iron'] * 100;
+    double magnesium = menu.menuMagnesium / _myChildDRI['magnesium'] * 100;
+    double zinc = menu.menuZinc / _myChildDRI['zinc'] * 100;
+    double mineral = (calcium + iron + magnesium + zinc) / 4;
+    if (mineral < 100) return mineral;
+    return 100.0;
   }
+
   /* 炭水化物 */
   double get _graphMenuCarbohydrate {
-    double graphCarbohydrate = menu.menuCarbohydrate / _myChildDRI["carbohydrate"] *100;
-    double graphDietaryFiber = menu.menuDietaryFiber / _myChildDRI["dietaryFiber"] * 100;
-    double result = (graphCarbohydrate + graphDietaryFiber) /  2;
-    return result;
+    double carbohydrate =
+        menu.menuCarbohydrate / _myChildDRI['carbohydrate'] * 100;
+    double dietaryFiber =
+        menu.menuDietaryFiber / _myChildDRI['dietaryFiber'] * 100;
+    double totalCarb = (carbohydrate + dietaryFiber) / 2;
+    if (totalCarb < 100) return totalCarb;
+    return 100.0;
   }
+
   /* 脂質 */
   double get _graphMenuLipid {
-    double graphLipid = menu.menuLipid / _myChildDRI["lipid"] * 100 ;
-    if(graphLipid >= 100) { // 脂質が100%を越えるためここで制御
-      graphLipid = 100;
-    }
-    double result = graphLipid;
-    return result;
+    double lipid = menu.menuLipid / _myChildDRI['lipid'] * 100;
+    if (lipid < 100) return lipid;
+    return 100;
   }
 
   /* 栄養素の合計値の塊作成 */
@@ -175,7 +177,8 @@ class _DailyMenuState extends State<DailyMenu> {
   /* 栄養素の合計値リスト表示 */
   Widget menuNutrientList() {
     return Column(
-        children: List.generate(_nutrientName.length, (int i) { // 栄養素の名前、数値、線を一つにまとめてリストにしている
+        children: List.generate(_nutrientName.length, (int i) {
+      // 栄養素の名前、数値、線を一つにまとめてリストにしている
       return Container(
         child: Column(
           children: <Widget>[
@@ -204,7 +207,8 @@ class _DailyMenuState extends State<DailyMenu> {
       child: Container(
         width: deviceWidth, // コンテイナーの横幅を変数指定
         height: deviceHeight, // コンテイナーの縦幅を変数指定
-        child: RadarChart( // レーダーチャート
+        child: RadarChart(
+          // レーダーチャート
           values: [
             _graphMenuProtein,
             _graphMenuLipid,
@@ -212,12 +216,13 @@ class _DailyMenuState extends State<DailyMenu> {
             _graphMenuVitamin,
             _graphMenuMineral,
           ],
-          labels: [ // 今回は文字だけでなく、%も可変にしている
-            "タンパク質\n(" + _graphMenuProtein.toStringAsFixed(0) + "％)",
-            "脂質\n(" + _graphMenuLipid.toStringAsFixed(0) + "％)",
-            "炭水化物\n(" + _graphMenuCarbohydrate.toStringAsFixed(0) + "％)",
-            "ビタミン\n(" + _graphMenuVitamin.toStringAsFixed(0) + "％)",
-            "ミネラル\n(" + _graphMenuMineral.toStringAsFixed(0) + "％)",
+          labels: [
+            // 今回は文字だけでなく、%も可変にしている
+            'タンパク質\n(' + _graphMenuProtein.toStringAsFixed(0) + '％)',
+            '脂質\n(' + _graphMenuLipid.toStringAsFixed(0) + '％)',
+            '炭水化物\n(' + _graphMenuCarbohydrate.toStringAsFixed(0) + '％)',
+            'ビタミン\n(' + _graphMenuVitamin.toStringAsFixed(0) + '％)',
+            'ミネラル\n(' + _graphMenuMineral.toStringAsFixed(0) + '％)',
           ],
           maxValue: 100, // グラフの最大値は100
           fillColor: Colors.orange, // グラフの色はオレンジで塗ります
@@ -231,16 +236,17 @@ class _DailyMenuState extends State<DailyMenu> {
   Widget build(BuildContext context) {
     final Size _size = MediaQuery.of(context).size; // デバイス毎のサイズを持ってくる(縦幅と横幅両方)
     addMenuNutrient(); // ここで栄養素の塊作成
-    return ListView( // リストで並べる
+    return ListView(
+      // リストで並べる
       physics: AlwaysScrollableScrollPhysics(), // コンテンツが不十分な場合でも常にスクロール可能
       controller: _controller, // スクロール可能なウィジェットになる
       children: <Widget>[
-        titleBar("料理名"),
+        titleBar('料理名'),
         Container(
           padding: EdgeInsets.only(top: 10, bottom: 10),
           child: menuNameList(), // メニューの名前表示
         ),
-        titleBar("栄養素"),
+        titleBar('栄養素'),
         Container(
           padding: EdgeInsets.only(left: 10, right: 10, top: 5),
           child: Column(
