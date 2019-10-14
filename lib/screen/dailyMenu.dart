@@ -29,7 +29,7 @@ class _DailyMenuState extends State<DailyMenu> {
   ScrollController _controller; // スクロールできるようにする
   Map<String, double> _myChildDRI; // 子供に合わせた基準栄養素
 
-  /* それぞれの栄養素の名前と単位 */
+  /* それぞれの栄養素の名前と値・単位 */
   final List<String> _nutrientName = [
     'エネルギー',
     'タンパク質',
@@ -79,6 +79,7 @@ class _DailyMenuState extends State<DailyMenu> {
     _isMenu = (menu != null) ? true : false;
     _myChildDRI = dri.getNutrient(child);
     if (_isMenu) {
+      // メニューがない場合空の値を代入し、存在する場合はその日の献立の栄養素合計値を代入
       _nutrientValue = {
         _nutrientName[0]: menu.menuEnergy,
         _nutrientName[1]: menu.menuProtein,
@@ -204,7 +205,7 @@ class _DailyMenuState extends State<DailyMenu> {
   }
 
   /* タイトルバー表示 */
-  Widget titleBar(String title) {
+  Widget _titleBar(String title) {
     return Container(
       padding: EdgeInsets.only(left: 10, top: 5, bottom: 5),
       width: double.infinity, // 画面いっぱいに出すよ
@@ -220,44 +221,50 @@ class _DailyMenuState extends State<DailyMenu> {
   }
 
   /* メニュー名表示 */
-  Widget menuNameList() {
+  Widget _menuNameList() {
     if (_isMenu) {
-      return Column(
-        children: <Widget>[
-          Wrap(
-            spacing: 10.0,
-            runSpacing: 10.0,
-            children: List.generate(menu.menu.length, (int selectIndex) {
-              return InputChip(
-                label: Text(menu.menu[selectIndex].name), // 今日のメニューを表示する
-                onPressed: () {
-                  handleToDetail(selectIndex); // (i)番目の料理名のChipクリックで詳細画面に遷移
-                },
-              );
-            }),
-          ),
-        ],
+      return Padding(
+        padding: EdgeInsets.symmetric(vertical: 10.0),
+        child: Column(
+          children: <Widget>[
+            Wrap(
+              spacing: 10.0,
+              runSpacing: 10.0,
+              children: List.generate(menu.menu.length, (int selectIndex) {
+                return InputChip(
+                  label: Text(menu.menu[selectIndex].name), // 今日のメニューを表示する
+                  onPressed: () {
+                    handleToDetail(selectIndex); // (i)番目の料理名のChipクリックで詳細画面に遷移
+                  },
+                );
+              }),
+            ),
+          ],
+        ),
       );
     } else {
-      return Center(
-        child: RichText(
-          text: TextSpan(
-            style: TextStyle(
-              fontSize: 30.0,
-              color: Colors.black45,
-            ),
-            children: [
-              TextSpan(text: '本日の給食は'),
-              TextSpan(
-                text: 'お休み',
-                style: TextStyle(
-                  decoration: TextDecoration.underline,
-                  decorationColor: Theme.of(context).primaryColor,
-                  decorationStyle: TextDecorationStyle.dashed,
-                ),
+      return Padding(
+        padding: EdgeInsets.symmetric(vertical: 10.0),
+        child: Center(
+          child: RichText(
+            text: TextSpan(
+              style: TextStyle(
+                fontSize: 30.0,
+                color: Colors.black45,
               ),
-              TextSpan(text: 'です.'),
-            ],
+              children: [
+                TextSpan(text: '本日の給食は'),
+                TextSpan(
+                  text: 'お休み',
+                  style: TextStyle(
+                    decoration: TextDecoration.underline,
+                    decorationColor: Theme.of(context).primaryColor,
+                    decorationStyle: TextDecorationStyle.dashed,
+                  ),
+                ),
+                TextSpan(text: 'です.'),
+              ],
+            ),
           ),
         ),
       );
@@ -376,12 +383,9 @@ class _DailyMenuState extends State<DailyMenu> {
       physics: AlwaysScrollableScrollPhysics(), // コンテンツが不十分な場合でも常にスクロール可能
       controller: _controller, // スクロール可能なウィジェットになる
       children: <Widget>[
-        titleBar('料理名'),
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: 10.0),
-          child: menuNameList(), // メニューの名前表示
-        ),
-        titleBar('栄養素'),
+        _titleBar('料理名'),
+        _menuNameList(), // メニューの名前表示
+        _titleBar('栄養素'),
         _nutrientList(),
         menuGraph(_size.width * 0.65, _size.height * 0.65), // グラフの縦幅と横幅は65%
       ],
