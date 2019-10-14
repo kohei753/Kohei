@@ -4,9 +4,6 @@ import 'package:sample/data/menu.dart';
 import 'package:sample/data/dri.dart';
 import 'secondEntry.dart';
 
-import 'home.dart';
-import 'package:sample/data/child.dart';
-
 /* 初期登録画面 */
 class Entry extends StatefulWidget {
   final Map<DateTime, Menu> menus;
@@ -203,8 +200,7 @@ class _EntryState extends State<Entry> {
         MaterialPageRoute(
           settings: RouteSettings(name: '/secondEntry'),
           builder: (BuildContext context) =>
-              // SecondEntry(menus: menus, dri: dri, name: name, sex: gender),
-          Home(menus: menus, dri: dri, child: Child('けいた', '中学校', 8, 1), selectDay: DateTime(2019, 8, 19))
+              SecondEntry(menus: menus, dri: dri, name: name, sex: gender),
         ));
   }
 
