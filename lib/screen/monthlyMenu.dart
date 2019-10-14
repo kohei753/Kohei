@@ -23,7 +23,6 @@ class MonthlyMenu extends StatefulWidget {
 
 class _MonthlyMenuState extends State<MonthlyMenu> {
   static DateTime today = DateTime.now(); // 今日の日付
-  //static DateTime today = DateTime(2019, 8, 19); // 今日の日付
   static DateTime pickDate = today; // 選択した日を格納する変数
   static String formattedDate = DateFormat('M月d日').format(today); //日付をフォーマットしたのを格納する変数
 
@@ -58,12 +57,12 @@ class _MonthlyMenuState extends State<MonthlyMenu> {
   }
 
   /* ホームへの遷移 */
-  void handleToHome() {
+  void handleToHome(DateTime selectDay) {
     Navigator.push(
         context,
         MaterialPageRoute(
           settings: RouteSettings(name: '/home'),
-          builder: (BuildContext context) => Home(menus: _menus, child: _child, dri: _dri),
+          builder: (BuildContext context) => Home(menus: _menus, child: _child, dri: _dri, selectDay: selectDay),
         )
     );
   }
@@ -136,9 +135,9 @@ class _MonthlyMenuState extends State<MonthlyMenu> {
               color: Colors.deepOrangeAccent,//　ボタンの色
               shape: StadiumBorder(),// 角を丸くする
               elevation: 8.0,// 影をつける
-              onPressed: () {// ボタンを押した時の処理
-                handleToHome();// ホームにもどる
-              },
+                onPressed: () {
+                  if (_menus[pickDate] != null) handleToHome(DateTime(pickDate.year, pickDate.month, pickDate.day));
+                }
             ),
           ),
           Container(
@@ -147,7 +146,7 @@ class _MonthlyMenuState extends State<MonthlyMenu> {
               itemCount: checkLunch(pickDate),// リストの長さ
               shrinkWrap: true,
               itemBuilder: (context, i) {
-                if( _menus[pickDate] == null){
+                if( _menus[pickDate] == null){// タップした日の献立がない時
                   return Text(
                     formattedDate + "の給食はありません",//献立を表示
                     textAlign: TextAlign.center,
@@ -156,7 +155,7 @@ class _MonthlyMenuState extends State<MonthlyMenu> {
                       color: Colors.black87,
                     ),
                   );
-                } else {
+                } else { // タップした日の献立がある時
                   return Text(
                     _menus[pickDate].menu[i].name,//献立を表示
                     textAlign: TextAlign.center,
