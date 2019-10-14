@@ -56,7 +56,7 @@ class _HomeState extends State<Home> {
     // メニューがタップされた時更新
     setState(() {
       _selectedIndex = index;
-      _title = (index != 0) ? 'X月の献立表' : _title;
+      _title = (index != 0) ? '${selectDay.month}月の献立表' : DateFormat("MM月dd日").format(selectDay);
     });
   }
 
