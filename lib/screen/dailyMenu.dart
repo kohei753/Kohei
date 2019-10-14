@@ -201,11 +201,11 @@ class _DailyMenuState extends State<DailyMenu> {
         Wrap(
           spacing: 10.0,
           runSpacing: 10.0,
-          children: List.generate(menu.menu.length, (int i) {
+          children: List.generate(menu.menu.length, (int selectIndex) {
             return InputChip(
-              label: Text(menu.menu[i].name), // 今日のメニューを表示する
+              label: Text(menu.menu[selectIndex].name), // 今日のメニューを表示する
               onPressed: () {
-                handleToDetail(i); // (i)番目の料理名のChipクリックで詳細画面に遷移
+                handleToDetail(selectIndex); // (i)番目の料理名のChipクリックで詳細画面に遷移
               },
             );
           }),
@@ -214,7 +214,7 @@ class _DailyMenuState extends State<DailyMenu> {
     );
   }
 
-  /* 栄養素の合計値リスト表示 */
+  /* 栄養素リスト */
   Widget _nutrientList() {
     return Column(
       children: List.generate(_nutrientName.length, (int i) {
@@ -249,7 +249,11 @@ class _DailyMenuState extends State<DailyMenu> {
       child: Row(
         children: <Widget>[
           Expanded(
-            flex: 8,
+            flex: 1,
+            child: SizedBox(),
+          ),
+          Expanded(
+            flex: 7,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
@@ -286,10 +290,12 @@ class _DailyMenuState extends State<DailyMenu> {
   Widget menuGraph(double deviceWidth, double deviceHeight) {
     return Center(
       child: Container(
+        padding: EdgeInsets.all(20.0),
         width: deviceWidth, // コンテイナーの横幅を変数指定
         height: deviceHeight, // コンテイナーの縦幅を変数指定
         child: RadarChart(
           // レーダーチャート
+          labelWidth: 200,
           values: [
             _graphMenuProtein,
             _graphMenuLipid,
@@ -298,7 +304,6 @@ class _DailyMenuState extends State<DailyMenu> {
             _graphMenuMineral,
           ],
           labels: [
-            // 今回は文字だけでなく、%も可変にしている
             'タンパク質\n(' + _graphMenuProtein.toStringAsFixed(0) + '％)',
             '脂質\n(' + _graphMenuLipid.toStringAsFixed(0) + '％)',
             '炭水化物\n(' + _graphMenuCarbohydrate.toStringAsFixed(0) + '％)',
