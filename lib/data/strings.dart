@@ -17,9 +17,13 @@ class InfoStrings {
   ];
 
   static const String personalTitle = '個人情報の扱い';
-  static const String personalText = '本サービスは個人のプライバシー, 名誉, その他第三者の権利を侵害することのないよう, 利用者に関する情報の取扱に充分, 配慮します. また, 本サービス内で登録されたユーザの名前, 性別, 学校, 学年はサービスの向上以外の目的では使用されず, 収集も行いません.';
+  static const String personalText = '　本サービスは個人のプライバシー, 名誉, その他第三者の権利を侵害することのないよう, 利用者に関する情報の取扱に充分, 配慮します. また, 本サービス内で登録されたユーザの名前, 性別, 学校, 学年はサービスの向上以外の目的では使用されず, 収集も行いません.';
 
   static const String contactTitle = 'お問い合わせ';
   static const String developerTitle = '開発者';
   static const String developer = '公立はこだて未来大学 使ってもらって学ぶフィールド思考システムデザイン2019 市民情報サービスのデザインチーム';
+}
+
+class DevelopingStrings {
+  static const String noDevelop = '本機能は現在製作中です.';
 }

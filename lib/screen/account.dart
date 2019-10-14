@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart'; // マテリアルデザインしようぜのやーつ
 
 import 'package:sample/data/child.dart';
+import 'package:sample/data/strings.dart';
 
 /* インフォメーション画面 */
 class Account extends StatefulWidget {
@@ -17,6 +18,15 @@ class _AccountState extends State<Account> {
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(),
+      body: Center(
+        child: Text(
+          DevelopingStrings.noDevelop,
+          style: TextStyle(
+            fontSize: 20.0,
+            color: Colors.black45,
+          ),
+        ),
+      ),
     );
   }
 }
