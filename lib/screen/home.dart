@@ -48,7 +48,6 @@ class _HomeState extends State<Home> {
     /* widgetリストの中身作成 */
     _widgetOptions = [
       DailyMenu(menu: menus[DateTime(selectDay.year, selectDay.month, selectDay.day)], child: child, dri: dri),
-      //DailyMenu(menu: menus[DateTime(2019, 8, 20)], child: child, dri: dri),
       MonthlyMenu(menus: menus, child: child),
     ];
   }
