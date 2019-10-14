@@ -3,6 +3,8 @@ import 'package:flutter/material.dart'; // マテリアルデザインしよう�
 import 'package:sample/data/menu.dart';
 import 'package:sample/data/dri.dart';
 import 'secondEntry.dart';
+import 'home.dart';
+import 'package:sample/data/child.dart';
 
 /* 初期登録画面 */
 class Entry extends StatefulWidget {
@@ -200,7 +202,8 @@ class _EntryState extends State<Entry> {
         MaterialPageRoute(
           settings: RouteSettings(name: '/secondEntry'),
           builder: (BuildContext context) =>
-              SecondEntry(menus: menus, dri: dri, name: name, sex: gender),
+              // SecondEntry(menus: menus, dri: dri, name: name, sex: gender),
+            Home(menus: menus, dri: dri, child: Child(name, '巴中学校', 4, gender), selectDay: DateTime.now()),
         ));
   }
 
