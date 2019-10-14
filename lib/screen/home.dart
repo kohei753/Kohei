@@ -48,7 +48,6 @@ class _HomeState extends State<Home> {
     /* widgetリストの中身作成 */
     _widgetOptions = [
       DailyMenu(menu: menus[DateTime(selectDay.year, selectDay.month, selectDay.day)], child: child, dri: dri),
-      //DailyMenu(menu: menus[DateTime(2019, 8, 20)], child: child, dri: dri),
       MonthlyMenu(menus: menus, child: child),
     ];
   }
@@ -57,7 +56,7 @@ class _HomeState extends State<Home> {
     // メニューがタップされた時更新
     setState(() {
       _selectedIndex = index;
-      _title = (index != 0) ? 'X月の献立表' : _title;
+      _title = (index != 0) ? '${selectDay.month}月の献立表' : DateFormat("MM月dd日").format(selectDay);
     });
   }
 
