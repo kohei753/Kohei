@@ -25,9 +25,9 @@ class _DailyMenuState extends State<DailyMenu> {
   DRI dri;
 
   /* この画面内でのみ使う変数 */
-  ScrollController _controller;
+  bool _isMenu; // 今日のメニューがあるか
+  ScrollController _controller; // スクロールできるようにする
   Map<String, double> _myChildDRI; // 子供に合わせた基準栄養素
-  var menuNutrient = [];
 
   /* それぞれの栄養素の名前と単位 */
   final List<String> _nutrientName = [
@@ -68,26 +68,6 @@ class _DailyMenuState extends State<DailyMenu> {
     '食塩相当量': 'g',
   };
 
-  /* 栄養素の合計値の塊作成
-  * toStringAsFixed(int)は小数点以下の四捨五入を制御 */
-  void addMenuNutrient() {
-    menuNutrient.add(menu.menuEnergy.toStringAsFixed(2) + ' kcal');
-    menuNutrient.add(menu.menuProtein.toStringAsFixed(2) + ' g');
-    menuNutrient.add(menu.menuLipid.toStringAsFixed(2) + ' g');
-    menuNutrient.add(menu.menuCarbohydrate.toStringAsFixed(2) + ' g');
-    menuNutrient.add(menu.menuSodium.toStringAsFixed(2) + ' mg');
-    menuNutrient.add(menu.menuCalcium.toStringAsFixed(2) + ' mg');
-    menuNutrient.add(menu.menuMagnesium.toStringAsFixed(2) + ' mg');
-    menuNutrient.add(menu.menuIron.toStringAsFixed(2) + ' mg');
-    menuNutrient.add(menu.menuZinc.toStringAsFixed(2) + ' mg');
-    menuNutrient.add(menu.menuRetinol.toStringAsFixed(2) + ' µg');
-    menuNutrient.add(menu.menuVitaminB1.toStringAsFixed(2) + ' mg');
-    menuNutrient.add(menu.menuVitaminB2.toStringAsFixed(2) + ' mg');
-    menuNutrient.add(menu.menuVitaminC.toStringAsFixed(2) + ' mg');
-    menuNutrient.add(menu.menuDietaryFiber.toStringAsFixed(2) + ' g');
-    menuNutrient.add(menu.menuSalt.toStringAsFixed(2) + ' g');
-  }
-
   /* 読み込まれた時に遷移されてきた変数を代入 */
   @override
   void initState() {
@@ -96,8 +76,9 @@ class _DailyMenuState extends State<DailyMenu> {
     child = widget.child;
     dri = widget.dri;
 
+    _isMenu = (menu != null) ? true : false;
     _myChildDRI = dri.getNutrient(child);
-    if (menu != null) {
+    if (_isMenu) {
       _nutrientValue = {
         _nutrientName[0]: menu.menuEnergy,
         _nutrientName[1]: menu.menuProtein,
@@ -115,55 +96,93 @@ class _DailyMenuState extends State<DailyMenu> {
         _nutrientName[13]: menu.menuDietaryFiber,
         _nutrientName[14]: menu.menuSalt,
       };
+    } else {
+      _nutrientValue = {
+        _nutrientName[0]: 0.0,
+        _nutrientName[1]: 0.0,
+        _nutrientName[2]: 0.0,
+        _nutrientName[3]: 0.0,
+        _nutrientName[4]: 0.0,
+        _nutrientName[5]: 0.0,
+        _nutrientName[6]: 0.0,
+        _nutrientName[7]: 0.0,
+        _nutrientName[8]: 0.0,
+        _nutrientName[9]: 0.0,
+        _nutrientName[10]: 0.0,
+        _nutrientName[11]: 0.0,
+        _nutrientName[12]: 0.0,
+        _nutrientName[13]: 0.0,
+        _nutrientName[14]: 0.0,
+      };
     }
   }
 
   /* グラフ用栄養素の作成 */
   /* タンパク質 */
   double get _graphMenuProtein {
-    double protein = menu.menuProtein / _myChildDRI['protein'] * 100;
-    if (protein < 100) return protein;
-    return 100.0;
+    if (_isMenu) {
+      double protein = menu.menuProtein / _myChildDRI['protein'] * 100;
+      if (protein < 100) return protein;
+      return 100.0;
+    } else {
+      return 0.0;
+    }
   }
 
   /* ビタミン */
   double get _graphMenuVitamin {
-    double retinol = menu.menuRetinol / _myChildDRI['retinol'] * 100;
-    double vitaminB1 = menu.menuVitaminB1 / _myChildDRI['vitaminB1'] * 100;
-    double vitaminB2 = menu.menuVitaminB2 / _myChildDRI['vitaminB2'] * 100;
-    double vitaminC = menu.menuVitaminC / _myChildDRI['vitaminC'] * 100;
-    double vitamin = (retinol + vitaminB1 + vitaminB2 + vitaminC) / 4;
-    if (vitamin < 100) return vitamin;
-    return 100.0;
+    if (_isMenu) {
+      double retinol = menu.menuRetinol / _myChildDRI['retinol'] * 100;
+      double vitaminB1 = menu.menuVitaminB1 / _myChildDRI['vitaminB1'] * 100;
+      double vitaminB2 = menu.menuVitaminB2 / _myChildDRI['vitaminB2'] * 100;
+      double vitaminC = menu.menuVitaminC / _myChildDRI['vitaminC'] * 100;
+      double vitamin = (retinol + vitaminB1 + vitaminB2 + vitaminC) / 4;
+      if (vitamin < 100) return vitamin;
+      return 100.0;
+    } else {
+      return 0.0;
+    }
   }
 
   /* ミネラル */
   double get _graphMenuMineral {
-    double calcium = menu.menuCalcium / _myChildDRI['calcium'] * 100;
-    double iron = menu.menuIron / _myChildDRI['iron'] * 100;
-    double magnesium = menu.menuMagnesium / _myChildDRI['magnesium'] * 100;
-    double zinc = menu.menuZinc / _myChildDRI['zinc'] * 100;
-    double mineral = (calcium + iron + magnesium + zinc) / 4;
-    if (mineral < 100) return mineral;
-    return 100.0;
+    if (_isMenu) {
+      double calcium = menu.menuCalcium / _myChildDRI['calcium'] * 100;
+      double iron = menu.menuIron / _myChildDRI['iron'] * 100;
+      double magnesium = menu.menuMagnesium / _myChildDRI['magnesium'] * 100;
+      double zinc = menu.menuZinc / _myChildDRI['zinc'] * 100;
+      double mineral = (calcium + iron + magnesium + zinc) / 4;
+      if (mineral < 100) return mineral;
+      return 100.0;
+    } else {
+      return 0.0;
+    }
   }
 
   /* 炭水化物 */
   double get _graphMenuCarbohydrate {
-    double carbohydrate =
-        menu.menuCarbohydrate / _myChildDRI['carbohydrate'] * 100;
-    double dietaryFiber =
-        menu.menuDietaryFiber / _myChildDRI['dietaryFiber'] * 100;
-    double totalCarb = (carbohydrate + dietaryFiber) / 2;
-    if (totalCarb < 100) return totalCarb;
-    return 100.0;
+    if (_isMenu) {
+      double carbohydrate =
+          menu.menuCarbohydrate / _myChildDRI['carbohydrate'] * 100;
+      double dietaryFiber =
+          menu.menuDietaryFiber / _myChildDRI['dietaryFiber'] * 100;
+      double totalCarb = (carbohydrate + dietaryFiber) / 2;
+      if (totalCarb < 100) return totalCarb;
+      return 100.0;
+    } else {
+      return 0.0;
+    }
   }
 
   /* 脂質 */
   double get _graphMenuLipid {
-    double lipid = menu.menuLipid / _myChildDRI['lipid'] * 100;
-    if (lipid < 100) return lipid;
-    return 100;
+    if (_isMenu) {
+      double lipid = menu.menuLipid / _myChildDRI['lipid'] * 100;
+      if (lipid < 100) return lipid;
+      return 100;
+    } else {
+      return 0.0;
+    }
   }
 
   /* 詳細画面に遷移 */
@@ -190,28 +209,59 @@ class _DailyMenuState extends State<DailyMenu> {
       padding: EdgeInsets.only(left: 10, top: 5, bottom: 5),
       width: double.infinity, // 画面いっぱいに出すよ
       color: Colors.orangeAccent,
-      child: Text(title, style: TextStyle(fontSize: 25)),
+      child: Text(
+        title,
+        style: TextStyle(
+          fontSize: 25,
+          color: Colors.black87,
+        ),
+      ),
     );
   }
 
   /* メニュー名表示 */
   Widget menuNameList() {
-    return Column(
-      children: <Widget>[
-        Wrap(
-          spacing: 10.0,
-          runSpacing: 10.0,
-          children: List.generate(menu.menu.length, (int selectIndex) {
-            return InputChip(
-              label: Text(menu.menu[selectIndex].name), // 今日のメニューを表示する
-              onPressed: () {
-                handleToDetail(selectIndex); // (i)番目の料理名のChipクリックで詳細画面に遷移
-              },
-            );
-          }),
+    if (_isMenu) {
+      return Column(
+        children: <Widget>[
+          Wrap(
+            spacing: 10.0,
+            runSpacing: 10.0,
+            children: List.generate(menu.menu.length, (int selectIndex) {
+              return InputChip(
+                label: Text(menu.menu[selectIndex].name), // 今日のメニューを表示する
+                onPressed: () {
+                  handleToDetail(selectIndex); // (i)番目の料理名のChipクリックで詳細画面に遷移
+                },
+              );
+            }),
+          ),
+        ],
+      );
+    } else {
+      return Center(
+        child: RichText(
+          text: TextSpan(
+            style: TextStyle(
+              fontSize: 30.0,
+              color: Colors.black45,
+            ),
+            children: [
+              TextSpan(text: '本日の給食は'),
+              TextSpan(
+                text: 'お休み',
+                style: TextStyle(
+                  decoration: TextDecoration.underline,
+                  decorationColor: Theme.of(context).primaryColor,
+                  decorationStyle: TextDecorationStyle.dashed,
+                ),
+              ),
+              TextSpan(text: 'です.'),
+            ],
+          ),
         ),
-      ],
-    );
+      );
+    }
   }
 
   /* 栄養素リスト */
@@ -310,10 +360,8 @@ class _DailyMenuState extends State<DailyMenu> {
             'ビタミン\n(' + _graphMenuVitamin.toStringAsFixed(0) + '％)',
             'ミネラル\n(' + _graphMenuMineral.toStringAsFixed(0) + '％)',
           ],
-          maxValue: 100,
-          // グラフの最大値は100
-          fillColor: Colors.orange,
-          // グラフの色はオレンジで塗ります
+          maxValue: 100, // グラフの最大値は100
+          fillColor: Colors.orange, // グラフの色はオレンジで塗ります
           animate: false, // アニメーションはつけない
         ),
       ),
@@ -323,7 +371,6 @@ class _DailyMenuState extends State<DailyMenu> {
   @override
   Widget build(BuildContext context) {
     final Size _size = MediaQuery.of(context).size; // デバイス毎のサイズを持ってくる(縦幅と横幅両方)
-    addMenuNutrient(); // ここで栄養素の塊作成
     return ListView(
       // リストで並べる
       physics: AlwaysScrollableScrollPhysics(), // コンテンツが不十分な場合でも常にスクロール可能
