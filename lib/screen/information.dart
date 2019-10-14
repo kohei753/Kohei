@@ -26,6 +26,8 @@ class _InformationState extends State<Information> {
           _dataText(), // 利用データについて
           SizedBox(height: lineSpace),
           _personalDataText(), // 個人情報について
+          SizedBox(height: lineSpace),
+          _contactUs(),
         ],
       ),
     );
@@ -64,7 +66,7 @@ class _InformationState extends State<Information> {
         _textFormat(text: InfoStrings.dataTitle, fontSize: head),
         SizedBox(height: lineSpace),
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 8.0), // 周りの余白
+          padding: EdgeInsets.symmetric(horizontal: lineSpace), // 周りの余白
           child: _textFormat(
             text: InfoStrings.dataLocation + '\n' + InfoStrings.dataAttention,
           ),
@@ -139,6 +141,26 @@ class _InformationState extends State<Information> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         _textFormat(text: InfoStrings.personalTitle, fontSize: head),
+        SizedBox(height: lineSpace),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: lineSpace),
+          child: _textFormat(text: InfoStrings.personalText),
+        ),
+      ],
+    );
+  }
+
+  Widget _contactUs() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        _textFormat(text: InfoStrings.contactTitle, fontSize: head),
+        _textFormat(text: InfoStrings.developerTitle, fontSize: middleHead),
+        SizedBox(height: lineSpace),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: lineSpace),
+          child: _textFormat(text: InfoStrings.developer),
+        ),
       ],
     );
   }

@@ -24,6 +24,29 @@ class _DetailState extends State<Detail> {
   DRI dri;
   var formatter = DateFormat("yyyy/MM/dd(E)"); // 日付をフォーマットするやつ
 
+  /*スクロール可能なコントローラ作成*/
+  ScrollController _controller = new ScrollController();
+  var _dishNutrient = [];
+
+  /*それぞれの栄養素の名前*/
+  var _nutrientName = [
+    "エネルギー",
+    "タンパク質",
+    "脂質",
+    "炭水化物",
+    "ナトリウム",
+    "カルシウム",
+    "マグネシウム",
+    "鉄分",
+    "亜鉛",
+    "ビタミンA",
+    "ビタミンB1",
+    "ビタミンB2",
+    "ビタミンC",
+    "食物繊維",
+    "食塩相当量"
+  ];
+
   /* サイドバー関係 */
   int _selectedIndex = 0; // 選択中のタブ番号管理
 
