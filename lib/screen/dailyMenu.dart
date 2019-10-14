@@ -180,7 +180,7 @@ class _DailyMenuState extends State<DailyMenu> {
     if (_isMenu) {
       double lipid = menu.menuLipid / _myChildDRI['lipid'] * 100;
       if (lipid < 100) return lipid;
-      return 100;
+      return 100.0;
     } else {
       return 0.0;
     }
@@ -344,7 +344,7 @@ class _DailyMenuState extends State<DailyMenu> {
   }
 
   /* 栄養素をグラフ表示 */
-  Widget menuGraph(double deviceWidth, double deviceHeight) {
+  Widget _menuGraph(double deviceWidth, double deviceHeight) {
     return Center(
       child: Container(
         padding: EdgeInsets.all(20.0),
@@ -387,7 +387,7 @@ class _DailyMenuState extends State<DailyMenu> {
         _menuNameList(), // メニューの名前表示
         _titleBar('栄養素'),
         _nutrientList(),
-        menuGraph(_size.width * 0.65, _size.height * 0.65), // グラフの縦幅と横幅は65%
+        _menuGraph(_size.width * 0.65, _size.height * 0.65), // グラフの縦幅と横幅は65%
       ],
     );
   }
