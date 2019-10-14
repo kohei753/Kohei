@@ -119,20 +119,6 @@ class _SecondEntryState extends State<SecondEntry> {
               ),
             ],
           ),
-//          Row(
-//            children: <Widget>[
-//              SizedBox(
-//                width: 30.0,
-//              ),
-//              Text(
-//                '学年を選択してください',
-//                style: TextStyle(
-//                  fontSize: 12.0,
-//                  color: Theme.of(context).errorColor,
-//                ),
-//              ),
-//            ],
-//          ),
           SizedBox(height: 20), // 縦の間の余白の大きさ
           Row(
             mainAxisAlignment: MainAxisAlignment.end, // 右端行くやつ
