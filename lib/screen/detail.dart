@@ -12,8 +12,7 @@ class Detail extends StatefulWidget {
   final Child child;
   final DRI dri;
   final int menuNum;  // 選択されたメニューの番号
-  final Map<String, double> myChildDRI;
-  Detail({Key key, this.dailyMenu, this.child, this.dri, this.menuNum, this.myChildDRI}) : super(key: key);
+  Detail({Key key, this.dailyMenu, this.child, this.dri, this.menuNum}) : super(key: key);
 
   @override
   _DetailState createState() => _DetailState();
@@ -21,36 +20,55 @@ class Detail extends StatefulWidget {
 
 class _DetailState extends State<Detail> {
   /* 諸々データ */
-  Menu _dailyMenu; // 表示する日のメニューデータ
-  Child _child;
-  DRI _dri;
+  Menu dailyMenu; // 表示する日のメニューデータ
+  Child child;
+  DRI dri;
+  
+  /* この画面でのみ使用する変数 */
   Map<String, double> _myChildDRI;
-  var formatter = DateFormat("yyyy/MM/dd(E)"); // 日付をフォーマットするやつ
-  /*スクロール可能なコントローラ作成*/
-  ScrollController _controller = new ScrollController();
-  var _dishNutrient = [];
-  /*それぞれの栄養素の名前*/
-  var _nutrientName = [
-    "エネルギー",
-    "タンパク質",
-    "脂質",
-    "炭水化物",
-    "ナトリウム",
-    "カルシウム",
-    "マグネシウム",
-    "鉄分",
-    "亜鉛",
-    "ビタミンA",
-    "ビタミンB1",
-    "ビタミンB2",
-    "ビタミンC",
-    "食物繊維",
-    "食塩相当量"
+  int _selectedIndex = 0; // 選択中のタブ番号管理
+  DateFormat formatter = DateFormat("yyyy/MM/dd(E)"); // 日付をフォーマットするやつ
+  ScrollController _controller = ScrollController();  // スクロール制御
+
+  /* それぞれの栄養素の名前と値・単位 */
+  final List<String> _nutrientName = [
+    'エネルギー',
+    'タンパク質',
+    '脂質',
+    '炭水化物',
+    'ナトリウム',
+    'カルシウム',
+    'マグネシウム',
+    '鉄分',
+    '亜鉛',
+    'レチノール',
+    'ビタミンB1',
+    'ビタミンB2',
+    'ビタミンC',
+    '食物繊維',
+    '食塩相当量',
   ];
 
-  /* サイドバー関係 */
-  int _selectedIndex = 0; // 選択中のタブ番号管理
+  Map<String, double> _nutrientValue;
 
+  final Map<String, String> _units = {
+    'エネルギー': 'kcal',
+    'タンパク質': 'g',
+    '脂質': 'g',
+    '炭水化物': 'g',
+    'ナトリウム': 'mg',
+    'カルシウム': 'mg',
+    'マグネシウム': 'mg',
+    '鉄分': 'mg',
+    '亜鉛': 'mg',
+    'レチノール': 'µg',
+    'ビタミンB1': 'mg',
+    'ビタミンB2': 'mg',
+    'ビタミンC': 'mg',
+    '食物繊維': 'g',
+    '食塩相当量': 'g',
+  };
+  
   /* カラーリスト */
   List<Color> _detailColors = [
     Color(0xFFf6f183),
@@ -72,166 +90,254 @@ class _DetailState extends State<Detail> {
     'assets/side_purple.png',
   ];
 
-  /*グラフ用栄養素の作成*/
-  double get graphDishProtein {
-    double graphProtein = _dailyMenu.menu[_selectedIndex].dishProtein / _myChildDRI["protein"]  * 100;
-    double result = graphProtein;
-    return result;
+  /* グラフ用栄養素の作成 */
+  /* タンパク質 */
+  double get _graphDishProtein {
+      double protein = dailyMenu.menu[_selectedIndex].dishProtein / _myChildDRI['protein'] * 100;
+      if (protein < 100) return protein;
+      return 100.0;
   }
 
-  double get graphDishVitamin {
-    double graphRetinol = _dailyMenu.menu[_selectedIndex].dishRetinol / _myChildDRI["retinol"] * 100;
-    double graphVitaminB1 = _dailyMenu.menu[_selectedIndex].dishVitaminB1 / _myChildDRI["vitaminB1"] * 100;
-    double graphVitaminB2 = _dailyMenu.menu[_selectedIndex].dishVitaminB2 / _myChildDRI["vitaminB2"] * 100;
-    double graphVitaminC = _dailyMenu.menu[_selectedIndex].dishVitaminC / _myChildDRI["vitaminC"] * 100;
-    double result =
-        (graphRetinol + graphVitaminB1 + graphVitaminB2 + graphVitaminC) / 4;
-    return result;
+  /* ビタミン */
+  double get _graphDishVitamin {
+      double retinol = dailyMenu.menu[_selectedIndex].dishRetinol / _myChildDRI['retinol'] * 100;
+      double vitaminB1 = dailyMenu.menu[_selectedIndex].dishVitaminB1 / _myChildDRI['vitaminB1'] * 100;
+      double vitaminB2 = dailyMenu.menu[_selectedIndex].dishVitaminB2 / _myChildDRI['vitaminB2'] * 100;
+      double vitaminC = dailyMenu.menu[_selectedIndex].dishVitaminC / _myChildDRI['vitaminC'] * 100;
+      double vitamin = (retinol + vitaminB1 + vitaminB2 + vitaminC) / 4;
+      if (vitamin < 100) return vitamin;
+      return 100.0;
   }
 
-  double get graphDishMineral {
-    double graphCalcium = _dailyMenu.menu[_selectedIndex].dishCalcium / _myChildDRI["calcium"] * 100;
-    double graphIron = _dailyMenu.menu[_selectedIndex].dishIron / _myChildDRI["iron"] * 100;
-    double graphMagnesium = _dailyMenu.menu[_selectedIndex].dishMagnesium / _myChildDRI["magnesium"] * 100;
-    double graphZinc = _dailyMenu.menu[_selectedIndex].dishZinc / _myChildDRI["zinc"] * 100;
-    double result = (graphCalcium +
-        graphIron +
-        graphMagnesium +
-        graphZinc) / 4;
-    return result;
+  /* ミネラル */
+  double get _graphDishMineral {
+      double calcium = dailyMenu.menu[_selectedIndex].dishCalcium / _myChildDRI['calcium'] * 100;
+      double iron = dailyMenu.menu[_selectedIndex].dishIron / _myChildDRI['iron'] * 100;
+      double magnesium = dailyMenu.menu[_selectedIndex].dishMagnesium / _myChildDRI['magnesium'] * 100;
+      double zinc = dailyMenu.menu[_selectedIndex].dishZinc / _myChildDRI['zinc'] * 100;
+      double mineral = (calcium + iron + magnesium + zinc) / 4;
+      if (mineral < 100) return mineral;
+      return 100.0;
   }
 
-  double get graphDishCarbohydrate {
-    double graphCarbohydrate = _dailyMenu.menu[_selectedIndex].dishCarbohydrate / _myChildDRI["carbohydrate"] *100;
-    double graphDietaryFiber = _dailyMenu.menu[_selectedIndex].dishDietaryFiber / _myChildDRI["dietaryFiber"] * 100;
-    double result = (graphCarbohydrate + graphDietaryFiber) /  2;
-    return result;
+  /* 炭水化物 */
+  double get _graphDishCarbohydrate {
+      double carbohydrate =
+          dailyMenu.menu[_selectedIndex].dishCarbohydrate / _myChildDRI['carbohydrate'] * 100;
+      double dietaryFiber =
+          dailyMenu.menu[_selectedIndex].dishDietaryFiber / _myChildDRI['dietaryFiber'] * 100;
+      double totalCarb = (carbohydrate + dietaryFiber) / 2;
+      if (totalCarb < 100) return totalCarb;
+      return 100.0;
   }
 
-  double get graphDishLipid {
-    double graphLipid = _dailyMenu.menu[_selectedIndex].dishLipid / _myChildDRI["lipid"] * 100 ; //脂肪エネルギー比率＝((脂質*9)／総エネルギー)×100
-    if(graphLipid >= 100) {
-      graphLipid = 100;
-    }
-    double result = graphLipid; // (摂取した脂肪エネルギー比率/推奨脂肪エネルギー比率)*100
-    return result;
+  /* 脂質 */
+  double get _graphDishLipid {
+      double lipid = dailyMenu.menu[_selectedIndex].dishLipid / _myChildDRI['lipid'] * 100;
+      if (lipid < 100) return lipid;
+      return 100.0;
   }
 
   /* 読み込まれた時にデータを取得する */
   @override
   void initState() {
     super.initState();
-    _dailyMenu = widget.dailyMenu;
-    _child = widget.child;
-    _dri = widget.dri;
-    _myChildDRI = widget.myChildDRI;
+    dailyMenu = widget.dailyMenu;
+    child = widget.child;
+    dri = widget.dri;
+    
+    _myChildDRI = dri.getNutrient(child);
     if (widget.menuNum != null) _selectedIndex = widget.menuNum;
+
+    _updateNutrientValue();
+  }
+
+  void _updateNutrientValue() {
+    _nutrientValue = {
+      _nutrientName[0]: dailyMenu.menu[_selectedIndex].dishEnergy,
+      _nutrientName[1]: dailyMenu.menu[_selectedIndex].dishProtein,
+      _nutrientName[2]: dailyMenu.menu[_selectedIndex].dishLipid,
+      _nutrientName[3]: dailyMenu.menu[_selectedIndex].dishCarbohydrate,
+      _nutrientName[4]: dailyMenu.menu[_selectedIndex].dishSodium,
+      _nutrientName[5]: dailyMenu.menu[_selectedIndex].dishCalcium,
+      _nutrientName[6]: dailyMenu.menu[_selectedIndex].dishMagnesium,
+      _nutrientName[7]: dailyMenu.menu[_selectedIndex].dishIron,
+      _nutrientName[8]: dailyMenu.menu[_selectedIndex].dishZinc,
+      _nutrientName[9]: dailyMenu.menu[_selectedIndex].dishRetinol,
+      _nutrientName[10]: dailyMenu.menu[_selectedIndex].dishVitaminB1,
+      _nutrientName[11]: dailyMenu.menu[_selectedIndex].dishVitaminB2,
+      _nutrientName[12]: dailyMenu.menu[_selectedIndex].dishVitaminC,
+      _nutrientName[13]: dailyMenu.menu[_selectedIndex].dishDietaryFiber,
+      _nutrientName[14]: dailyMenu.menu[_selectedIndex].dishSalt,
+    };
   }
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
-      _dishNutrient = [];
+      _updateNutrientValue();
     });
   }
 
-  void addDishNutrient() {
-    _dishNutrient.add(_dailyMenu.menu[_selectedIndex].dishEnergy.toStringAsFixed(2) + ' kcal');
-    _dishNutrient.add(_dailyMenu.menu[_selectedIndex].dishProtein.toStringAsFixed(2) + ' g');
-    _dishNutrient.add(_dailyMenu.menu[_selectedIndex].dishLipid.toStringAsFixed(2) + ' g');
-    _dishNutrient.add(_dailyMenu.menu[_selectedIndex].dishCarbohydrate.toStringAsFixed(2) + ' g');
-    _dishNutrient.add(_dailyMenu.menu[_selectedIndex].dishSodium.toStringAsFixed(2) + ' mg');
-    _dishNutrient.add(_dailyMenu.menu[_selectedIndex].dishCalcium.toStringAsFixed(2) + ' mg');
-    _dishNutrient.add(_dailyMenu.menu[_selectedIndex].dishMagnesium.toStringAsFixed(2) + ' mg');
-    _dishNutrient.add(_dailyMenu.menu[_selectedIndex].dishIron.toStringAsFixed(2) + ' mg');
-    _dishNutrient.add(_dailyMenu.menu[_selectedIndex].dishZinc.toStringAsFixed(2) + ' mg');
-    _dishNutrient.add(_dailyMenu.menu[_selectedIndex].dishRetinol.toStringAsFixed(2) + ' µg');
-    _dishNutrient.add(_dailyMenu.menu[_selectedIndex].dishVitaminB1.toStringAsFixed(2) + ' mg');
-    _dishNutrient.add(_dailyMenu.menu[_selectedIndex].dishVitaminB2.toStringAsFixed(2) + ' mg');
-    _dishNutrient.add(_dailyMenu.menu[_selectedIndex].dishVitaminC.toStringAsFixed(2) + ' mg');
-    _dishNutrient.add(_dailyMenu.menu[_selectedIndex].dishDietaryFiber.toStringAsFixed(2) + ' g');
-    _dishNutrient.add(_dailyMenu.menu[_selectedIndex].dishSalt.toStringAsFixed(2) + ' g');
-  }
-
-  /*カテゴリー表示*/
-  Widget titleBar(String category) {
+  /* タイトルバー表示 */
+  Widget _titleBar(String title) {
     return Container(
       padding: EdgeInsets.only(left: 10, top: 5, bottom: 5),
-      width: double.infinity,
-      color: _detailColors[_selectedIndex], //選択された料理名になる
-      child: Text(category, style: TextStyle(fontSize: 25)),
+      width: double.infinity, // 画面いっぱいに出すよ
+      color: _detailColors[_selectedIndex],
+      child: Text(
+        title,
+        style: TextStyle(
+          fontSize: 25,
+          color: Colors.black54,
+        ),
+      ),
     );
   }
 
   /*材料名表示*/
-  Widget materialList() {
+  Widget _materialList() {
     return Column(
-        children: List.generate(_dailyMenu.menu[_selectedIndex].dish.length, (int i) { //選択した料理名の材料のリスト表示
-          return Container(
-            child: Column(
-              children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    Text(_dailyMenu.menu[_selectedIndex].dish[i].name), //材料名を表示
-                  ],
-                ),
-                Divider(color: Colors.black), //下線
-              ],
-            ),
+      children: List.generate(dailyMenu.menu[_selectedIndex].dish.length, (int i) {
+        // 栄養素の名前、数値、線を一つにまとめてリストにしている
+        if (i.isOdd) {
+          return _materialLabel(
+            name: dailyMenu.menu[_selectedIndex].dish[i].name,
           );
-        }));
+        } else {
+          return _materialLabel(
+            name: dailyMenu.menu[_selectedIndex].dish[i].name,
+            color: Color(0xFFffead6),
+          );
+        }
+      }),
+    );
   }
 
-  /*栄養素の合計値表示*/
-  Widget dishNutrientList() {
-    return Column(
-        children: List.generate(_nutrientName.length, (int i) { //下の線を含めてリスト作成
-          return Container(
-            child: Column(
-              children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    Expanded(
-                      flex: 7,
-                      child: Text(_nutrientName[i]), //栄養素の名前
-                    ),
-                    Expanded(
-                      flex: 3,
-                      child: Text(_dishNutrient[i]), //料理の栄養素
-                    ),
-                  ],
-                ),
-                Divider(color: Colors.black),
-              ],
+  /* 材料名ラベル */
+  Widget _materialLabel({String name, Color color}) {
+    return Container(
+      height: 35.0,
+      color: color,
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            flex: 1,
+            child: SizedBox(),
+          ),
+          Expanded(
+            flex: 9,
+            child: Text(
+              name,
+              style: TextStyle(
+                fontSize: 16.0,
+              ),
             ),
-          );
-        }));
+          ),
+        ],
+      ),
+    );
   }
 
-  /*栄養素をグラフ表示*/
-  Widget dailyDishNutrientGraph(double deviceWidth, double deviceHeight) {
+  /* 栄養素リスト */
+  Widget _nutrientList() {
+    return Column(
+      children: List.generate(_nutrientName.length, (int i) {
+        // 栄養素の名前、数値、線を一つにまとめてリストにしている
+        if (i.isOdd) {
+          return _nutrientLabel(
+            name: _nutrientName[i],
+            value: _nutrientValue[_nutrientName[i]],
+            unit: _units[_nutrientName[i]],
+          );
+        } else {
+          return _nutrientLabel(
+            name: _nutrientName[i],
+            value: _nutrientValue[_nutrientName[i]],
+            unit: _units[_nutrientName[i]],
+            color: Color(0xFFffead6),
+          );
+        }
+      }),
+    );
+  }
+
+  /* 栄養素ラベル */
+  Widget _nutrientLabel(
+      {@required String name,
+        @required double value,
+        @required String unit,
+        Color color}) {
+    return Container(
+      height: 35.0,
+      color: color,
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            flex: 1,
+            child: SizedBox(),
+          ),
+          Expanded(
+            flex: 7,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(
+                  name,
+                  style: TextStyle(
+                    fontSize: 16.0,
+                  ),
+                ),
+                Text(
+                  value.toStringAsFixed(2),
+                  style: TextStyle(
+                    fontSize: 16.0,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            flex: 2,
+            child: Text(
+              '　' + unit,
+              style: TextStyle(
+                fontSize: 16.0,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /* 栄養素をグラフ表示 */
+  Widget _graph(double deviceWidth, double deviceHeight) {
     return Center(
       child: Container(
-        width: deviceWidth, //ここがグラフの横幅を管理する
-        height: deviceHeight, //ここがグラフの縦幅を管理する
+        padding: EdgeInsets.all(20.0),
+        width: deviceWidth, // コンテイナーの横幅を変数指定
+        height: deviceHeight, // コンテイナーの縦幅を変数指定
         child: RadarChart(
+          // レーダーチャート
+          labelWidth: 200,
           values: [
-            graphDishProtein,
-            graphDishLipid,
-            graphDishCarbohydrate,
-            graphDishVitamin,
-            graphDishMineral
+            _graphDishProtein,
+            _graphDishLipid,
+            _graphDishCarbohydrate,
+            _graphDishVitamin,
+            _graphDishMineral,
           ],
           labels: [
-            "タンパク質\n(" + graphDishProtein.toStringAsFixed(0) + "％)",
-            "脂質\n(" + graphDishLipid.toStringAsFixed(0) + "％)",
-            "炭水化物\n(" + graphDishCarbohydrate.toStringAsFixed(0) + "％)",
-            "ビタミン\n(" + graphDishVitamin.toStringAsFixed(0) + "％)",
-            "ミネラル\n(" + graphDishMineral.toStringAsFixed(0) + "％)",
+            "タンパク質\n(" + _graphDishProtein.toStringAsFixed(0) + "％)",
+            "脂質\n(" + _graphDishLipid.toStringAsFixed(0) + "％)",
+            "炭水化物\n(" + _graphDishCarbohydrate.toStringAsFixed(0) + "％)",
+            "ビタミン\n(" + _graphDishVitamin.toStringAsFixed(0) + "％)",
+            "ミネラル\n(" + _graphDishMineral.toStringAsFixed(0) + "％)",
           ],
-          maxValue: 100,
-          fillColor: Colors.orange,
-          animate: false,
+          maxValue: 100, // グラフの最大値は100
+          fillColor: Colors.orange, // グラフの色はオレンジで塗ります
+          animate: false, // アニメーションはつけない
         ),
       ),
     );
@@ -243,7 +349,7 @@ class _DetailState extends State<Detail> {
       child: ListView.builder(
         // 中身はリスト表示
         padding: EdgeInsets.zero, // 余白を消去
-        itemCount: _dailyMenu.menu.length + 1, // +1はヘッダーを作成するため
+        itemCount: dailyMenu.menu.length + 1, // +1はヘッダーを作成するため
         itemBuilder: (context, i) {
           if (i == 0) return _buildDrawerHeader(); // 一番上にヘッダーを作成
           final index = i - 1; // ヘッダーを抜いた真のindex
@@ -254,7 +360,7 @@ class _DetailState extends State<Detail> {
               width: 50,
               height: 50,
             ),
-            title: Text(_dailyMenu.menu[index].name), // とりあえず名前だしてるだけ
+            title: Text(dailyMenu.menu[index].name), // とりあえず名前だしてるだけ
             onTap: () => _onItemTapped(index), // タップしたら切り替えるように
           );
         },
@@ -267,7 +373,7 @@ class _DetailState extends State<Detail> {
     return UserAccountsDrawerHeader(
       accountName: Text(
         // メニュー名
-        _dailyMenu.menu[_selectedIndex].name,
+        dailyMenu.menu[_selectedIndex].name,
         style: TextStyle(
           color: Colors.black54,
           fontSize: 20, // ちょっと大きめに
@@ -275,7 +381,7 @@ class _DetailState extends State<Detail> {
       ),
       accountEmail: Text(
         // 日付
-        formatter.format(_dailyMenu.day),
+        formatter.format(dailyMenu.day),
         style: TextStyle(
           color: Colors.black54,
           fontSize: 15,
@@ -294,13 +400,11 @@ class _DetailState extends State<Detail> {
 
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
-    addDishNutrient();
-    // TODO: implement build
+    final Size _size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          _dailyMenu.menu[_selectedIndex].name,
+          dailyMenu.menu[_selectedIndex].name,
           style: TextStyle(color: Colors.black54),
         ), // 選択した料理名に
         backgroundColor: _detailColors[_selectedIndex],
@@ -310,17 +414,11 @@ class _DetailState extends State<Detail> {
         physics: const AlwaysScrollableScrollPhysics(), //コンテンツが不十分な場合でも常にスクロール可能
         controller: _controller, //スクロールできるようになる
         children: <Widget>[
-          titleBar("材料"),
-          Container(
-            padding: EdgeInsets.all(10),
-            child: materialList() //材料表示
-          ),
-          titleBar("栄養素"),
-          Container(
-              padding: EdgeInsets.only(top: 10, bottom: 10,left: 10),
-              child: dishNutrientList() //栄養素表示
-          ),
-          dailyDishNutrientGraph(size.width * 0.65, size.height * 0.65) //グラフの縦幅と横幅は65%
+          _titleBar("材料"),
+          _materialList(),
+          _titleBar("栄養素"),
+          _nutrientList(),
+          _graph(_size.width * 0.65, _size.height * 0.65),
         ],
       )
     );
