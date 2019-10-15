@@ -2,7 +2,10 @@ import 'package:flutter/material.dart'; // マテリアルデザインしよう�
 
 import 'package:sample/data/menu.dart';
 import 'package:sample/data/dri.dart';
+import 'package:sample/screen/home.dart';
 import 'secondEntry.dart';
+import 'home.dart';
+import 'package:sample/data/child.dart';
 
 /* 初期登録画面 */
 class Entry extends StatefulWidget {
@@ -24,8 +27,8 @@ class _EntryState extends State<Entry> {
 
   /* この画面内のみで使う変数 */
   final _formKey = GlobalKey<FormState>(); // 入力フォームを検知するキー
-  MaterialAccentColor manButtonColor = null; // 男のボタンの色
-  MaterialAccentColor womanButtonColor = null; // 女のボタンの色
+  MaterialAccentColor manButtonColor; // 男のボタンの色
+  MaterialAccentColor womanButtonColor; // 女のボタンの色
   Color manTextColor = Colors.black;
   Color womanTextColor = Colors.black;
   Color genderErrorColor = Color.fromARGB(0, 0, 0, 255);
@@ -200,7 +203,8 @@ class _EntryState extends State<Entry> {
         MaterialPageRoute(
           settings: RouteSettings(name: '/secondEntry'),
           builder: (BuildContext context) =>
-              SecondEntry(menus: menus, dri: dri, name: name, sex: gender),
+              // SecondEntry(menus: menus, dri: dri, name: name, sex: gender),
+          Home(menus: menus, dri: dri, child: Child('けいた', '巴中学校', 7, 1), selectDay: DateTime(2019, 8, 19)),
         ));
   }
 
