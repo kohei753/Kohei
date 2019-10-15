@@ -11,7 +11,7 @@ class InfoStrings {
   static const String noOpenData = '現在オープンデータを使用しておりません.';
   static const String illustration1 = 'イラストレイン';
   static const String illustration2 = 'ICOOON MONO';
-  static const String cooperationSchools = '協力していただいている学校';
+  static const String cooperationSchools = '協力していただいている学校(敬称略)';
   static const List<String> cooperationSchoolsValue = [
     '巴中学校',
   ];

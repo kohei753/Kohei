@@ -34,6 +34,8 @@ dependencies:
   # Use to URL links
   url_launcher: ^5.1.6
 
+  multi_charts: ^0.1.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

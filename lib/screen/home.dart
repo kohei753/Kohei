@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart'; // マテリアルデザインしようぜのやーつ
+import 'package:intl/intl.dart';  // 型変形
 
 import 'package:sample/data/menu.dart';
 import 'package:sample/data/child.dart';
 import 'package:sample/data/dri.dart';
 import 'package:sample/screen/dailyMenu.dart';
-import 'package:sample/screen/information.dart';
 import 'package:sample/screen/monthlyMenu.dart';
 import 'package:sample/screen/setting.dart';
 
@@ -13,20 +13,21 @@ class Home extends StatefulWidget {
   final Map<DateTime, Menu> menus;
   final Child child;
   final DRI dri;
-  Home({Key key, this.menus, this.child, this.dri}) : super(key: key);
+  final DateTime selectDay;  // 指定がなければ今日
+  Home({Key key, this.menus, this.child, this.dri, this.selectDay}) : super(key: key);
 
   @override
   _HomeState createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
-  /* 引き継いだメニューと登録情報 */
+  /* 引き継いだ情報 */
   Map<DateTime, Menu> menus;
   Child child;
   DRI dri;
-  Map<String, double> nutrient = {};
+  DateTime selectDay;
 
-  String _title = '日付';
+  String _title;
 
   /* BottomNavigationBarで使用する諸々 */
   List<Widget> _widgetOptions;  // タブのリスト
@@ -40,12 +41,13 @@ class _HomeState extends State<Home> {
     menus = widget.menus;
     child = widget.child;
     dri = widget.dri;
-    nutrient = dri.getNutrient(child);
+    selectDay = widget.selectDay;
+
+    _title = DateFormat("MM月dd日").format(selectDay);
 
     /* widgetリストの中身作成 */
     _widgetOptions = [
-      // TODO: 選択日を受け渡す
-      DailyMenu(menu: menus[DateTime(2019, 8, 19)], child: child, dri: dri),
+      DailyMenu(menu: menus[DateTime(selectDay.year, selectDay.month, selectDay.day)], child: child, dri: dri),
       MonthlyMenu(menus: menus, child: child),
     ];
   }
@@ -54,7 +56,7 @@ class _HomeState extends State<Home> {
     // メニューがタップされた時更新
     setState(() {
       _selectedIndex = index;
-      _title = (index != 0) ? 'X月の献立表' : '日付';
+      _title = (index != 0) ? '${selectDay.month}月の献立表' : DateFormat("MM月dd日").format(selectDay);
     });
   }
 
@@ -73,7 +75,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(_title), // TODO:表示したい日付に変わる予定
+        title: Text(_title),
         actions: <Widget>[
           // 設定ボタン
           IconButton(

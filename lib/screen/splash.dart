@@ -95,11 +95,12 @@ class _SplashState extends State<Splash> {
 
   /* ホームへの遷移 */
   void handleToHome() {
+    DateTime today = DateTime.now();
     Navigator.pushReplacement(
         context,
         MaterialPageRoute(
           settings: RouteSettings(name: '/home'),
-          builder: (BuildContext context) => Home(menus: menus, child: myChild, dri: DRI),
+          builder: (BuildContext context) => Home(menus: menus, child: myChild, dri: DRI, selectDay: DateTime(today.year, today.month, today.day)),
         ));
   }
 }
