@@ -2,9 +2,7 @@ import 'package:flutter/material.dart'; // マテリアルデザインしよう�
 
 import 'package:sample/data/menu.dart';
 import 'package:sample/data/dri.dart';
-import 'package:sample/data/child.dart';  // de
-import 'secondEntry.dart';  // de
-import 'home.dart';
+import 'secondEntry.dart';
 
 /* 初期登録画面 */
 class Entry extends StatefulWidget {
@@ -32,6 +30,72 @@ class _EntryState extends State<Entry> {
   Color womanTextColor = Colors.black;
   Color genderErrorColor = Color.fromARGB(0, 0, 0, 255);
 
+  @override
+  void initState() {
+    super.initState();
+
+    menus = widget.menus;
+    dri = widget.dri;
+  }
+
+  /* 男女のボタンを押すと選択した方の色がつく
+  * gender = 0: man, 1: woman */
+  void _genderUpdate(int newGender) {
+    setState(() {
+      gender = newGender;
+      if (gender == 0) {
+        manButtonColor = Colors.blueAccent;
+        manTextColor = Colors.white;
+        womanButtonColor = null;
+        womanTextColor = Colors.black;
+      } else {
+        manButtonColor = null;
+        manTextColor = Colors.black;
+        womanButtonColor = Colors.redAccent;
+        womanTextColor = Colors.white;
+      }
+    });
+  }
+
+  /* 名前の更新 */
+  void _nameUpdate(String newName) {
+    setState(() {
+      name = newName;
+    });
+  }
+
+  /* 入力情報を登録 */
+  void entryInfo() {
+    // 入力情報のチェック
+    if (_formKey.currentState.validate() && (gender == 0 || gender == 1)) { //何かがフォームに記入されてる(validate)or男女がどちらか選択されていればok
+      _formKey.currentState.save();
+
+      handleToSecond();
+    } else {
+      if (gender > 1) {
+        setState(() {
+          genderErrorColor = Theme.of(context).errorColor;
+        });
+      } else {
+        setState(() {
+          genderErrorColor = Color.fromARGB(0, 0, 0, 255);
+        });
+      }
+    }
+  }
+
+  /* ホーム画面への遷移 */
+  void handleToSecond() {
+    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          settings: RouteSettings(name: '/secondEntry'),
+          builder: (BuildContext context) =>
+              SecondEntry(menus: menus, dri: dri, name: name, sex: gender),
+        ));
+  }
+
+  /* Body */
   Widget _buildBody() {
     return Form(
       key: _formKey,
@@ -146,70 +210,8 @@ class _EntryState extends State<Entry> {
     );
   }
 
-  /* 男女のボタンを押すと選択した方の色がつく
-  * gender = 0: man, 1: woman */
-  void _genderUpdate(int newGender) {
-    setState(() {
-      gender = newGender;
-      if (gender == 0) {
-        manButtonColor = Colors.blueAccent;
-        manTextColor = Colors.white;
-        womanButtonColor = null;
-        womanTextColor = Colors.black;
-      } else {
-        manButtonColor = null;
-        manTextColor = Colors.black;
-        womanButtonColor = Colors.redAccent;
-        womanTextColor = Colors.white;
-      }
-    });
-  }
-
-  /* 名前の更新 */
-  void _nameUpdate(String newName) {
-    setState(() {
-      name = newName;
-    });
-  }
-
-  /* 入力情報を登録 */
-  void entryInfo() {
-    // 入力情報のチェック
-    if (_formKey.currentState.validate() && (gender == 0 || gender == 1)) {
-      _formKey.currentState.save();
-
-      menus = widget.menus;
-      dri = widget.dri;
-
-      handleToSecond();
-    } else {
-      if (gender > 1) {
-        setState(() {
-          genderErrorColor = Theme.of(context).errorColor;
-        });
-      } else {
-        setState(() {
-          genderErrorColor = Color.fromARGB(0, 0, 0, 255);
-        });
-      }
-    }
-  }
-
-  /* ホーム画面への遷移 */
-  void handleToSecond() {
-    Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          settings: RouteSettings(name: '/secondEntry'),
-          builder: (BuildContext context) =>
-              // SecondEntry(menus: menus, dri: dri, name: name, sex: gender),
-            Home(menus: menus, child: Child('けいた', '巴中学校', 3, 1), dri: dri), // de
-        ));
-  }
-
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
       appBar: AppBar(
         title: Text('登録'),
