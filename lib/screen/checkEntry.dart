@@ -44,7 +44,7 @@ class _CheckEntryState extends State<CheckEntry> {
       yearLabel = '${child.schoolYear - 6}年生';
     }
   }
-
+  //todo　確認画面から変更するための遷移
   Widget _summon(String item, String element){
     return Container(
       decoration: BoxDecoration(
@@ -52,18 +52,6 @@ class _CheckEntryState extends State<CheckEntry> {
       ),
       child: ListTile(
         contentPadding: EdgeInsets.fromLTRB(30.0, 0.0, 20.0, 0.0),
-//        leading: Text(
-//          item, //  名前、性別など要素を表すもの
-//          style: TextStyle(
-//            fontSize: 20.0,
-//          ),
-//        ),
-//        title: Text(
-//          element,  //  kouhei、男など要素そのもの
-//          style: TextStyle(
-//            fontSize: 16.0,
-//          ),
-//        ),
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
