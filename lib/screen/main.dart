@@ -13,7 +13,7 @@ void main() {
         // primaryColor: Color(0xFFe1a067),Color(0xFF66cdaa), // 一応チームカラー(汚かった)と太郎さんのやつ
       ),
       // home: Splash(), // スプラッシュ
-      home: Entry(),
+      home: Splash(),
     ),
   );
 }

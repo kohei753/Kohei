@@ -20,7 +20,7 @@ class SecondEntry extends StatefulWidget {
 }
 
 class _SecondEntryState extends State<SecondEntry> {
-  Map<DateTime, Menu> menus = {};
+  Map<DateTime, Menu> menus;
   DRI dri;
 
   /* 登録する情報 */
@@ -42,6 +42,14 @@ class _SecondEntryState extends State<SecondEntry> {
     '2年',
     '3年',
   ];
+
+  @override
+  void initState() {
+    super.initState();
+
+    menus = widget.menus;
+    dri = widget.dri;
+  }
 
   void _onTapSchool(BuildContext context) {  // 返り値なし関数__onTapSchoolを宣言
     showModalBottomSheet(  // このメソッドによって下から選択するためのシートを作成
