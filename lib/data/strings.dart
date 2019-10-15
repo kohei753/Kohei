@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 /* アプリ内で使う文字列のストレージ */
 class MenuStrings {
   static const List<String> nutrientName = [
@@ -41,6 +43,22 @@ class MenuStrings {
     'assets/side_red.png',
     'assets/side_orenge.png',
     'assets/side_purple.png',
+  ];
+  static const List<Color> mainDetailColors = [
+    Color(0xFFf6f183),
+    Color(0xFF82c1f5),
+    Color(0xFF87f582),
+    Color(0xFFf58287),
+    Color(0xFFffba66),
+    Color(0xFFb682f5),
+  ];
+  static const List<Color> listDetailColors = [
+    Color(0xFFffffd6),
+    Color(0xFFd6eaff),
+    Color(0xFFd6ffd6),
+    Color(0xFFffd6d6),
+    Color(0xFFffead6),
+    Color(0xFFead6ff),
   ];
 }
 
