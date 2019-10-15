@@ -198,7 +198,6 @@ class _DailyMenuState extends State<DailyMenu> {
           child: child,
           menuNum: selectIndex,
           // 選んだ数字を遷移させることで料理毎の処理を可能
-          myChildDRI: _myChildDRI,
         ),
       ),
     );
@@ -214,7 +213,7 @@ class _DailyMenuState extends State<DailyMenu> {
         title,
         style: TextStyle(
           fontSize: 25,
-          color: Colors.black87,
+          color: Colors.black54,
         ),
       ),
     );
@@ -344,7 +343,7 @@ class _DailyMenuState extends State<DailyMenu> {
   }
 
   /* 栄養素をグラフ表示 */
-  Widget _menuGraph(double deviceWidth, double deviceHeight) {
+  Widget _graph(double deviceWidth, double deviceHeight) {
     return Center(
       child: Container(
         padding: EdgeInsets.all(20.0),
@@ -387,7 +386,7 @@ class _DailyMenuState extends State<DailyMenu> {
         _menuNameList(), // メニューの名前表示
         _titleBar('栄養素'),
         _nutrientList(),
-        _menuGraph(_size.width * 0.65, _size.height * 0.65), // グラフの縦幅と横幅は65%
+        _graph(_size.width * 0.65, _size.height * 0.65), // グラフの縦幅と横幅は65%
       ],
     );
   }
