@@ -58,7 +58,7 @@ class _SecondEntryState extends State<SecondEntry> {
         return Container(  // heightを設定するためにラッピング
           height: MediaQuery.of(context).size.height / 4,  // 後に呼び出すシートの縦幅を端末の4分の1の大きさに指定
           child: CupertinoPicker.builder(  // メインの関数、この関数でホイールを作成する
-            onSelectedItemChanged: _onSelectedItemChanged,  // ホイールを動かした時のコールバック(選択先の番号がintで引数)
+            onSelectedItemChanged: _onSelectedSchoolChanged,  // ホイールを動かした時のコールバック(選択先の番号がintで引数)
             itemExtent: 40.0,  // ホイールで使用する文字の大きさ(項目の大きさ)
             childCount: _schoolName.length,  // ホイールで使用する項目の上限
             itemBuilder: (context, index) {  // ホイールで使用する項目そのもの
@@ -77,7 +77,7 @@ class _SecondEntryState extends State<SecondEntry> {
           return Container(
             height: MediaQuery.of(context).size.height / 4,
             child: CupertinoPicker.builder(
-                onSelectedItemChanged: _onSelectedItemChanger,
+                onSelectedItemChanged: _onSelectedYearChanged,
                 itemExtent: 40.0,
                 childCount: _schoolYearList.length,
                 itemBuilder: (context, index) {
@@ -89,14 +89,14 @@ class _SecondEntryState extends State<SecondEntry> {
     );
   }
 
-  void _onSelectedItemChanged(int value) {  // ホイールで使用する対象に関する関数
+  void _onSelectedSchoolChanged(int value) {  // ホイールで使用する対象に関する関数
     setState(() {  // ホイールを回して項目を変える度に更新(更新を反映させるためにこの関数が必要)
       if (value != 0)   // 0番目(デフォルトの'学校を選択')でなければ
         school = _schoolName[value];  // 選択中の学校名を設定
     });  // ifが存在しているのは'学校を選択'を一度ホイールを回せば設定できなくさせるため
   }
 
-  void _onSelectedItemChanger(int value) {  // ホイールで使用する対象に関する関数
+  void _onSelectedYearChanged(int value) {  // ホイールで使用する対象に関する関数
     setState(() {  // ホイールを回して項目を変える度に更新(更新を反映させるためにこの関数が必要)
       if (value != 0)   // 0番目(デフォルトの'学校を選択')でなければ
         schoolYearLabel = _schoolYearList[value];
@@ -218,8 +218,6 @@ class _SecondEntryState extends State<SecondEntry> {
         errorTextColor = Color.fromARGB(0, 0, 0, 255);
         menus = widget.menus;
         dri = widget.dri;
-
-        child.writeInfo(child.Child(widget.name, school, schoolYear, widget.sex));
 
         handleToCheck();
       } else if (0 < schoolYear && schoolYear < 10) {

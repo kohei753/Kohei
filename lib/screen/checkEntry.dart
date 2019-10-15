@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:sample/data/menu.dart';
 import 'package:sample/data/child.dart';
 import 'package:sample/data/dri.dart';
+import 'package:sample/screen/changeEntry.dart';
 import 'home.dart';
 
 class CheckEntry extends StatefulWidget {
@@ -25,6 +26,12 @@ class _CheckEntryState extends State<CheckEntry> {
   String _sexLabel; // 性別: int => String
   String _yearLabel; // 学年: int => String
 
+  /* 最終的に登録する値 */
+  String name;
+  int sex;
+  String school;
+  int schoolYear;
+
   @override
   void initState() {
     //空の変数に引き継いだ情報を渡す
@@ -33,8 +40,12 @@ class _CheckEntryState extends State<CheckEntry> {
     dri = widget.dri;
     child = widget.child;
 
-    _sexLabel = (child.sex == 0) ? '男' : '女';
-    if (child.schoolYear < 7) {
+    name = child.name;
+    sex = child.sex;
+    school = child.school;
+    schoolYear = child.schoolYear;
+    _sexLabel = (sex == 0) ? '男' : '女';
+    if (schoolYear < 7) {
       _yearLabel = '${child.schoolYear}年生';
     } else {
       _yearLabel = '${child.schoolYear - 6}年生';
@@ -43,28 +54,102 @@ class _CheckEntryState extends State<CheckEntry> {
 
   /* 登録処理 */
   void entryChild() {
-    writeInfo(child); // 情報の登録
+    writeInfo(Child(name, school, schoolYear, sex)); // 情報の登録
     handleToHome();
   }
 
-  /* 名前変更へ遷移 */
-  void handleToName() {
+  /* 各画面への遷移を管理 */
+  void handleToNext(int selectItem) {
+    switch (selectItem) {
+      case 0:
+        handleToName();
+        break;
+      case 1:
+        handleToSex();
+        break;
+      case 2:
+        handleToSchool();
+        break;
+      case 3:
+        handleToYear();
+        break;
+      default:
+        break;
+    }
+  }
 
+  /* 名前変更へ遷移 */
+  void handleToName() async {
+    Child newChild = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        settings: RouteSettings(name: '/changeName'),
+        builder: (BuildContext context) =>
+            ChangeName(child: Child(name, school, schoolYear, sex)),
+      ),
+    );
+    if ((newChild != null) && (name != newChild.name)) {
+      setState(() {
+        name = newChild.name;
+      });
+    }
   }
 
   /* 性別変更へ遷移 */
-  void handleToSex() {
-
+  void handleToSex() async {
+    Child newChild = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        settings: RouteSettings(name: '/changeSex'),
+        builder: (BuildContext context) =>
+            ChangeSex(child: Child(name, school, schoolYear, sex)),
+      ),
+    );
+    if ((newChild != null) && (sex != newChild.sex)) {
+      setState(() {
+        sex = newChild.sex;
+        _sexLabel = (sex == 0) ? '男子' : '女子';
+      });
+    }
   }
 
   /* 学校変更へ遷移 */
-  void handleToSchool() {
-
+  void handleToSchool() async {
+    Child newChild = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        settings: RouteSettings(name: '/changeSchool'),
+        builder: (BuildContext context) =>
+            ChangeSchool(child: Child(name, school, schoolYear, sex)),
+      ),
+    );
+    if ((newChild != null) && (school != newChild.school)) {
+      setState(() {
+        school = newChild.school;
+      });
+    }
   }
 
   /* 学年変更へ遷移 */
-  void handleToYear() {
-
+  void handleToYear() async {
+    Child newChild = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        settings: RouteSettings(name: '/changeSchoolYear'),
+        builder: (BuildContext context) =>
+            ChangeYear(child: Child(name, school, schoolYear, sex)),
+      ),
+    );
+    if ((newChild != null) && (schoolYear != newChild.schoolYear)) {
+      setState(() {
+        schoolYear = newChild.schoolYear;
+        if (schoolYear < 7) {
+          _yearLabel = '${schoolYear}年生';
+        } else {
+          _yearLabel = '${schoolYear - 6}年生';
+        }
+      });
+    }
   }
 
   /* ホーム画面への遷移 */
@@ -74,51 +159,57 @@ class _CheckEntryState extends State<CheckEntry> {
         context,
         MaterialPageRoute(
           settings: RouteSettings(name: '/home'),
-          builder: (BuildContext context) => Home(menus: menus, child: child, dri: dri, selectDay: DateTime(today.year, today.month, today.day)),
+          builder: (BuildContext context) => Home(
+              menus: menus,
+              child: Child(name, school, schoolYear, sex),
+              dri: dri,
+              selectDay: DateTime(today.year, today.month, today.day)),
         ));
   }
 
   /* Body */
   Widget _buildBody() {
-    return Column(
-      children: <Widget>[
-        SizedBox(
-          //  appbarと本文の隙間
-          height: 40.0,
-          width: 30.0,
-        ),
-        _entryLabel('名前', child.name),
-        _entryLabel('性別', _sexLabel),
-        _entryLabel('学校', child.school),
-        _entryLabel('学年', _yearLabel),
-        SizedBox(height: 20), // 縦の間の余白の大きさ
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end, // 右端行くやつ
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(right: 16.0),
-              child: ButtonTheme(
-                // ボタンの大きさ
-                minWidth: 100, //必要最小限度の幅
-                height: 40, //長さ
-                child: RaisedButton(
-                  //ボタンについての設定
-                  onPressed: entryChild, //押した時のエフェクト
-                  color: Theme.of(context).primaryColor,
-                  textColor: Colors.white, //ボタンの文字
-                  shape: StadiumBorder(),
-                  child: Text('確定'), //ボタン内の文字
+    return SingleChildScrollView(
+      child: Column(
+        children: <Widget>[
+          SizedBox(
+            //  appbarと本文の隙間
+            height: 40.0,
+            width: 30.0,
+          ),
+          _entryLabel('名前', name, 0),
+          _entryLabel('性別', _sexLabel, 1),
+          _entryLabel('学校', school, 2),
+          _entryLabel('学年', _yearLabel, 3),
+          SizedBox(height: 20), // 縦の間の余白の大きさ
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end, // 右端行くやつ
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.only(right: 16.0),
+                child: ButtonTheme(
+                  // ボタンの大きさ
+                  minWidth: 100, //必要最小限度の幅
+                  height: 40, //長さ
+                  child: RaisedButton(
+                    //ボタンについての設定
+                    onPressed: entryChild, //押した時のエフェクト
+                    color: Theme.of(context).primaryColor,
+                    textColor: Colors.white, //ボタンの文字
+                    shape: StadiumBorder(),
+                    child: Text('登録'), //ボタン内の文字
+                  ),
                 ),
               ),
-            ),
-          ],
-        ),
-      ],
+            ],
+          ),
+        ],
+      ),
     );
   }
 
   /* １つの項目 */
-  Widget _entryLabel(String item, String element) {
+  Widget _entryLabel(String item, String element, int selectItem) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -149,14 +240,13 @@ class _CheckEntryState extends State<CheckEntry> {
             color: Theme.of(context).accentColor,
           ),
         ),
-        onTap: () {},
+        onTap: () => handleToNext(selectItem),
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
       appBar: AppBar(
         title: Text('確認'),
