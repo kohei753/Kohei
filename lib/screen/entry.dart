@@ -24,8 +24,8 @@ class _EntryState extends State<Entry> {
 
   /* この画面内のみで使う変数 */
   final _formKey = GlobalKey<FormState>(); // 入力フォームを検知するキー
-  MaterialAccentColor manButtonColor = null; // 男のボタンの色
-  MaterialAccentColor womanButtonColor = null; // 女のボタンの色
+  MaterialAccentColor manButtonColor; // 男のボタンの色
+  MaterialAccentColor womanButtonColor; // 女のボタンの色
   Color manTextColor = Colors.black;
   Color womanTextColor = Colors.black;
   Color genderErrorColor = Color.fromARGB(0, 0, 0, 255);
