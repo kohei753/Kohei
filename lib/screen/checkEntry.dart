@@ -53,9 +53,10 @@ class _CheckEntryState extends State<CheckEntry> {
   }
 
   /* 登録処理 */
-  void entryChild() {
-    writeInfo(Child(name, school, schoolYear, sex)); // 情報の登録
-    handleToHome();
+  void entryChild() { // 情報の登録
+    writeInfo(Child(name, school, schoolYear, sex)).then((value) {
+      handleToHome();
+    });
   }
 
   /* 各画面への遷移を管理 */
@@ -170,6 +171,7 @@ class _CheckEntryState extends State<CheckEntry> {
   /* Body */
   Widget _buildBody() {
     return SingleChildScrollView(
+      padding: EdgeInsets.only(top: 40.0),
       child: Column(
         children: <Widget>[
           SizedBox(

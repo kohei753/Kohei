@@ -86,6 +86,7 @@ class _SettingState extends State<Setting> {
   /* 登録情報タイル生成 */
   Widget _buildEntryTile() {
     return Container(
+      margin: EdgeInsets.only(top: 40.0, bottom: 30.0),
       color: Colors.white,
       child: ListTile(
         contentPadding: EdgeInsets.symmetric(horizontal: 12.0),
@@ -103,13 +104,13 @@ class _SettingState extends State<Setting> {
           ),
         ),
         title: Text(
-          '登録情報',
+          child.name,
           style: TextStyle(
             fontSize: 20,
             color: Colors.black,
           ),
         ),
-        subtitle: Text('巴中学校'),
+        subtitle: Text(child.school),
         trailing: Icon(Icons.keyboard_arrow_right), // 右端の矢印
         onTap: () => handleToAccount(),
       ),
