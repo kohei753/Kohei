@@ -263,9 +263,9 @@ class _DailyMenuState extends State<DailyMenu> {
   /* 栄養素ラベル */
   Widget _nutrientLabel(
       {@required String name,
-      @required double value,
-      @required String unit,
-      Color color}) {
+        @required double value,
+        @required String unit,
+        Color color}) {
     return Container(
       height: 35.0,
       color: color,
