@@ -1,8 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart'; // マテリアルデザインしようぜのやーつ
 import 'package:intl/intl.dart'; //　日付をフォーマットするやつ
 import 'package:flutter_calendar_carousel/classes/event.dart'; // イベントクラスに関するやーつ
-import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
+import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart' // // 献立表のカレンダーに関するAPI
     show CalendarCarousel; // 献立表のカレンダーに関するAPI
 
 import 'package:sample/data/menu.dart';
