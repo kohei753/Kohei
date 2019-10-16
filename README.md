@@ -33,11 +33,7 @@ Tab!
 ## wikiについて
 GitHubProjectやIssueについては大体wikiに必要事項が書いてあります。  
 不明点がある場合はその都度スクラムマスターや先生、TAの方々に積極的に聞いてください。
->⇒[Wiki](https://github.com/funswift/Civic_Tech/wiki)  
-=======
-# sample
-
-給食のアプリで使えそうなクラスとかの扱いをやってみる
+>⇒[Wiki](https://github.com/funswift/Civic_Tech/wiki)
 
 ## Getting Started
 
@@ -51,3 +47,4 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter, view our
 [online documentation](https://flutter.dev/docs), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+
