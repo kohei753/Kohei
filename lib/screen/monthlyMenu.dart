@@ -26,6 +26,7 @@ class _MonthlyMenuState extends State<MonthlyMenu> {
   static DateTime pickDate = today; // 選択した日を格納する変数
   static String formattedDate = DateFormat('M月d日').format(today); //日付をフォーマットしたのを格納する変数
 
+
   Map<DateTime, Menu> _menus; //引き継いでる変数から持ってきた
   Child _child;
   DRI _dri;
@@ -70,12 +71,12 @@ class _MonthlyMenuState extends State<MonthlyMenu> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
+      body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             _calenderScreen(context),// カレンダーのWidget
-            _lunchScreen(),// 下の献立の表示のWidget
+            _lunchScreen(),// 下の献立の表示のWidget,
           ],
         ),
       ),
@@ -95,16 +96,19 @@ class _MonthlyMenuState extends State<MonthlyMenu> {
           color: Colors.red,
         ),
 
-        height: (size.height * 2 / 5) + size.height / 80,// カレンダーの高さの設定
+        height: (size.height * 1/2),// カレンダーの高さの設定
 
         todayBorderColor: null,//　今日の日付枠の色
         todayButtonColor: null,//　今日の日付の色
-        todayTextStyle: TextStyle(// 今日の日付の文字設定
-          color: Colors.black,
+        todayTextStyle: TextStyle(// 今日の日付の文字色
+          color: Colors.black
         ),
 
         selectedDayBorderColor: Color.fromARGB(0, 0, 0, 255),//　選択した日の枠の色を設定
         selectedDayButtonColor: Theme.of(context).primaryColor,// 選択した日の色の設定
+        selectedDayTextStyle: TextStyle(// 選択した日の文字色
+          color: Colors.white
+        ),
         selectedDateTime: pickDate, //開始する日付
         locale: 'JA',// 言語
         daysHaveCircularBorder: true, //　日付の形を丸にする
@@ -115,14 +119,15 @@ class _MonthlyMenuState extends State<MonthlyMenu> {
 
   /* 献立表示のWidget */
   Widget _lunchScreen() {
+    final Size size = MediaQuery.of(context).size;// 端末の画面を取得
     return Container(
       margin: const EdgeInsets.all(16.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           SizedBox(// X月X日と表示するためのbox
-            width: 300.0,
-            height: 50.0,
+            width: size.width * 3/5,
+            height: size.height/18,
             child: RaisedButton(// ボタン
               child: Text(
                 formattedDate + 'の献立',//　選択した日を出力
@@ -143,38 +148,39 @@ class _MonthlyMenuState extends State<MonthlyMenu> {
             ),
           ),
           Container(
-            margin: EdgeInsets.only(top: 20.0),
+            margin: EdgeInsets.only(top: 10.0),
             child: ListView.builder(// 献立をリストと表示する
               itemCount: checkLunch(pickDate),// リストの長さ
               shrinkWrap: true,
               itemBuilder: (context, i) {
                 if( _menus[pickDate] == null){// タップした日の献立がない時
                   return RichText(
-                        text: TextSpan(
+                    textAlign: TextAlign.center,
+                    text: TextSpan(
+                      style: TextStyle(
+                        fontSize: 24.0,
+                        color: Colors.black45,
+                      ),
+                      children: [
+                        TextSpan(text: formattedDate + 'の給食は'),
+                        TextSpan(
+                          text: 'お休み',
                           style: TextStyle(
-                            fontSize: 30.0,
-                            color: Colors.black45,
+                            decoration: TextDecoration.underline,
+                            decorationColor: Theme.of(context).primaryColor,
+                            decorationStyle: TextDecorationStyle.dashed,
                           ),
-                          children: [
-                            TextSpan(text: '本日の給食は'),
-                            TextSpan(
-                              text: 'お休み',
-                              style: TextStyle(
-                                decoration: TextDecoration.underline,
-                                decorationColor: Theme.of(context).primaryColor,
-                                decorationStyle: TextDecorationStyle.dashed,
-                              ),
-                            ),
-                            TextSpan(text: 'です.'),
-                          ],
                         ),
-                      );
+                        TextSpan(text: 'です.'),
+                      ],
+                    ),
+                  );
                 } else { // タップした日の献立がある時
                   return Text(
                     _menus[pickDate].menu[i].name,//献立を表示
                     textAlign: TextAlign.center,
                     style: TextStyle(// 文字の設定
-                      fontSize: 18.0,
+                      fontSize: 16.0,
                       color: Colors.black87,
                     ),
                   );
