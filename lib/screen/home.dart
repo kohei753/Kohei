@@ -7,6 +7,7 @@ import 'package:sample/data/dri.dart';
 import 'package:sample/screen/dailyMenu.dart';
 import 'package:sample/screen/monthlyMenu.dart';
 import 'package:sample/screen/setting.dart';
+import 'package:sample/data/strings.dart';
 
 /* ホーム画面 */
 class Home extends StatefulWidget {
@@ -41,7 +42,8 @@ class _HomeState extends State<Home> {
     menus = widget.menus;
     child = widget.child;
     dri = widget.dri;
-    selectDay = widget.selectDay;
+    // selectDay = widget.selectDay;
+    selectDay = DateTime(2019, 8, 19);
 
     _title = DateFormat("MM月dd日").format(selectDay);
 
@@ -66,7 +68,7 @@ class _HomeState extends State<Home> {
         context,
         MaterialPageRoute(
           settings: RouteSettings(name: '/setting'),
-          builder: (BuildContext context) => Setting(),
+          builder: (BuildContext context) => Setting(child: child),
           fullscreenDialog: true, // モーダルで表示
         ));
   }

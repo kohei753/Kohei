@@ -1,4 +1,67 @@
+import 'package:flutter/material.dart';
+
 /* アプリ内で使う文字列のストレージ */
+class MenuStrings {
+  static const List<String> nutrientName = [
+    'エネルギー',
+    'タンパク質',
+    '脂質',
+    '炭水化物',
+    'ナトリウム',
+    'カルシウム',
+    'マグネシウム',
+    '鉄分',
+    '亜鉛',
+    'レチノール',
+    'ビタミンB1',
+    'ビタミンB2',
+    'ビタミンC',
+    '食物繊維',
+    '食塩相当量',
+  ];
+  static const Map<String, String> units = {
+    'エネルギー': 'kcal',
+    'タンパク質': 'g',
+    '脂質': 'g',
+    '炭水化物': 'g',
+    'ナトリウム': 'mg',
+    'カルシウム': 'mg',
+    'マグネシウム': 'mg',
+    '鉄分': 'mg',
+    '亜鉛': 'mg',
+    'レチノール': 'µg',
+    'ビタミンB1': 'mg',
+    'ビタミンB2': 'mg',
+    'ビタミンC': 'mg',
+    '食物繊維': 'g',
+    '食塩相当量': 'g',
+  };
+  static const List<String> menuIcon = [
+    'assets/staple.png',
+    'assets/drink.png',
+    'assets/side_green.png',
+    'assets/side_red.png',
+    'assets/side_orenge.png',
+    'assets/side_purple.png',
+  ];
+  static const List<Color> mainDetailColors = [
+    Color(0xFFf6f183),
+    Color(0xFF82c1f5),
+    Color(0xFF87f582),
+    Color(0xFFf58287),
+    Color(0xFFffba66),
+    Color(0xFFb682f5),
+  ];
+  static const List<Color> listDetailColors = [
+    Color(0xFFffffd6),
+    Color(0xFFd6eaff),
+    Color(0xFFd6ffd6),
+    Color(0xFFffd6d6),
+    Color(0xFFffead6),
+    Color(0xFFead6ff),
+  ];
+}
+
 class InfoStrings {
   static const String dataTitle = '利用データについて';
   static const String dataLocation =

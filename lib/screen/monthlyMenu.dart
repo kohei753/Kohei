@@ -71,27 +71,25 @@ class _MonthlyMenuState extends State<MonthlyMenu> {
 
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size; // 端末の画面を取得
     return Scaffold(
       body: SingleChildScrollView(
-        child: Container(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              _calenderScreen(context), // カレンダーのWidget
-              _menuTitle(), // 「X月X日の献立」を表示するWidget
-              _menuList(), // 献立をリスト表示するWidget
+              _calenderScreen(size), // カレンダーのWidget
+              _menuTitle(size), // 「X月X日の献立」を表示するWidget
+              _menuList(size), // 献立をリスト表示するWidget
             ],
           ),
         ),
-      ),
     );
   }
 
   /* カレンダーのWidget */
-  Widget _calenderScreen(BuildContext context) {
-    final Size size = MediaQuery.of(context).size; // 端末の画面を取得
+  Widget _calenderScreen(Size size) {
     return Container(
-      margin: EdgeInsets.only(top: 16.0),
+      margin: EdgeInsets.all(size.height/200),
       child: CalendarCarousel<Event>(
         onDayPressed: onDayPressed, //日付を押した時の処理
         showOnlyCurrentMonthDate: true, // 今月だけ表示
@@ -102,6 +100,7 @@ class _MonthlyMenuState extends State<MonthlyMenu> {
         ),
 
         height: (size.height * 1 / 2), // カレンダーの高さの設定
+        
 
         todayBorderColor: null, //　今日の日付枠の色
         todayButtonColor: null, //　今日の日付の色
@@ -123,8 +122,7 @@ class _MonthlyMenuState extends State<MonthlyMenu> {
   }
 
   /* 「X月X日の献立」を表示する */
-  Widget _menuTitle() {
-    final Size size = MediaQuery.of(context).size; // 端末の画面を取得
+  Widget _menuTitle(Size size) {
     return Container(
       margin: EdgeInsets.only(bottom: 6),
       child: Row(
@@ -159,9 +157,8 @@ class _MonthlyMenuState extends State<MonthlyMenu> {
   }
 
   /* 献立をリスト表示する */
-  Widget _menuList() {
+  Widget _menuList(size) {
     if (_menus[pickDate] == null) {
-      final Size size = MediaQuery.of(context).size; // 端末の画面を取得
       return Padding(
         padding: EdgeInsets.symmetric(vertical: size.height/15),
         child: Center(
@@ -187,27 +184,6 @@ class _MonthlyMenuState extends State<MonthlyMenu> {
           ),
         ),
       );
-//        child: RichText(
-//          textAlign: TextAlign.center,
-//          text: TextSpan(
-//            style: TextStyle(
-//              fontSize: 24.0,
-//              color: Colors.black45,
-//            ),
-//            children: [
-//              TextSpan(text: formattedDate + 'の給食は'),
-//              TextSpan(text: 'お休み',
-//                style: TextStyle(
-//                  decoration: TextDecoration.underline,
-//                  decorationColor: Theme.of(context).primaryColor,
-//                  decorationStyle: TextDecorationStyle.dashed,
-//                ),
-//              ),
-//              TextSpan(text: 'です.'),
-//            ],
-//          ),
-//        ),
-//      );
     } else {
       return ListView.builder(
         // 献立をリストと表示する

@@ -4,8 +4,9 @@ import 'package:multi_charts/multi_charts.dart';
 
 import 'package:sample/data/menu.dart';
 import 'package:sample/data/child.dart';
-import 'package:sample/screen/detail.dart';
 import 'package:sample/data/dri.dart';
+import 'package:sample/data/strings.dart';
+import 'package:sample/screen/detail.dart';
 
 /* 一日の献立画面 */
 class DailyMenu extends StatefulWidget {
@@ -30,43 +31,9 @@ class _DailyMenuState extends State<DailyMenu> {
   Map<String, double> _myChildDRI; // 子供に合わせた基準栄養素
 
   /* それぞれの栄養素の名前と値・単位 */
-  final List<String> _nutrientName = [
-    'エネルギー',
-    'タンパク質',
-    '脂質',
-    '炭水化物',
-    'ナトリウム',
-    'カルシウム',
-    'マグネシウム',
-    '鉄分',
-    '亜鉛',
-    'レチノール',
-    'ビタミンB1',
-    'ビタミンB2',
-    'ビタミンC',
-    '食物繊維',
-    '食塩相当量',
-  ];
-
+  final List<String> _nutrientName = MenuStrings.nutrientName;
   Map<String, double> _nutrientValue;
-
-  final Map<String, String> _units = {
-    'エネルギー': 'kcal',
-    'タンパク質': 'g',
-    '脂質': 'g',
-    '炭水化物': 'g',
-    'ナトリウム': 'mg',
-    'カルシウム': 'mg',
-    'マグネシウム': 'mg',
-    '鉄分': 'mg',
-    '亜鉛': 'mg',
-    'レチノール': 'µg',
-    'ビタミンB1': 'mg',
-    'ビタミンB2': 'mg',
-    'ビタミンC': 'mg',
-    '食物繊維': 'g',
-    '食塩相当量': 'g',
-  };
+  final Map<String, String> _units = MenuStrings.units;
 
   /* 読み込まれた時に遷移されてきた変数を代入 */
   @override

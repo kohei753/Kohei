@@ -5,6 +5,7 @@ import 'package:multi_charts/multi_charts.dart';
 import 'package:sample/data/menu.dart';
 import 'package:sample/data/child.dart';
 import 'package:sample/data/dri.dart';
+import 'package:sample/data/strings.dart';
 
 /* 詳細画面 */
 class Detail extends StatefulWidget {
@@ -31,64 +32,17 @@ class _DetailState extends State<Detail> {
   ScrollController _controller = ScrollController();  // スクロール制御
 
   /* それぞれの栄養素の名前と値・単位 */
-  final List<String> _nutrientName = [
-    'エネルギー',
-    'タンパク質',
-    '脂質',
-    '炭水化物',
-    'ナトリウム',
-    'カルシウム',
-    'マグネシウム',
-    '鉄分',
-    '亜鉛',
-    'レチノール',
-    'ビタミンB1',
-    'ビタミンB2',
-    'ビタミンC',
-    '食物繊維',
-    '食塩相当量',
-  ];
-
+  final List<String> _nutrientName = MenuStrings.nutrientName;
   Map<String, double> _nutrientValue;
-
-  final Map<String, String> _units = {
-    'エネルギー': 'kcal',
-    'タンパク質': 'g',
-    '脂質': 'g',
-    '炭水化物': 'g',
-    'ナトリウム': 'mg',
-    'カルシウム': 'mg',
-    'マグネシウム': 'mg',
-    '鉄分': 'mg',
-    '亜鉛': 'mg',
-    'レチノール': 'µg',
-    'ビタミンB1': 'mg',
-    'ビタミンB2': 'mg',
-    'ビタミンC': 'mg',
-    '食物繊維': 'g',
-    '食塩相当量': 'g',
-  };
+  final Map<String, String> _units = MenuStrings.units;
   
   /* カラーリスト */
-  List<Color> _detailColors = [
-    Color(0xFFf6f183),
-    Color(0xFF82c1f5),
-    Color(0xFF87f582),
-    Color(0xFFf58287),
-    Color(0xFFffba66),
-    Color(0xFFb682f5),
-  ];
+  List<Color> _mainDetailColors = MenuStrings.mainDetailColors;
+  List<Color> _listDetailColors = MenuStrings.listDetailColors;
 
   /* サイドバーの各メニューのアイコン
   *  色が上のカラーリストと対応している */
-  List<String> _menuIcon = [
-    'assets/staple.png',
-    'assets/drink.png',
-    'assets/side_green.png',
-    'assets/side_red.png',
-    'assets/side_orenge.png',
-    'assets/side_purple.png',
-  ];
+  List<String> _menuIcon = MenuStrings.menuIcon;
 
   /* グラフ用栄養素の作成 */
   /* タンパク質 */
@@ -184,7 +138,7 @@ class _DetailState extends State<Detail> {
     return Container(
       padding: EdgeInsets.only(left: 10, top: 5, bottom: 5),
       width: double.infinity, // 画面いっぱいに出すよ
-      color: _detailColors[_selectedIndex],
+      color: _mainDetailColors[_selectedIndex],
       child: Text(
         title,
         style: TextStyle(
@@ -207,7 +161,7 @@ class _DetailState extends State<Detail> {
         } else {
           return _materialLabel(
             name: dailyMenu.menu[_selectedIndex].dish[i].name,
-            color: Color(0xFFffead6),
+            color: _listDetailColors[_selectedIndex],
           );
         }
       }),
@@ -255,7 +209,7 @@ class _DetailState extends State<Detail> {
             name: _nutrientName[i],
             value: _nutrientValue[_nutrientName[i]],
             unit: _units[_nutrientName[i]],
-            color: Color(0xFFffead6),
+            color: _listDetailColors[_selectedIndex],
           );
         }
       }),
@@ -393,7 +347,7 @@ class _DetailState extends State<Detail> {
         child: Image.asset(_menuIcon[_selectedIndex]),
       ),
       decoration: BoxDecoration(
-        color: _detailColors[_selectedIndex], // 背景色も変えられるよ
+        color: _mainDetailColors[_selectedIndex], // 背景色も変えられるよ
       ),
     );
   }
@@ -407,7 +361,7 @@ class _DetailState extends State<Detail> {
           dailyMenu.menu[_selectedIndex].name,
           style: TextStyle(color: Colors.black54),
         ), // 選択した料理名に
-        backgroundColor: _detailColors[_selectedIndex],
+        backgroundColor: _mainDetailColors[_selectedIndex],
       ),
       endDrawer: _buildDrawer(), // サイドメニュー
       body: ListView(
