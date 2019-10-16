@@ -48,14 +48,6 @@ class _MonthlyMenuState extends State<MonthlyMenu> {
     });
   }
 
-  /* ListViewのitemCountを決める関数 */
-  int checkLunch(DateTime day) {
-    int result = 1;
-    if (_menus[day] == null) {
-      return result;
-    }
-    return _menus[day].menu.length;
-  }
 
   /* ホームへの遷移 */
   void handleToHome(DateTime selectDay) {
@@ -66,23 +58,6 @@ class _MonthlyMenuState extends State<MonthlyMenu> {
           builder: (BuildContext context) => Home(
               menus: _menus, child: _child, dri: _dri, selectDay: selectDay),
         ));
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size; // 端末の画面を取得
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            _calenderScreen(size), // カレンダーのWidget
-            _menuTitle(size), // 「X月X日の献立」を表示するWidget
-            _menuList(size), // 献立をリスト表示するWidget
-          ],
-        ),
-      ),
-    );
   }
 
   /* カレンダーのWidget */
@@ -99,7 +74,7 @@ class _MonthlyMenuState extends State<MonthlyMenu> {
         ),
 
         height: (size.height *  1 / 2), // カレンダーの高さの設定
-        childAspectRatio: 1.1,
+        childAspectRatio: 1.15,
 
 
         todayBorderColor: null, //　今日の日付枠の色
@@ -112,7 +87,8 @@ class _MonthlyMenuState extends State<MonthlyMenu> {
         selectedDayButtonColor: Theme.of(context).primaryColor, // 選択した日の色の設定
         selectedDayTextStyle: TextStyle(
           // 選択した日の文字色
-            color: Colors.white),
+            color: Colors.white
+        ),
         selectedDateTime: pickDate, //開始する日付
         locale: 'JA', // 言語
         daysHaveCircularBorder: true, //　日付の形を丸にする
@@ -124,7 +100,7 @@ class _MonthlyMenuState extends State<MonthlyMenu> {
   /* 「X月X日の献立」を表示する */
   Widget _menuTitle(Size size) {
     return Container(
-      margin: EdgeInsets.only(bottom: size.height/100.0),
+      margin: EdgeInsets.only(bottom: size.height/50.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -143,8 +119,14 @@ class _MonthlyMenuState extends State<MonthlyMenu> {
                   ),
                 ),
                 color: Colors.deepOrangeAccent, //　ボタンの色
-                shape: StadiumBorder(), // 角を丸くする
-                elevation: 8.0, // 影をつける
+                shape: StadiumBorder(
+
+                  side: BorderSide(
+                    color: Color(0xFFffb499),
+                    width: 2.0,
+                  ),
+                ), // 角を丸くする
+                //elevation: 8.0, // 影をつける
                 onPressed: () {
                   if (_menus[pickDate] != null) {
                     handleToHome(DateTime(pickDate.year, pickDate.month, pickDate.day));
@@ -186,22 +168,49 @@ class _MonthlyMenuState extends State<MonthlyMenu> {
       );
     } else {
       return Center(
-        child: Wrap(
-          spacing: 10.0,
-          runSpacing: 5.0,
-          children: List.generate(_menus[pickDate].menu.length, (int index) {
-            return Chip(
-              label: Text(
-                _menus[pickDate].menu[index].name,
-                style: TextStyle(
-                  fontSize: 16.0,
-                  color: Colors.black,
-                ),
-              ), // 今日のメニューを表示する
-            );
-          }),
+        child: Container(
+          margin: EdgeInsets.symmetric(horizontal: 16.0),
+          decoration: BoxDecoration(
+            //border: Border.all(color: Colors.deepOrangeAccent),
+            //color: Color(0xFFffead6),
+          ),
+          child: Center(
+            child: Wrap(
+              spacing: 10.0,
+              runSpacing: 5.0,
+              children: List.generate(_menus[pickDate].menu.length, (int index) {
+                return Chip(
+                  backgroundColor: Color(0xFFffead6),
+                  label: Text(
+                    _menus[pickDate].menu[index].name,
+                    style: TextStyle(
+                      fontSize: 16.0,
+                      color: Colors.black87,
+                    ),
+                  ), // 今日のメニューを表示する
+                );
+              }),
+            ),
+          ),
         ),
       );
     }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size; // 端末の画面を取得
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            _calenderScreen(size), // カレンダーのWidget
+            _menuTitle(size), // 「X月X日の献立」を表示するWidget
+            _menuList(size), // 献立をリスト表示するWidget
+          ],
+        ),
+      ),
+    );
   }
 }
