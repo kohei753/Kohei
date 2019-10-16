@@ -168,10 +168,6 @@ class _MonthlyMenuState extends State<MonthlyMenu> {
       return Center(
         child: Container(
           margin: EdgeInsets.symmetric(horizontal: 16.0),
-          decoration: BoxDecoration(
-            //border: Border.all(color: Colors.deepOrangeAccent),
-            //color: Color(0xFFffead6),
-          ),
           child: Center(
             child: Wrap(
               spacing: 10.0,
