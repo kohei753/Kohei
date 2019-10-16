@@ -120,13 +120,11 @@ class _MonthlyMenuState extends State<MonthlyMenu> {
                 ),
                 color: Colors.deepOrangeAccent, //　ボタンの色
                 shape: StadiumBorder(
-
                   side: BorderSide(
                     color: Color(0xFFffb499),
                     width: 2.0,
                   ),
-                ), // 角を丸くする
-                //elevation: 8.0, // 影をつける
+                ),
                 onPressed: () {
                   if (_menus[pickDate] != null) {
                     handleToHome(DateTime(pickDate.year, pickDate.month, pickDate.day));
