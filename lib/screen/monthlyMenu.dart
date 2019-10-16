@@ -98,7 +98,8 @@ class _MonthlyMenuState extends State<MonthlyMenu> {
           color: Colors.red,
         ),
 
-        height: (size.height * 1 / 2), // カレンダーの高さの設定
+        height: (size.height *  1 / 2), // カレンダーの高さの設定
+        childAspectRatio: 1.1,
 
 
         todayBorderColor: null, //　今日の日付枠の色
