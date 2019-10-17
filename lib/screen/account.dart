@@ -7,7 +7,7 @@ import 'package:sample/data/strings.dart';
 class Account extends StatefulWidget {
   final Child child;
   Account({Key key, this.child}) : super(key: key);
-  
+
   @override
   _AccountState createState() => _AccountState();
 }

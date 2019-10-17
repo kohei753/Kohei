@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart'; // マテリアルデザインしようぜのやーつ
-import 'package:sample/screen/entry.dart';
+import 'package:flutter/services.dart'; // 画面縦に固定するやつ
 
 /* 各画面をインポート */
 import 'package:sample/screen/splash.dart';
 
 void main() {
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+  // 画面を縦に固定
   runApp(
     MaterialApp(
       title: '給食アプリ(仮)',

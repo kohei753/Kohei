@@ -18,6 +18,7 @@ class CheckEntry extends StatefulWidget {
 
 class _CheckEntryState extends State<CheckEntry> {
   //引き継いだ情報の読み込み
+
   Map<DateTime, Menu> menus;
   DRI dri;
   Child child;
@@ -145,7 +146,7 @@ class _CheckEntryState extends State<CheckEntry> {
       setState(() {
         schoolYear = newChild.schoolYear;
         if (schoolYear < 7) {
-          _yearLabel = '${schoolYear}年生';
+          _yearLabel = '$schoolYear年生';
         } else {
           _yearLabel = '${schoolYear - 6}年生';
         }
