@@ -32,9 +32,9 @@ dependencies:
   # Use to read JSON
   json_annotation: ^3.0.0
   # Use to get a local path
-  path_provider: ^1.3.0
+  path_provider: ^1.4.0
   # Use to URL links
-  url_launcher: ^5.1.6
+  url_launcher: ^5.2.3
 
   multi_charts: ^0.1.0
 

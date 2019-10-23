@@ -101,7 +101,7 @@ class _SecondEntryState extends State<SecondEntry> {
       if (value != 0)   // 0番目(デフォルトの'学校を選択')でなければ
         schoolYearLabel = _schoolYearList[value];
         schoolYear = value;  // 選択中の学校名を設定
-    });  // ifが存在しているのは'学校を選択'を一度ホイールを回せば設定できなくさせるため
+    });
   }
 
   /* Body */

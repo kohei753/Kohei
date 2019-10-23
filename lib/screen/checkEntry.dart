@@ -172,7 +172,6 @@ class _CheckEntryState extends State<CheckEntry> {
   /* Body */
   Widget _buildBody() {
     return SingleChildScrollView(
-      padding: EdgeInsets.only(top: 40.0),
       child: Column(
         children: <Widget>[
           SizedBox(
