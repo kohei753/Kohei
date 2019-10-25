@@ -150,6 +150,7 @@ class _InformationState extends State<Information> {
     );
   }
 
+  /* お問い合わせ */
   Widget _contactUs() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

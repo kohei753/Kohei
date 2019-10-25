@@ -87,6 +87,14 @@ class InfoStrings {
   static const String developer = '公立はこだて未来大学 使ってもらって学ぶフィールド思考システムデザイン2019 市民情報サービスのデザインチーム';
 }
 
+class HelpStrings {
+  static const String graphTitle = '栄養素の分類';
+  static const String graphText = 'グラフなどで利用されている栄養素は, 文部科学省が定めている「児童又は生徒一人当たりの学校給食摂取基準」に基づいて表示しています.';
+  static const String graphBase = '12 ~ 14歳の中学生の場合, 以下の栄養素が基準となっています.';
+  static const String nutrientLink = '児童又は生徒一人当たりの学校給食摂取基準';
+  static const String graphOther = '上記の他に摂取量について配慮するものは以下のようになっています.';
+}
+
 class DevelopingStrings {
   static const String noDevelop = '本機能は現在製作中です.';
 }
