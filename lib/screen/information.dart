@@ -58,6 +58,18 @@ class _InformationState extends State<Information> {
     }
   }
 
+  /* リンクの汎用クラス */
+  Widget _linkFormat(String label, String url) {
+    return InkWell(
+      onTap: () async {
+        if (await canLaunch(url)) await launch(url);
+      },
+      child: _textFormat(
+          text: label,
+          color: Theme.of(context).accentColor),
+    );
+  }
+
   /* 利用しているデータについて */
   Widget _dataText() {
     return Column(
@@ -96,31 +108,7 @@ class _InformationState extends State<Information> {
         ),
         SizedBox(height: lineSpace),
         _textFormat(text: InfoStrings.usingData, fontSize: middleHead),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: lineSpace),
-          child: Column(
-            children: <Widget>[
-              InkWell(
-                onTap: () async {
-                  const url = 'https://illustrain.com/';
-                  if (await canLaunch(url)) await launch(url);
-                },
-                child: _textFormat(
-                    text: InfoStrings.illustration1,
-                    color: Theme.of(context).accentColor),
-              ),
-              InkWell(
-                onTap: () async {
-                  const url = 'https://icooon-mono.com/';
-                  if (await canLaunch(url)) await launch(url);
-                },
-                child: _textFormat(
-                    text: InfoStrings.illustration2,
-                    color: Theme.of(context).accentColor),
-              ),
-            ],
-          ),
-        ),
+        _dataLinks(),
         SizedBox(height: lineSpace),
         _textFormat(text: InfoStrings.cooperationSchools, fontSize: middleHead),
         Padding(
@@ -132,6 +120,22 @@ class _InformationState extends State<Information> {
           ),
         ),
       ],
+    );
+  }
+
+  /* 利用データのリンク集 */
+  Widget _dataLinks() {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: lineSpace),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          _linkFormat(InfoStrings.nutrientBase, 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/kenkou/eiyou/syokuji_kijyun.html'),
+          _linkFormat(InfoStrings.schoolLunchBase, 'http://www.mext.go.jp/b_menu/hakusho/nc/k19540928001/k19540928001.html'),
+          _linkFormat(InfoStrings.illustration1, 'https://illustrain.com/'),
+          _linkFormat(InfoStrings.illustration2, 'https://icooon-mono.com/'),
+        ],
+      ),
     );
   }
 

@@ -72,6 +72,8 @@ class InfoStrings {
   static const String linkInternalAffairsCommunications = '総務省 地方公共団体のオープンデータの推進';
   static const String usingData = '利用中のデータ(敬称略)';
   static const String noOpenData = '現在オープンデータを使用しておりません.';
+  static const String nutrientBase = '厚生労働省 日本人の食事摂取基準';
+  static const String schoolLunchBase = '文部科学省 学校給食実施基準';
   static const String illustration1 = 'イラストレイン';
   static const String illustration2 = 'ICOOON MONO';
   static const String cooperationSchools = '協力していただいている学校(敬称略)';
