@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart'; // マテリアルデザインしようぜのやーつ
 import 'package:intl/intl.dart';  // DateTimeのフォーマットに使う
-import 'package:multi_charts/multi_charts.dart';
 
 import 'package:sample/data/menu.dart';
-import 'package:sample/data/child.dart';
 import 'package:sample/data/dri.dart';
 import 'package:sample/data/strings.dart';
 
