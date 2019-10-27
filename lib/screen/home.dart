@@ -43,7 +43,7 @@ class _HomeState extends State<Home> {
     child = widget.child;
     dri = widget.dri;
     // selectDay = widget.selectDay;
-    selectDay = DateTime(2019, 8, 19);
+    selectDay = widget.selectDay;
 
     _title = DateFormat("MM月dd日").format(selectDay);
 
