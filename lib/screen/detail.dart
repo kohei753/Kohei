@@ -169,7 +169,7 @@ class _DetailState extends State<Detail> {
   }
 
   /* 材料名ラベル */
-  Widget _materialLabel({String name, Color color}) {
+  Widget _materialLabel({@required String name, Color color}) {
     return Container(
       height: 35.0,
       color: color,
