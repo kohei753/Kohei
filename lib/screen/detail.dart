@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart'; // マテリアルデザインしようぜのやーつ
-import 'package:intl/intl.dart';  // DateTimeのフォーマットに使う
+import 'package:intl/intl.dart'; // DateTimeのフォーマットに使う
 
 import 'package:sample/data/menu.dart';
 import 'package:sample/data/dri.dart';
@@ -9,28 +9,29 @@ import 'package:sample/data/strings.dart';
 class Detail extends StatefulWidget {
   final Menu dailyMenu;
   final DRI dri;
-  final int menuNum;  // 選択されたメニューの番号
+  final int menuNum; // 選択されたメニューの番号
   Detail({Key key, this.dailyMenu, this.dri, this.menuNum}) : super(key: key);
 
   @override
-  _DetailState createState() => _DetailState();
+  _DetailState createState() => _DetailState(dailyMenu, dri);
 }
 
 class _DetailState extends State<Detail> {
   /* 諸々データ */
-  Menu dailyMenu; // 表示する日のメニューデータ
-  DRI dri;
-  
+  final Menu dailyMenu; // 表示する日のメニューデータ
+  final DRI dri;
+  _DetailState(this.dailyMenu, this.dri);
+
   /* この画面でのみ使用する変数 */
   int _selectedIndex = 0; // 選択中のタブ番号管理
   DateFormat formatter = DateFormat("yyyy/MM/dd(E)"); // 日付をフォーマットするやつ
-  ScrollController _controller = ScrollController();  // スクロール制御
+  ScrollController _controller = ScrollController(); // スクロール制御
 
   /* それぞれの栄養素の名前と値・単位 */
   final List<String> _nutrientName = MenuStrings.nutrientName;
   Map<String, double> _nutrientValue;
   final Map<String, String> _units = MenuStrings.units;
-  
+
   /* カラーリスト */
   List<Color> _mainDetailColors = MenuStrings.mainDetailColors;
   List<Color> _listDetailColors = MenuStrings.listDetailColors;
@@ -43,14 +44,12 @@ class _DetailState extends State<Detail> {
   @override
   void initState() {
     super.initState();
-    dailyMenu = widget.dailyMenu;
-    dri = widget.dri;
-
     if (widget.menuNum != null) _selectedIndex = widget.menuNum;
 
     _updateNutrientValue();
   }
 
+  /* DRIの更新 */
   void _updateNutrientValue() {
     _nutrientValue = {
       _nutrientName[0]: dailyMenu.menu[_selectedIndex].dishEnergy,
@@ -71,6 +70,7 @@ class _DetailState extends State<Detail> {
     };
   }
 
+  /* サイドバーのアイテムがタップされたときの処理 */
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -97,7 +97,8 @@ class _DetailState extends State<Detail> {
   /*材料名表示*/
   Widget _materialList() {
     return Column(
-      children: List.generate(dailyMenu.menu[_selectedIndex].dish.length, (int i) {
+      children:
+          List.generate(dailyMenu.menu[_selectedIndex].dish.length, (int i) {
         // 栄養素の名前、数値、線を一つにまとめてリストにしている
         if (i.isOdd) {
           return _materialLabel(
@@ -164,9 +165,9 @@ class _DetailState extends State<Detail> {
   /* 栄養素ラベル */
   Widget _nutrientLabel(
       {@required String name,
-        @required double value,
-        @required String unit,
-        Color color}) {
+      @required double value,
+      @required String unit,
+      Color color}) {
     return Container(
       height: 35.0,
       color: color,
@@ -265,9 +266,22 @@ class _DetailState extends State<Detail> {
     );
   }
 
+  /* Body */
+  Widget _buildBody() {
+    return ListView(
+      physics: const AlwaysScrollableScrollPhysics(), //コンテンツが不十分な場合でも常にスクロール可能
+      controller: _controller, //スクロールできるようになる
+      children: <Widget>[
+        _titleBar("材料"),
+        _materialList(),
+        _titleBar("栄養素"),
+        _nutrientList(),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final Size _size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -275,18 +289,12 @@ class _DetailState extends State<Detail> {
           style: TextStyle(color: Colors.black54),
         ), // 選択した料理名に
         backgroundColor: _mainDetailColors[_selectedIndex],
+        iconTheme: IconThemeData(
+          color: Colors.black54,
+        ),
       ),
+      body: _buildBody(),
       endDrawer: _buildDrawer(), // サイドメニュー
-      body: ListView(
-        physics: const AlwaysScrollableScrollPhysics(), //コンテンツが不十分な場合でも常にスクロール可能
-        controller: _controller, //スクロールできるようになる
-        children: <Widget>[
-          _titleBar("材料"),
-          _materialList(),
-          _titleBar("栄養素"),
-          _nutrientList(),
-        ],
-      )
     );
   }
 }

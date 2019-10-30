@@ -17,26 +17,27 @@ class MonthlyMenu extends StatefulWidget {
   MonthlyMenu({Key key, this.menus, this.child, this.dri}) : super(key: key);
 
   @override
-  _MonthlyMenuState createState() => _MonthlyMenuState();
+  _MonthlyMenuState createState() => _MonthlyMenuState(menus, child, dri);
 }
 
 class _MonthlyMenuState extends State<MonthlyMenu> {
-  static DateTime today = DateTime.now(); // 今日の日付
-  static DateTime pickDate = today; // 選択した日を格納する変数
-  static String formattedDate = DateFormat('MM月dd日').format(today); //日付をフォーマットしたのを格納する変数
+  DateTime today; // 今日の日付
+  DateTime pickDate; // 選択した日を格納する変数
+  String formattedDate; //日付をフォーマットしたのを格納する変数
 
-
-  Map<DateTime, Menu> _menus; //引き継いでる変数から持ってきた
-  Child _child;
-  DRI _dri;
+  final Map<DateTime, Menu> _menus; //引き継いでる変数から持ってきた
+  final Child _child;
+  final DRI _dri;
+  _MonthlyMenuState(this._menus, this._child, this._dri);
 
   /*読み込まれた時に遷移されてきた変数を代入*/
   @override
   void initState() {
     super.initState();
-    _menus = widget.menus;
-    _child = widget.child;
-    _dri = widget.dri;
+
+    today = DateTime.now();
+    pickDate = today;
+    formattedDate = DateFormat('MM月dd日').format(today);
   }
 
   /* カレンダーの更新用 */

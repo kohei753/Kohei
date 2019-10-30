@@ -58,13 +58,6 @@ class _SplashState extends State<Splash> {
     });
   }
 
-  /* スプラッシュで表示するアイコンだとかの処理はここ */
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    return FlutterLogo();
-  }
-
   /* 全てのデータを取得している場合は次の画面へ遷移する */
   void handleToNext() {
     if (isAllFinish()) {
@@ -102,5 +95,12 @@ class _SplashState extends State<Splash> {
           settings: RouteSettings(name: '/home'),
           builder: (BuildContext context) => Home(menus: menus, child: myChild, dri: DRI, selectDay: DateTime(today.year, today.month, today.day)),
         ));
+  }
+
+  /* スプラッシュで表示するアイコンだとかの処理はここ */
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return FlutterLogo();
   }
 }

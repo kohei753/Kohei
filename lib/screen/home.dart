@@ -18,15 +18,16 @@ class Home extends StatefulWidget {
       : super(key: key);
 
   @override
-  _HomeState createState() => _HomeState();
+  _HomeState createState() => _HomeState(menus, child, dri, selectDay);
 }
 
 class _HomeState extends State<Home> {
   /* 引き継いだ情報 */
-  Map<DateTime, Menu> menus;
-  Child child;
-  DRI dri;
-  DateTime selectDay;
+  final Map<DateTime, Menu> menus;
+  final Child child;
+  final DRI dri;
+  final DateTime selectDay;
+  _HomeState(this.menus, this.child, this.dri, this.selectDay);
 
   String _title;  // AppBarのテキスト
 
@@ -38,11 +39,6 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    /* 引き継いだ情報の取得 */
-    menus = widget.menus;
-    child = widget.child;
-    dri = widget.dri;
-    selectDay = widget.selectDay;
 
     _title = DateFormat("MM月dd日").format(selectDay);
 
@@ -91,6 +87,34 @@ class _HomeState extends State<Home> {
     }
   }
 
+  /* 下のメニューバー */
+  Widget _buildBottomNavigationBar() {
+    return BottomNavigationBar(
+      // タブバーの実装
+      items: const <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
+          // 1日の献立を表示する画面に遷移するアイコン
+          icon: Icon(
+            Icons.view_list,
+            size: 30,
+          ),
+          title: Text('献立'),
+        ),
+        BottomNavigationBarItem(
+          // 献立表を表示する画面に遷移するアイコン
+          icon: Icon(
+            Icons.calendar_today,
+            size: 30,
+          ),
+          title: Text('献立表'),
+        ),
+      ],
+      currentIndex: _selectedIndex, // 選択中の画面を管理
+      selectedItemColor: Theme.of(context).primaryColor, // 選択時の色
+      onTap: _onItemTapped, // タップすると更新
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -105,30 +129,7 @@ class _HomeState extends State<Home> {
         ],
       ),
       body: _widgetOptions.elementAt(_selectedIndex), // ListになってるWidgetを読み込む
-      bottomNavigationBar: BottomNavigationBar(
-        // タブバーの実装
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            // 1日の献立を表示する画面に遷移するアイコン
-            icon: Icon(
-              Icons.view_list,
-              size: 30,
-            ),
-            title: Text('献立'),
-          ),
-          BottomNavigationBarItem(
-            // 献立表を表示する画面に遷移するアイコン
-            icon: Icon(
-              Icons.calendar_today,
-              size: 30,
-            ),
-            title: Text('献立表'),
-          ),
-        ],
-        currentIndex: _selectedIndex, // 選択中の画面を管理
-        selectedItemColor: Theme.of(context).primaryColor, // 選択時の色
-        onTap: _onItemTapped, // タップすると更新
-      ),
+      bottomNavigationBar: _buildBottomNavigationBar(),
     );
   }
 }
