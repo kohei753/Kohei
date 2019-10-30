@@ -72,6 +72,8 @@ class InfoStrings {
   static const String linkInternalAffairsCommunications = '総務省 地方公共団体のオープンデータの推進';
   static const String usingData = '利用中のデータ(敬称略)';
   static const String noOpenData = '現在オープンデータを使用しておりません.';
+  static const String nutrientBase = '厚生労働省 日本人の食事摂取基準';
+  static const String schoolLunchBase = '文部科学省 学校給食実施基準';
   static const String illustration1 = 'イラストレイン';
   static const String illustration2 = 'ICOOON MONO';
   static const String cooperationSchools = '協力していただいている学校(敬称略)';
@@ -85,6 +87,14 @@ class InfoStrings {
   static const String contactTitle = 'お問い合わせ';
   static const String developerTitle = '開発者';
   static const String developer = '公立はこだて未来大学 使ってもらって学ぶフィールド思考システムデザイン2019 市民情報サービスのデザインチーム';
+}
+
+class HelpStrings {
+  static const String graphTitle = '栄養素の分類';
+  static const String graphText = 'グラフなどで利用されている栄養素は, 文部科学省が定めている「児童又は生徒一人当たりの学校給食摂取基準」に基づいて表示しています.';
+  static const String graphBase = '12 ~ 14歳の中学生の場合, 以下の栄養素が基準となっています.';
+  static const String nutrientLink = '児童又は生徒一人当たりの学校給食摂取基準';
+  static const String graphOther = '上記の他に摂取量について配慮するものは以下のようになっています.';
 }
 
 class DevelopingStrings {
