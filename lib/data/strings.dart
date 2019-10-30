@@ -45,7 +45,8 @@ class MenuStrings {
     'assets/side_purple.png',
   ];
   static const List<Color> mainDetailColors = [
-    Color(0xFFf6f183),
+//    Color(0xFFf6f183),
+    Color(0xFFffff33),  // 濃い黄色
     Color(0xFF82c1f5),
     Color(0xFF87f582),
     Color(0xFFf58287),
@@ -53,7 +54,8 @@ class MenuStrings {
     Color(0xFFb682f5),
   ];
   static const List<Color> listDetailColors = [
-    Color(0xFFffffd6),
+//    Color(0xFFffffd6),
+    Color(0xFFffffb2),  // 濃い黄色
     Color(0xFFd6eaff),
     Color(0xFFd6ffd6),
     Color(0xFFffd6d6),
