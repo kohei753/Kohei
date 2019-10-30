@@ -312,7 +312,7 @@ class _DailyMenuState extends State<DailyMenu> {
   Widget _graph(double deviceWidth, double deviceHeight) {
     return Center(
       child: Container(
-        padding: EdgeInsets.all(20.0),
+        padding: EdgeInsets.symmetric(vertical: 30.0, horizontal: 0),
         width: deviceWidth, // コンテイナーの横幅を変数指定
         height: deviceHeight, // コンテイナーの縦幅を変数指定
         child: RadarChart(
@@ -351,8 +351,8 @@ class _DailyMenuState extends State<DailyMenu> {
         _titleBar('料理名'),
         _menuNameList(), // メニューの名前表示
         _titleBar('栄養素'),
-        _nutrientList(),
         _graph(_size.width * 0.65, _size.height * 0.65), // グラフの縦幅と横幅は65%
+        _nutrientList(),
       ],
     );
   }
