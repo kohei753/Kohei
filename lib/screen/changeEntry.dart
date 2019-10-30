@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:sample/data/child.dart';
-import 'checkEntry.dart';
-import 'setting.dart';
 
 /* 名前変更のクラス */
 class ChangeName extends StatefulWidget {
@@ -11,12 +9,13 @@ class ChangeName extends StatefulWidget {
   ChangeName({Key key, this.child}) : super(key: key);
 
   @override
-  _ChangeNameState createState() => _ChangeNameState();
+  _ChangeNameState createState() => _ChangeNameState(child);
 }
 
 class _ChangeNameState extends State<ChangeName> {
-  /* 引き継いだ変数 */
-  Child child;
+  /* 引き継いだ情報 */
+  final Child child;
+  _ChangeNameState(this.child);
 
   /* この画面でのみ使う変数 */
   final _formKey = GlobalKey<FormState>(); // 入力フォームを検知するキー
@@ -26,7 +25,6 @@ class _ChangeNameState extends State<ChangeName> {
   void initState() {
     super.initState();
 
-    child = widget.child;
     name = child.name;
   }
 
@@ -133,12 +131,13 @@ class ChangeSex extends StatefulWidget {
   ChangeSex({Key key, this.child}) : super(key: key);
 
   @override
-  _ChangeSexState createState() => _ChangeSexState();
+  _ChangeSexState createState() => _ChangeSexState(child);
 }
 
 class _ChangeSexState extends State<ChangeSex> {
-  /* 引き継いだやつ */
-  Child child;
+  /* 引き継いだ情報 */
+  final Child child;
+  _ChangeSexState(this.child);
 
   /* 変更先 */
   int gender;
@@ -152,8 +151,6 @@ class _ChangeSexState extends State<ChangeSex> {
   @override
   void initState() {
     super.initState();
-
-    child = widget.child;
 
     gender = child.sex;
     _genderUpdate(gender);
@@ -270,12 +267,13 @@ class ChangeSchool extends StatefulWidget {
   ChangeSchool({Key key, this.child}) : super(key: key);
 
   @override
-  _ChangeSchoolState createState() => _ChangeSchoolState();
+  _ChangeSchoolState createState() => _ChangeSchoolState(child);
 }
 
 class _ChangeSchoolState extends State<ChangeSchool> {
-  /* 引き継いだやつ */
-  Child child;
+  /* 引き継いだ情報 */
+  final Child child;
+  _ChangeSchoolState(this.child);
 
   /* 変更先 */
   String school;
@@ -291,7 +289,6 @@ class _ChangeSchoolState extends State<ChangeSchool> {
   void initState() {
     super.initState();
 
-    child = widget.child;
     school = child.school;
   }
 
@@ -415,12 +412,13 @@ class ChangeYear extends StatefulWidget {
   ChangeYear({Key key, this.child}) : super(key: key);
 
   @override
-  _ChangeYearState createState() => _ChangeYearState();
+  _ChangeYearState createState() => _ChangeYearState(child);
 }
 
 class _ChangeYearState extends State<ChangeYear> {
-  /* 引き継いだ変数 */
-  Child child;
+  /* 引き継いだ情報 */
+  final Child child;
+  _ChangeYearState(this.child);
 
   /* 登録する情報 */
   int schoolYear; // 内部の登録学年(内部では1-9で設定)
@@ -439,7 +437,6 @@ class _ChangeYearState extends State<ChangeYear> {
   void initState() {
     super.initState();
 
-    child = widget.child;
     schoolYear = child.schoolYear;
     if (schoolYear < 7) {
       schoolYearLabel = '${child.schoolYear}年生';

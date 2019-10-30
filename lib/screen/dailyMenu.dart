@@ -16,14 +16,15 @@ class DailyMenu extends StatefulWidget {
   DailyMenu({Key key, this.menu, this.child, this.dri}) : super(key: key);
 
   @override
-  _DailyMenuState createState() => _DailyMenuState();
+  _DailyMenuState createState() => _DailyMenuState(menu, child, dri);
 }
 
 class _DailyMenuState extends State<DailyMenu> {
-  /* 引き継いでる変数を移すための変数 */
-  Menu menu;
-  Child child;
-  DRI dri;
+  /* 引き継いだ情報 */
+  final Menu menu;
+  final Child child;
+  final DRI dri;
+  _DailyMenuState(this.menu, this.child, this.dri);
 
   /* この画面内でのみ使う変数 */
   bool _isMenu; // 今日のメニューがあるか
@@ -39,9 +40,6 @@ class _DailyMenuState extends State<DailyMenu> {
   @override
   void initState() {
     super.initState();
-    menu = widget.menu;
-    child = widget.child;
-    dri = widget.dri;
 
     _isMenu = (menu != null) ? true : false;
     _myChildDRI = dri.getNutrient(child);

@@ -5,18 +5,19 @@ import 'package:sample/data/dri.dart';
 import 'secondEntry.dart';
 
 /* 初期登録画面 */
-class Entry extends StatefulWidget {
+class FirstEntry extends StatefulWidget {
   final Map<DateTime, Menu> menus;
   final DRI dri;
-  Entry({Key key, this.menus, this.dri}) : super(key: key);
+  FirstEntry({Key key, this.menus, this.dri}) : super(key: key);
 
   @override
-  _EntryState createState() => _EntryState();
+  _FirstEntryState createState() => _FirstEntryState(menus, dri);
 }
 
-class _EntryState extends State<Entry> {
-  Map<DateTime, Menu> menus; // JSONから取得したメニュー情報(この画面では使わないが、次の画面に引き渡すために必要)
-  DRI dri;
+class _FirstEntryState extends State<FirstEntry> {
+  final Map<DateTime, Menu> menus; // JSONから取得したメニュー情報(この画面では使わないが、次の画面に引き渡すために必要)
+  final DRI dri;
+  _FirstEntryState(this.menus, this.dri);
 
   /* 登録する情報 */
   String name;
@@ -29,14 +30,6 @@ class _EntryState extends State<Entry> {
   Color manTextColor = Colors.black;
   Color womanTextColor = Colors.black;
   Color genderErrorColor = Color.fromARGB(0, 0, 0, 255);
-
-  @override
-  void initState() {
-    super.initState();
-
-    menus = widget.menus;
-    dri = widget.dri;
-  }
 
   /* 男女のボタンを押すと選択した方の色がつく
   * gender = 0: man, 1: woman */
