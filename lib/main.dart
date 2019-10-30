@@ -9,7 +9,7 @@ void main() {
   // 画面を縦に固定
   runApp(
     MaterialApp(
-      title: '給食アプリ(仮)',
+      title: 'はこんだて',
       theme: ThemeData(
         primaryColor: Colors.deepOrangeAccent,
         // primaryColor: Color(0xFFe1a067),Color(0xFF66cdaa), // 一応チームカラー(汚かった)と太郎さんのやつ
