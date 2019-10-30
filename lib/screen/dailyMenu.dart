@@ -162,7 +162,6 @@ class _DailyMenuState extends State<DailyMenu> {
         builder: (BuildContext context) => Detail(
           dri: dri,
           dailyMenu: menu,
-          child: child,
           menuNum: selectIndex,
           // 選んだ数字を遷移させることで料理毎の処理を可能
         ),
