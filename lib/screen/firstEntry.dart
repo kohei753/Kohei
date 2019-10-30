@@ -109,6 +109,7 @@ class _FirstEntryState extends State<FirstEntry> {
                 border: OutlineInputBorder(), // 枠線追加
                 hintText: 'お子様の名前を入力してください',
               ),
+              maxLength: 15,
               validator: (value) {
                 // 入力チェック
                 if (value.isEmpty) {
