@@ -29,7 +29,7 @@ class _SettingState extends State<Setting> {
   @override
   void initState() {
     super.initState();
-    child = widget.child;
+    child = widget.child; // childは可変のためここで取得
 
     _itemList = [
       _buildEntryTile(), // 登録情報
@@ -139,7 +139,7 @@ class _SettingState extends State<Setting> {
   }
 
   /* ボディのリスト生成 */
-  Widget _buildBodyList() {
+  Widget _buildBody() {
     return ListView.separated(
       padding: EdgeInsets.zero,
       itemCount: _itemList.length,
@@ -157,7 +157,7 @@ class _SettingState extends State<Setting> {
       appBar: AppBar(
         title: Text('設定'),
       ),
-      body: _buildBodyList(),
+      body: _buildBody(),
     );
   }
 }

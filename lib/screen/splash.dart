@@ -3,7 +3,7 @@ import 'package:flutter/material.dart'; // マテリアルデザインしよう�
 import 'package:sample/data/menu.dart' as menu;
 import 'package:sample/data/child.dart' as child;
 import 'package:sample/data/dri.dart' as dri;
-import 'entry.dart';
+import 'firstEntry.dart';
 import 'home.dart';
 
 /* スプラッシュ画面 */
@@ -89,7 +89,7 @@ class _SplashState extends State<Splash> {
         context,
         MaterialPageRoute(
           settings: RouteSettings(name: '/entry'),
-          builder: (BuildContext context) => Entry(menus: menus, dri: DRI),
+          builder: (BuildContext context) => FirstEntry(menus: menus, dri: DRI),
         ));
   }
 
