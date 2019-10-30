@@ -40,14 +40,19 @@ class _SettingState extends State<Setting> {
   }
 
   /* 登録情報の確認・更新画面へ */
-  void handleToAccount() {
-    Navigator.push(
+  void handleToAccount() async {
+    await Navigator.push(
       context,
       MaterialPageRoute(
         settings: RouteSettings(name: '/account'),
         builder: (BuildContext context) => Account(child: child),
       ),
     );
+    Child newChild = await readInfo();
+    setState(() {
+      child = newChild;
+      _itemList[0] = _buildEntryTile();
+    });
   }
 
   /* リストタイルの遷移先への遷移 */
