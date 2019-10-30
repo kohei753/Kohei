@@ -16,12 +16,13 @@ class SecondEntry extends StatefulWidget {
       : super(key: key);
 
   @override
-  _SecondEntryState createState() => _SecondEntryState();
+  _SecondEntryState createState() => _SecondEntryState(menus, dri);
 }
 
 class _SecondEntryState extends State<SecondEntry> {
-  Map<DateTime, Menu> menus;
-  DRI dri;
+  final Map<DateTime, Menu> menus;
+  final DRI dri;
+  _SecondEntryState(this.menus, this.dri);
 
   /* 登録する情報 */
   String school = '学校を選択';  // デフォルトの選択内容を'学校を選択'にしている
@@ -42,14 +43,6 @@ class _SecondEntryState extends State<SecondEntry> {
     '2年',
     '3年',
   ];
-
-  @override
-  void initState() {
-    super.initState();
-
-    menus = widget.menus;
-    dri = widget.dri;
-  }
 
   void _onTapSchool(BuildContext context) {  // 返り値なし関数__onTapSchoolを宣言
     showModalBottomSheet(  // このメソッドによって下から選択するためのシートを作成
@@ -102,6 +95,40 @@ class _SecondEntryState extends State<SecondEntry> {
         schoolYearLabel = _schoolYearList[value];
         schoolYear = value;  // 選択中の学校名を設定
     });
+  }
+
+  void entryInfo() {
+    //  入力情報の確認
+    bool schoolCheck = false;
+    for (var i = 1; i < _schoolName.length; i++) {
+      if (school == _schoolName[i]) schoolCheck = true;
+    }
+    setState(() {
+      if (schoolCheck && schoolYear != 0) {
+        errorTextColor = Color.fromARGB(0, 0, 0, 255);
+        handleToCheck();
+      } else if (0 < schoolYear && schoolYear < 10) {
+        errorTextColor = Theme.of(context).errorColor;
+        errorElement = '学校';
+      } else if (schoolCheck) {
+        errorTextColor = Theme.of(context).errorColor;
+        errorElement = '学年';
+      } else {
+        errorTextColor = Theme.of(context).errorColor;
+        errorElement = '学校・学年';
+      }
+    });
+  }
+
+  void handleToCheck() {  //  確認画面への遷移
+    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          settings: RouteSettings(name: '/checkEntry'),
+          builder: (BuildContext context) =>
+              CheckEntry(menus: menus, dri: dri, child: child.Child(widget.name, school, schoolYear, widget.sex)),
+        ),
+    );
   }
 
   /* Body */
@@ -207,46 +234,8 @@ class _SecondEntryState extends State<SecondEntry> {
     );
   }
 
-  void entryInfo() {
-    //  入力情報の確認
-    bool schoolCheck = false;
-    for (var i = 1; i < _schoolName.length; i++) {
-      if (school == _schoolName[i]) schoolCheck = true;
-    }
-    setState(() {
-      if (schoolCheck && schoolYear != 0) {
-        errorTextColor = Color.fromARGB(0, 0, 0, 255);
-        menus = widget.menus;
-        dri = widget.dri;
-
-        handleToCheck();
-      } else if (0 < schoolYear && schoolYear < 10) {
-        errorTextColor = Theme.of(context).errorColor;
-        errorElement = '学校';
-      } else if (schoolCheck) {
-        errorTextColor = Theme.of(context).errorColor;
-        errorElement = '学年';
-      } else {
-        errorTextColor = Theme.of(context).errorColor;
-        errorElement = '学校・学年';
-      }
-    });
-  }
-
-  void handleToCheck() {  //  確認画面への遷移
-    Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          settings: RouteSettings(name: '/checkEntry'),
-          builder: (BuildContext context) =>
-              CheckEntry(menus: menus, dri: dri, child: child.Child(widget.name, school, schoolYear, widget.sex)),
-        ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-      //  TODO: implement build
     return Scaffold(
       appBar: AppBar(
         title: Text('登録'),

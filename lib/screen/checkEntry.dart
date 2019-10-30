@@ -13,15 +13,15 @@ class CheckEntry extends StatefulWidget {
   CheckEntry({Key key, this.menus, this.dri, this.child}) : super(key: key);
 
   @override
-  _CheckEntryState createState() => _CheckEntryState();
+  _CheckEntryState createState() => _CheckEntryState(menus, dri, child);
 }
 
 class _CheckEntryState extends State<CheckEntry> {
-  //引き継いだ情報の読み込み
-
-  Map<DateTime, Menu> menus;
-  DRI dri;
-  Child child;
+  // 引き継いだ情報
+  final Map<DateTime, Menu> menus;
+  final DRI dri;
+  final Child child;
+  _CheckEntryState(this.menus, this.dri, this.child);
 
   /* この画面でのみ使用する変数 */
   String _sexLabel; // 性別: int => String
@@ -35,11 +35,7 @@ class _CheckEntryState extends State<CheckEntry> {
 
   @override
   void initState() {
-    //空の変数に引き継いだ情報を渡す
     super.initState();
-    menus = widget.menus;
-    dri = widget.dri;
-    child = widget.child;
 
     name = child.name;
     sex = child.sex;
@@ -54,7 +50,8 @@ class _CheckEntryState extends State<CheckEntry> {
   }
 
   /* 登録処理 */
-  void entryChild() { // 情報の登録
+  void entryChild() {
+    // 情報の登録
     writeInfo(Child(name, school, schoolYear, sex)).then((value) {
       handleToHome();
     });

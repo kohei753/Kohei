@@ -29,7 +29,7 @@ class _SettingState extends State<Setting> {
   @override
   void initState() {
     super.initState();
-    child = widget.child;
+    child = widget.child; // childは可変のためここで取得
 
     _itemList = [
       _buildEntryTile(), // 登録情報
@@ -40,14 +40,20 @@ class _SettingState extends State<Setting> {
   }
 
   /* 登録情報の確認・更新画面へ */
-  void handleToAccount() {
-    Navigator.push(
+  void handleToAccount() async {
+    await Navigator.push(
       context,
       MaterialPageRoute(
         settings: RouteSettings(name: '/account'),
         builder: (BuildContext context) => Account(child: child),
       ),
     );
+    // 登録情報の更新
+    Child newChild = await readInfo();
+    setState(() {
+      child = newChild;
+      _itemList[0] = _buildEntryTile();
+    });
   }
 
   /* リストタイルの遷移先への遷移 */
@@ -133,7 +139,7 @@ class _SettingState extends State<Setting> {
   }
 
   /* ボディのリスト生成 */
-  Widget _buildBodyList() {
+  Widget _buildBody() {
     return ListView.separated(
       padding: EdgeInsets.zero,
       itemCount: _itemList.length,
@@ -151,7 +157,7 @@ class _SettingState extends State<Setting> {
       appBar: AppBar(
         title: Text('設定'),
       ),
-      body: _buildBodyList(),
+      body: _buildBody(),
     );
   }
 }
