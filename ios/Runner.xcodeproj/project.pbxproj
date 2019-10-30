@@ -142,7 +142,6 @@
 				9C9C33BFFEA75191D0A98063 /* Pods-Runner.release.xcconfig */,
 				8D18317C9B6FFD15C877FDCA /* Pods-Runner.profile.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -182,7 +181,7 @@
 				TargetAttributes = {
 					97C146ED1CF9000F007C117D = {
 						CreatedOnToolsVersion = 7.3.1;
-						DevelopmentTeam = 7DFSWKK3Y3;
+						DevelopmentTeam = 8M8FCJB7FF;
 						LastSwiftMigration = 0910;
 						ProvisioningStyle = Automatic;
 					};
@@ -515,7 +514,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
-				DEVELOPMENT_TEAM = 7DFSWKK3Y3;
+				DEVELOPMENT_TEAM = 8M8FCJB7FF;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
