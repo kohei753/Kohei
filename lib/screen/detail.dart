@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart'; // マテリアルデザインしようぜのやーつ
 import 'package:intl/intl.dart';  // DateTimeのフォーマットに使う
-import 'package:multi_charts/multi_charts.dart';
 
 import 'package:sample/data/menu.dart';
-import 'package:sample/data/child.dart';
 import 'package:sample/data/dri.dart';
 import 'package:sample/data/strings.dart';
 
 /* 詳細画面 */
 class Detail extends StatefulWidget {
   final Menu dailyMenu;
-  final Child child;
   final DRI dri;
   final int menuNum;  // 選択されたメニューの番号
-  Detail({Key key, this.dailyMenu, this.child, this.dri, this.menuNum}) : super(key: key);
+  Detail({Key key, this.dailyMenu, this.dri, this.menuNum}) : super(key: key);
 
   @override
   _DetailState createState() => _DetailState();
@@ -22,11 +19,9 @@ class Detail extends StatefulWidget {
 class _DetailState extends State<Detail> {
   /* 諸々データ */
   Menu dailyMenu; // 表示する日のメニューデータ
-  Child child;
   DRI dri;
   
   /* この画面でのみ使用する変数 */
-  Map<String, double> _myChildDRI;
   int _selectedIndex = 0; // 選択中のタブ番号管理
   DateFormat formatter = DateFormat("yyyy/MM/dd(E)"); // 日付をフォーマットするやつ
   ScrollController _controller = ScrollController();  // スクロール制御
@@ -44,63 +39,13 @@ class _DetailState extends State<Detail> {
   *  色が上のカラーリストと対応している */
   List<String> _menuIcon = MenuStrings.menuIcon;
 
-  /* グラフ用栄養素の作成 */
-  /* タンパク質 */
-  double get _graphDishProtein {
-      double protein = dailyMenu.menu[_selectedIndex].dishProtein / _myChildDRI['protein'] * 100;
-      if (protein < 100) return protein;
-      return 100.0;
-  }
-
-  /* ビタミン */
-  double get _graphDishVitamin {
-      double retinol = dailyMenu.menu[_selectedIndex].dishRetinol / _myChildDRI['retinol'] * 100;
-      double vitaminB1 = dailyMenu.menu[_selectedIndex].dishVitaminB1 / _myChildDRI['vitaminB1'] * 100;
-      double vitaminB2 = dailyMenu.menu[_selectedIndex].dishVitaminB2 / _myChildDRI['vitaminB2'] * 100;
-      double vitaminC = dailyMenu.menu[_selectedIndex].dishVitaminC / _myChildDRI['vitaminC'] * 100;
-      double vitamin = (retinol + vitaminB1 + vitaminB2 + vitaminC) / 4;
-      if (vitamin < 100) return vitamin;
-      return 100.0;
-  }
-
-  /* ミネラル */
-  double get _graphDishMineral {
-      double calcium = dailyMenu.menu[_selectedIndex].dishCalcium / _myChildDRI['calcium'] * 100;
-      double iron = dailyMenu.menu[_selectedIndex].dishIron / _myChildDRI['iron'] * 100;
-      double magnesium = dailyMenu.menu[_selectedIndex].dishMagnesium / _myChildDRI['magnesium'] * 100;
-      double zinc = dailyMenu.menu[_selectedIndex].dishZinc / _myChildDRI['zinc'] * 100;
-      double mineral = (calcium + iron + magnesium + zinc) / 4;
-      if (mineral < 100) return mineral;
-      return 100.0;
-  }
-
-  /* 炭水化物 */
-  double get _graphDishCarbohydrate {
-      double carbohydrate =
-          dailyMenu.menu[_selectedIndex].dishCarbohydrate / _myChildDRI['carbohydrate'] * 100;
-      double dietaryFiber =
-          dailyMenu.menu[_selectedIndex].dishDietaryFiber / _myChildDRI['dietaryFiber'] * 100;
-      double totalCarb = (carbohydrate + dietaryFiber) / 2;
-      if (totalCarb < 100) return totalCarb;
-      return 100.0;
-  }
-
-  /* 脂質 */
-  double get _graphDishLipid {
-      double lipid = dailyMenu.menu[_selectedIndex].dishLipid / _myChildDRI['lipid'] * 100;
-      if (lipid < 100) return lipid;
-      return 100.0;
-  }
-
   /* 読み込まれた時にデータを取得する */
   @override
   void initState() {
     super.initState();
     dailyMenu = widget.dailyMenu;
-    child = widget.child;
     dri = widget.dri;
-    
-    _myChildDRI = dri.getNutrient(child);
+
     if (widget.menuNum != null) _selectedIndex = widget.menuNum;
 
     _updateNutrientValue();
@@ -265,38 +210,6 @@ class _DetailState extends State<Detail> {
     );
   }
 
-  /* 栄養素をグラフ表示 */
-  Widget _graph(double deviceWidth, double deviceHeight) {
-    return Center(
-      child: Container(
-        padding: EdgeInsets.all(20.0),
-        width: deviceWidth, // コンテイナーの横幅を変数指定
-        height: deviceHeight, // コンテイナーの縦幅を変数指定
-        child: RadarChart(
-          // レーダーチャート
-          labelWidth: 200,
-          values: [
-            _graphDishProtein,
-            _graphDishLipid,
-            _graphDishCarbohydrate,
-            _graphDishVitamin,
-            _graphDishMineral,
-          ],
-          labels: [
-            "タンパク質\n(" + _graphDishProtein.toStringAsFixed(0) + "％)",
-            "脂質\n(" + _graphDishLipid.toStringAsFixed(0) + "％)",
-            "炭水化物\n(" + _graphDishCarbohydrate.toStringAsFixed(0) + "％)",
-            "ビタミン\n(" + _graphDishVitamin.toStringAsFixed(0) + "％)",
-            "ミネラル\n(" + _graphDishMineral.toStringAsFixed(0) + "％)",
-          ],
-          maxValue: 100, // グラフの最大値は100
-          fillColor: Colors.orange, // グラフの色はオレンジで塗ります
-          animate: false, // アニメーションはつけない
-        ),
-      ),
-    );
-  }
-
   /* サイドメニューを生成 */
   Widget _buildDrawer() {
     return Drawer(
@@ -372,7 +285,6 @@ class _DetailState extends State<Detail> {
           _materialList(),
           _titleBar("栄養素"),
           _nutrientList(),
-          _graph(_size.width * 0.65, _size.height * 0.65),
         ],
       )
     );
