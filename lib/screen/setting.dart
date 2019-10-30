@@ -48,6 +48,7 @@ class _SettingState extends State<Setting> {
         builder: (BuildContext context) => Account(child: child),
       ),
     );
+    // 登録情報の更新
     Child newChild = await readInfo();
     setState(() {
       child = newChild;

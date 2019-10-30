@@ -7,7 +7,6 @@ import 'package:sample/data/dri.dart';
 import 'package:sample/screen/dailyMenu.dart';
 import 'package:sample/screen/monthlyMenu.dart';
 import 'package:sample/screen/setting.dart';
-import 'package:sample/data/strings.dart';
 
 /* ホーム画面 */
 class Home extends StatefulWidget {
@@ -29,7 +28,7 @@ class _HomeState extends State<Home> {
   DRI dri;
   DateTime selectDay;
 
-  String _title;
+  String _title;  // AppBarのテキスト
 
   /* BottomNavigationBarで使用する諸々 */
   List<Widget> _widgetOptions; // タブのリスト
@@ -76,6 +75,7 @@ class _HomeState extends State<Home> {
           builder: (BuildContext context) => Setting(child: child),
           fullscreenDialog: true, // モーダルで表示
         ));
+    // 登録情報に更新があった場合はリロード
     Child newChild = await readInfo();
     if (child.name != newChild.name ||
         child.sex != newChild.sex ||
