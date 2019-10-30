@@ -73,6 +73,7 @@ class _ChangeNameState extends State<ChangeName> {
                 decoration: InputDecoration(
                   border: OutlineInputBorder(), // 枠線追加
                 ),
+                maxLength: 15,
                 validator: (value) {
                   // 入力チェック
                   if (value.isEmpty) {
