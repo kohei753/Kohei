@@ -1,0 +1,92 @@
+{
+  "energy": {
+    "low": 530.0,
+    "middle": 650.0,
+    "high": 780.0,
+    "junior": 830.0
+  },
+  "protein": {
+    "low": 17.2,
+    "middle": 21.1,
+    "high": 25.3,
+    "junior": 27.0
+  },
+  "lipid": {
+    "low": 11.8,
+    "middle": 14.4,
+    "high": 17.3,
+    "junior": 18.4
+  },
+  "carbohydrate": {
+    "low": 72.8,
+    "middle": 89.4,
+    "high": 107.3,
+    "junior": 114.1
+  },
+  "sodium": {
+    "low": 0.0,
+    "middle": 0.0,
+    "high": 0.0,
+    "junior": 0.0
+  },
+  "calcium": {
+    "low": 290.0,
+    "middle": 350.0,
+    "high": 360.0,
+    "junior": 450.0
+  },
+  "magnesium": {
+    "low": 40.0,
+    "middle": 50.0,
+    "high": 70.0,
+    "junior": 120.0
+  },
+  "iron": {
+    "low": 2.5,
+    "middle": 3.0,
+    "high": 4.0,
+    "junior": 4.0
+  },
+  "zinc": {
+    "low": 2.0,
+    "middle": 2.0,
+    "high": 2.0,
+    "junior": 3.0
+  },
+  "retinol": {
+    "low": 170.0,
+    "middle": 200.0,
+    "high": 240.0,
+    "junior": 300.0
+  },
+  "vitaminB1": {
+    "low": 0.3,
+    "middle": 0.4,
+    "high": 0.5,
+    "junior": 0.5
+  },
+  "vitaminB2": {
+    "low": 0.4,
+    "middle": 0.4,
+    "high": 0.5,
+    "junior": 0.6
+  },
+  "vitaminC": {
+    "low": 20,
+    "middle": 20,
+    "high": 25,
+    "junior": 30
+  },
+  "dietaryFiber": {
+    "low": 4.0,
+    "middle": 5.0,
+    "high": 5.0,
+    "junior": 6.5
+  },
+  "salt": {
+    "low": 2.0,
+    "middle": 2.0,
+    "high": 2.5,
+    "junior": 2.5
+  }
+}

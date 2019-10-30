@@ -3,25 +3,28 @@ import 'package:flutter/material.dart';
 import 'package:sample/data/menu.dart';
 import 'package:sample/data/child.dart';
 import 'package:sample/data/dri.dart';
+import 'package:sample/data/slis.dart';
 import 'package:sample/screen/changeEntry.dart';
 import 'home.dart';
 
 class CheckEntry extends StatefulWidget {
   final Map<DateTime, Menu> menus;
   final DRI dri;
+  final SLIS slis;
   final Child child;
-  CheckEntry({Key key, this.menus, this.dri, this.child}) : super(key: key);
+  CheckEntry({Key key, this.menus, this.dri, this.slis, this.child}) : super(key: key);
 
   @override
-  _CheckEntryState createState() => _CheckEntryState(menus, dri, child);
+  _CheckEntryState createState() => _CheckEntryState(menus, dri, slis, child);
 }
 
 class _CheckEntryState extends State<CheckEntry> {
   // 引き継いだ情報
   final Map<DateTime, Menu> menus;
   final DRI dri;
+  final SLIS slis;
   final Child child;
-  _CheckEntryState(this.menus, this.dri, this.child);
+  _CheckEntryState(this.menus, this.dri, this.slis, this.child);
 
   /* この画面でのみ使用する変数 */
   String _sexLabel; // 性別: int => String
@@ -162,6 +165,7 @@ class _CheckEntryState extends State<CheckEntry> {
               menus: menus,
               child: Child(name, school, schoolYear, sex),
               dri: dri,
+              slis: slis,
               selectDay: DateTime(today.year, today.month, today.day)),
         ));
   }

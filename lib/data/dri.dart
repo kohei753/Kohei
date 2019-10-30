@@ -7,7 +7,7 @@ import 'package:flutter/services.dart' show rootBundle; // ローカルファイ
 
 import 'child.dart';
 
-part 'package:sample/data/dri.g.dart';
+part 'dri.g.dart';
 
 /* 栄養素別の食事摂取基準 */
 @JsonSerializable(createToJson: false)

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart'; // マテリアルデザインしよう�
 import 'package:sample/data/menu.dart' as menu;
 import 'package:sample/data/child.dart' as child;
 import 'package:sample/data/dri.dart' as dri;
+import 'package:sample/data/slis.dart' as slis;
 import 'firstEntry.dart';
 import 'home.dart';
 
@@ -20,12 +21,14 @@ class _SplashState extends State<Splash> {
   Map<DateTime, menu.Menu> menus = {}; // jsonのメニューを格納する変数
   child.Child myChild; // 登録情報
   dri.DRI DRI;  // 食事摂取基準
+  slis.SLIS SLIS;
 
   // 取得するべき情報を取得できたかを管理する連想配列
   Map<String, bool> acquired = {
     'menu': false,
     'info': false,
     'DRI': false,
+    'SLIS': false,
   };
 
   @override
@@ -56,6 +59,14 @@ class _SplashState extends State<Splash> {
 
       handleToNext();
     });
+
+    // 学校給食実施基準データを取得
+    slis.getSLIS().then((value) {
+      SLIS = value;
+      acquired['SLIS'] = true;
+
+      handleToNext();
+    });
   }
 
   /* 全てのデータを取得している場合は次の画面へ遷移する */
@@ -82,7 +93,7 @@ class _SplashState extends State<Splash> {
         context,
         MaterialPageRoute(
           settings: RouteSettings(name: '/entry'),
-          builder: (BuildContext context) => FirstEntry(menus: menus, dri: DRI),
+          builder: (BuildContext context) => FirstEntry(menus: menus, dri: DRI, slis: SLIS),
         ));
   }
 
@@ -93,7 +104,7 @@ class _SplashState extends State<Splash> {
         context,
         MaterialPageRoute(
           settings: RouteSettings(name: '/home'),
-          builder: (BuildContext context) => Home(menus: menus, child: myChild, dri: DRI, selectDay: DateTime(today.year, today.month, today.day)),
+          builder: (BuildContext context) => Home(menus: menus, child: myChild, dri: DRI, slis: SLIS, selectDay: DateTime(today.year, today.month, today.day)),
         ));
   }
 

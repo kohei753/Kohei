@@ -4,6 +4,7 @@ import 'package:intl/intl.dart'; // 型変形
 import 'package:sample/data/menu.dart';
 import 'package:sample/data/child.dart';
 import 'package:sample/data/dri.dart';
+import 'package:sample/data/slis.dart';
 import 'package:sample/screen/dailyMenu.dart';
 import 'package:sample/screen/monthlyMenu.dart';
 import 'package:sample/screen/setting.dart';
@@ -13,12 +14,13 @@ class Home extends StatefulWidget {
   final Map<DateTime, Menu> menus;
   final Child child;
   final DRI dri;
+  final SLIS slis;
   final DateTime selectDay; // 指定がなければ今日
-  Home({Key key, this.menus, this.child, this.dri, this.selectDay})
+  Home({Key key, this.menus, this.child, this.dri, this.slis, this.selectDay})
       : super(key: key);
 
   @override
-  _HomeState createState() => _HomeState(menus, child, dri, selectDay);
+  _HomeState createState() => _HomeState(menus, child, dri, slis, selectDay);
 }
 
 class _HomeState extends State<Home> {
@@ -26,8 +28,9 @@ class _HomeState extends State<Home> {
   final Map<DateTime, Menu> menus;
   final Child child;
   final DRI dri;
+  final SLIS slis;
   final DateTime selectDay;
-  _HomeState(this.menus, this.child, this.dri, this.selectDay);
+  _HomeState(this.menus, this.child, this.dri, this.slis, this.selectDay);
 
   String _title;  // AppBarのテキスト
 
@@ -48,7 +51,7 @@ class _HomeState extends State<Home> {
           menu: menus[DateTime(selectDay.year, selectDay.month, selectDay.day)],
           child: child,
           dri: dri),
-      MonthlyMenu(menus: menus, child: child, dri: dri),
+      MonthlyMenu(menus: menus, child: child, dri: dri, slis: slis),
     ];
   }
 
@@ -82,7 +85,7 @@ class _HomeState extends State<Home> {
           MaterialPageRoute(
             settings: RouteSettings(name: '/reHome'),
             builder: (BuildContext context) => Home(
-                menus: menus, child: newChild, dri: dri, selectDay: selectDay),
+                menus: menus, child: newChild, dri: dri, slis: slis, selectDay: selectDay),
           ));
     }
   }

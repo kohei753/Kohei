@@ -7,6 +7,7 @@ import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart' // // 
 import 'package:sample/data/menu.dart';
 import 'package:sample/data/child.dart';
 import 'package:sample/data/dri.dart';
+import 'package:sample/data/slis.dart';
 import 'package:sample/screen/home.dart';
 
 /* 献立表画面 */
@@ -14,10 +15,11 @@ class MonthlyMenu extends StatefulWidget {
   final Map<DateTime, Menu> menus;
   final Child child;
   final DRI dri;
-  MonthlyMenu({Key key, this.menus, this.child, this.dri}) : super(key: key);
+  final SLIS slis;
+  MonthlyMenu({Key key, this.menus, this.child, this.dri, this.slis}) : super(key: key);
 
   @override
-  _MonthlyMenuState createState() => _MonthlyMenuState(menus, child, dri);
+  _MonthlyMenuState createState() => _MonthlyMenuState(menus, child, dri, slis);
 }
 
 class _MonthlyMenuState extends State<MonthlyMenu> {
@@ -28,7 +30,8 @@ class _MonthlyMenuState extends State<MonthlyMenu> {
   final Map<DateTime, Menu> _menus; //引き継いでる変数から持ってきた
   final Child _child;
   final DRI _dri;
-  _MonthlyMenuState(this._menus, this._child, this._dri);
+  final SLIS _slis;
+  _MonthlyMenuState(this._menus, this._child, this._dri, this._slis);
 
   /*読み込まれた時に遷移されてきた変数を代入*/
   @override
@@ -57,7 +60,7 @@ class _MonthlyMenuState extends State<MonthlyMenu> {
         MaterialPageRoute(
           settings: RouteSettings(name: '/home'),
           builder: (BuildContext context) => Home(
-              menus: _menus, child: _child, dri: _dri, selectDay: selectDay),
+              menus: _menus, child: _child, dri: _dri, slis: _slis, selectDay: selectDay),
         ));
   }
 

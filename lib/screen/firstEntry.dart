@@ -2,22 +2,25 @@ import 'package:flutter/material.dart'; // マテリアルデザインしよう�
 
 import 'package:sample/data/menu.dart';
 import 'package:sample/data/dri.dart';
+import 'package:sample/data/slis.dart';
 import 'secondEntry.dart';
 
 /* 初期登録画面 */
 class FirstEntry extends StatefulWidget {
   final Map<DateTime, Menu> menus;
   final DRI dri;
-  FirstEntry({Key key, this.menus, this.dri}) : super(key: key);
+  final SLIS slis;
+  FirstEntry({Key key, this.menus, this.dri, this.slis}) : super(key: key);
 
   @override
-  _FirstEntryState createState() => _FirstEntryState(menus, dri);
+  _FirstEntryState createState() => _FirstEntryState(menus, dri, slis);
 }
 
 class _FirstEntryState extends State<FirstEntry> {
   final Map<DateTime, Menu> menus; // JSONから取得したメニュー情報(この画面では使わないが、次の画面に引き渡すために必要)
   final DRI dri;
-  _FirstEntryState(this.menus, this.dri);
+  final SLIS slis;
+  _FirstEntryState(this.menus, this.dri, this.slis);
 
   /* 登録する情報 */
   String name;
@@ -84,7 +87,7 @@ class _FirstEntryState extends State<FirstEntry> {
         MaterialPageRoute(
           settings: RouteSettings(name: '/secondEntry'),
           builder: (BuildContext context) =>
-              SecondEntry(menus: menus, dri: dri, name: name, sex: gender),
+              SecondEntry(menus: menus, dri: dri, slis: slis, name: name, sex: gender),
         ));
   }
 
