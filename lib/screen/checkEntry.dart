@@ -54,7 +54,8 @@ class _CheckEntryState extends State<CheckEntry> {
   }
 
   /* 登録処理 */
-  void entryChild() { // 情報の登録
+  void entryChild() {
+    // 情報の登録
     writeInfo(Child(name, school, schoolYear, sex)).then((value) {
       handleToHome();
     });

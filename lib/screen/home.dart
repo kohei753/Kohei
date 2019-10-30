@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart'; // マテリアルデザインしようぜのやーつ
-import 'package:intl/intl.dart';  // 型変形
+import 'package:intl/intl.dart'; // 型変形
 
 import 'package:sample/data/menu.dart';
 import 'package:sample/data/child.dart';
@@ -14,8 +14,9 @@ class Home extends StatefulWidget {
   final Map<DateTime, Menu> menus;
   final Child child;
   final DRI dri;
-  final DateTime selectDay;  // 指定がなければ今日
-  Home({Key key, this.menus, this.child, this.dri, this.selectDay}) : super(key: key);
+  final DateTime selectDay; // 指定がなければ今日
+  Home({Key key, this.menus, this.child, this.dri, this.selectDay})
+      : super(key: key);
 
   @override
   _HomeState createState() => _HomeState();
@@ -31,7 +32,7 @@ class _HomeState extends State<Home> {
   String _title;
 
   /* BottomNavigationBarで使用する諸々 */
-  List<Widget> _widgetOptions;  // タブのリスト
+  List<Widget> _widgetOptions; // タブのリスト
   int _selectedIndex = 0; // 選択中のタブ番号を管理
 
   /* 初期化処理 */
@@ -42,14 +43,16 @@ class _HomeState extends State<Home> {
     menus = widget.menus;
     child = widget.child;
     dri = widget.dri;
-    // selectDay = widget.selectDay;
     selectDay = widget.selectDay;
 
     _title = DateFormat("MM月dd日").format(selectDay);
 
     /* widgetリストの中身作成 */
     _widgetOptions = [
-      DailyMenu(menu: menus[DateTime(selectDay.year, selectDay.month, selectDay.day)], child: child, dri: dri),
+      DailyMenu(
+          menu: menus[DateTime(selectDay.year, selectDay.month, selectDay.day)],
+          child: child,
+          dri: dri),
       MonthlyMenu(menus: menus, child: child, dri: dri),
     ];
   }
@@ -58,19 +61,34 @@ class _HomeState extends State<Home> {
     // メニューがタップされた時更新
     setState(() {
       _selectedIndex = index;
-      _title = (index != 0) ? '${selectDay.month}月の献立表' : DateFormat("MM月dd日").format(selectDay);
+      _title = (index != 0)
+          ? '${selectDay.month}月の献立表'
+          : DateFormat("MM月dd日").format(selectDay);
     });
   }
 
-  void handleToSetting() {
+  void handleToSetting() async {
     // 設定画面へ
-    Navigator.push(
+    await Navigator.push(
         context,
         MaterialPageRoute(
           settings: RouteSettings(name: '/setting'),
           builder: (BuildContext context) => Setting(child: child),
           fullscreenDialog: true, // モーダルで表示
         ));
+    Child newChild = await readInfo();
+    if (child.name != newChild.name ||
+        child.sex != newChild.sex ||
+        child.school != newChild.school ||
+        child.schoolYear != newChild.schoolYear) {
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            settings: RouteSettings(name: '/reHome'),
+            builder: (BuildContext context) => Home(
+                menus: menus, child: newChild, dri: dri, selectDay: selectDay),
+          ));
+    }
   }
 
   @override
