@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:sample/data/child.dart';
-import 'checkEntry.dart';
-import 'setting.dart';
 
 /* 名前変更のクラス */
 class ChangeName extends StatefulWidget {
