@@ -99,7 +99,7 @@ class _HomeState extends State<Home> {
         BottomNavigationBarItem(
           // 1日の献立を表示する画面に遷移するアイコン
           icon: Icon(
-            Icons.view_list,
+            Icons.local_dining,
             size: 30,
           ),
           title: Text('献立'),
