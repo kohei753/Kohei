@@ -66,10 +66,10 @@ class SLIS {
     fittedData['energy'] = this.energy.years[grade];
     fittedData['protein'] = this.protein.years[grade];
     fittedData['lipid'] = this.lipid.years[grade];
-    fittedData['carbihydrate'] = this.carbohydrate.years[grade];
+    fittedData['carbohydrate'] = this.carbohydrate.years[grade];
     fittedData['sodium'] = this.sodium.years[grade];
     fittedData['calcium'] = this.calcium.years[grade];
-    fittedData['magnecium'] = this.magnesium.years[grade];
+    fittedData['magnesium'] = this.magnesium.years[grade];
     fittedData['iron'] = this.iron.years[grade];
     fittedData['zinc'] = this.zinc.years[grade];
     fittedData['retinol'] = this.retinol.years[grade];

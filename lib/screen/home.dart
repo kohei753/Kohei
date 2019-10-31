@@ -50,7 +50,8 @@ class _HomeState extends State<Home> {
       DailyMenu(
           menu: menus[DateTime(selectDay.year, selectDay.month, selectDay.day)],
           child: child,
-          dri: dri),
+          dri: dri,
+          slis: slis),
       MonthlyMenu(menus: menus, child: child, dri: dri, slis: slis),
     ];
   }

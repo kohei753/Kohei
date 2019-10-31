@@ -82,16 +82,12 @@ YearStandard _$YearStandardFromJson(Map<String, dynamic> json) {
     json['junior3'] == null
         ? null
         : GenderStandard.fromJson(json['junior3'] as Map<String, dynamic>),
-  )..years = (json['years'] as List)
-      ?.map((e) =>
-          e == null ? null : GenderStandard.fromJson(e as Map<String, dynamic>))
-      ?.toList();
+  );
 }
 
 GenderStandard _$GenderStandardFromJson(Map<String, dynamic> json) {
   return GenderStandard(
     (json['man'] as num)?.toDouble(),
     (json['woman'] as num)?.toDouble(),
-  )..genders =
-      (json['genders'] as List)?.map((e) => (e as num)?.toDouble())?.toList();
+  );
 }

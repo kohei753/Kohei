@@ -62,6 +62,5 @@ NutrientSLIS _$NutrientSLISFromJson(Map<String, dynamic> json) {
     (json['middle'] as num)?.toDouble(),
     (json['high'] as num)?.toDouble(),
     (json['junior'] as num)?.toDouble(),
-  )..years =
-      (json['years'] as List)?.map((e) => (e as num)?.toDouble())?.toList();
+  );
 }

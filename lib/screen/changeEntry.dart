@@ -478,7 +478,7 @@ class _ChangeYearState extends State<ChangeYear> {
   /* 遷移元に戻る */
   void handleToBack() {
     Navigator.of(context)
-        .pop(Child(child.name, child.school, schoolYear, child.sex));
+        .pop(Child(child.name, child.school, schoolYear + 6, child.sex));
   }
 
   /* ラベル */
