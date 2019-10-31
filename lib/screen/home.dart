@@ -52,7 +52,7 @@ class _HomeState extends State<Home> {
           child: child,
           dri: dri,
           slis: slis),
-      MonthlyMenu(menus: menus, child: child, dri: dri, slis: slis),
+      MonthlyMenu(menus: menus, child: child, dri: dri, slis: slis, selectedDay: selectDay),
     ];
   }
 
