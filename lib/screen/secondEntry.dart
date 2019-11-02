@@ -4,25 +4,28 @@ import 'package:flutter/material.dart';   //  マテリアルデザインしよ�
 import 'package:sample/data/menu.dart';
 import 'package:sample/data/child.dart' as child;
 import 'package:sample/data/dri.dart';
+import 'package:sample/data/slis.dart';
 import 'checkEntry.dart';
 
 /* 学校・学年登録画面 */
 class SecondEntry extends StatefulWidget {
   final Map<DateTime, Menu> menus;
   final DRI dri;
+  final SLIS slis;
   final String name;
   final int sex;
-  SecondEntry({Key key, this.menus, this.dri, this.name, this.sex})
+  SecondEntry({Key key, this.menus, this.dri, this.slis, this.name, this.sex})
       : super(key: key);
 
   @override
-  _SecondEntryState createState() => _SecondEntryState(menus, dri);
+  _SecondEntryState createState() => _SecondEntryState(menus, dri, slis);
 }
 
 class _SecondEntryState extends State<SecondEntry> {
   final Map<DateTime, Menu> menus;
   final DRI dri;
-  _SecondEntryState(this.menus, this.dri);
+  final SLIS slis;
+  _SecondEntryState(this.menus, this.dri, this.slis);
 
   /* 登録する情報 */
   String school = '学校を選択';  // デフォルトの選択内容を'学校を選択'にしている
@@ -126,7 +129,7 @@ class _SecondEntryState extends State<SecondEntry> {
         MaterialPageRoute(
           settings: RouteSettings(name: '/checkEntry'),
           builder: (BuildContext context) =>
-              CheckEntry(menus: menus, dri: dri, child: child.Child(widget.name, school, schoolYear, widget.sex)),
+              CheckEntry(menus: menus, dri: dri, slis: slis, child: child.Child(widget.name, school, schoolYear, widget.sex)),
         ),
     );
   }

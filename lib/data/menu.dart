@@ -8,7 +8,7 @@ import 'package:intl/intl.dart';  // DateTimeのパース処理
 
 import 'package:sample/data/dish.dart';
 
-part 'package:sample/data/menu.g.dart';
+part 'menu.g.dart';
 
 @JsonSerializable(createToJson: false)
 class Menu {

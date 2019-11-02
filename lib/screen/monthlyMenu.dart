@@ -7,6 +7,7 @@ import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart' // // 
 import 'package:sample/data/menu.dart';
 import 'package:sample/data/child.dart';
 import 'package:sample/data/dri.dart';
+import 'package:sample/data/slis.dart';
 import 'package:sample/screen/home.dart';
 
 /* 献立表画面 */
@@ -14,30 +15,32 @@ class MonthlyMenu extends StatefulWidget {
   final Map<DateTime, Menu> menus;
   final Child child;
   final DRI dri;
-  MonthlyMenu({Key key, this.menus, this.child, this.dri}) : super(key: key);
+  final SLIS slis;
+  final DateTime selectedDay;
+  MonthlyMenu({Key key, this.menus, this.child, this.dri, this.slis, this.selectedDay}) : super(key: key);
 
   @override
-  _MonthlyMenuState createState() => _MonthlyMenuState(menus, child, dri);
+  _MonthlyMenuState createState() => _MonthlyMenuState(menus, child, dri, slis, selectedDay);
 }
 
 class _MonthlyMenuState extends State<MonthlyMenu> {
-  DateTime today; // 今日の日付
   DateTime pickDate; // 選択した日を格納する変数
   String formattedDate; //日付をフォーマットしたのを格納する変数
 
   final Map<DateTime, Menu> _menus; //引き継いでる変数から持ってきた
   final Child _child;
   final DRI _dri;
-  _MonthlyMenuState(this._menus, this._child, this._dri);
+  final SLIS _slis;
+  final DateTime selectedDay;
+  _MonthlyMenuState(this._menus, this._child, this._dri, this._slis, this.selectedDay);
 
   /*読み込まれた時に遷移されてきた変数を代入*/
   @override
   void initState() {
     super.initState();
 
-    today = DateTime.now();
-    pickDate = today;
-    formattedDate = DateFormat('MM月dd日').format(today);
+    pickDate = selectedDay;
+    formattedDate = DateFormat('MM月dd日').format(pickDate);
   }
 
   /* カレンダーの更新用 */
@@ -57,7 +60,7 @@ class _MonthlyMenuState extends State<MonthlyMenu> {
         MaterialPageRoute(
           settings: RouteSettings(name: '/home'),
           builder: (BuildContext context) => Home(
-              menus: _menus, child: _child, dri: _dri, selectDay: selectDay),
+              menus: _menus, child: _child, dri: _dri, slis: _slis, selectDay: selectDay),
         ));
   }
 

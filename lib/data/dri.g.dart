@@ -87,7 +87,7 @@ YearStandard _$YearStandardFromJson(Map<String, dynamic> json) {
 
 GenderStandard _$GenderStandardFromJson(Map<String, dynamic> json) {
   return GenderStandard(
-    json['man'] as double,
-    json['woman'] as double,
+    (json['man'] as num)?.toDouble(),
+    (json['woman'] as num)?.toDouble(),
   );
 }

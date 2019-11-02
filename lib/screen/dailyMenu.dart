@@ -5,6 +5,7 @@ import 'package:multi_charts/multi_charts.dart';
 import 'package:sample/data/menu.dart';
 import 'package:sample/data/child.dart';
 import 'package:sample/data/dri.dart';
+import 'package:sample/data/slis.dart';
 import 'package:sample/data/strings.dart';
 import 'package:sample/screen/detail.dart';
 
@@ -13,10 +14,12 @@ class DailyMenu extends StatefulWidget {
   final Menu menu;
   final Child child;
   final DRI dri;
-  DailyMenu({Key key, this.menu, this.child, this.dri}) : super(key: key);
+  final SLIS slis;
+  DailyMenu({Key key, this.menu, this.child, this.dri, this.slis})
+      : super(key: key);
 
   @override
-  _DailyMenuState createState() => _DailyMenuState(menu, child, dri);
+  _DailyMenuState createState() => _DailyMenuState(menu, child, dri, slis);
 }
 
 class _DailyMenuState extends State<DailyMenu> {
@@ -24,12 +27,14 @@ class _DailyMenuState extends State<DailyMenu> {
   final Menu menu;
   final Child child;
   final DRI dri;
-  _DailyMenuState(this.menu, this.child, this.dri);
+  final SLIS slis;
+  _DailyMenuState(this.menu, this.child, this.dri, this.slis);
 
   /* この画面内でのみ使う変数 */
   bool _isMenu; // 今日のメニューがあるか
   ScrollController _controller; // スクロールできるようにする
-  Map<String, double> _myChildDRI; // 子供に合わせた基準栄養素
+  Map<String, double> _myChildSLIS; // 子供に合わせた学校給食実施基準
+  double _graphMaxValue = 120; // 栄養素グラフの最大値
 
   /* それぞれの栄養素の名前と値・単位 */
   final List<String> _nutrientName = MenuStrings.nutrientName;
@@ -42,7 +47,7 @@ class _DailyMenuState extends State<DailyMenu> {
     super.initState();
 
     _isMenu = (menu != null) ? true : false;
-    _myChildDRI = dri.getNutrient(child);
+    _myChildSLIS = slis.getSLIS(child);
     if (_isMenu) {
       // メニューがない場合空の値を代入し、存在する場合はその日の献立の栄養素合計値を代入
       _nutrientValue = {
@@ -84,12 +89,23 @@ class _DailyMenuState extends State<DailyMenu> {
   }
 
   /* グラフ用栄養素の作成 */
+  /* エネルギー */
+  double get _graphMenuEnergy {
+    if (_isMenu) {
+      double energy = menu.menuEnergy / _myChildSLIS['energy'] * 100;
+      if (energy < _graphMaxValue) return energy;
+      return _graphMaxValue;
+    } else {
+      return 0.0;
+    }
+  }
+
   /* タンパク質 */
   double get _graphMenuProtein {
     if (_isMenu) {
-      double protein = menu.menuProtein / _myChildDRI['protein'] * 100;
-      if (protein < 100) return protein;
-      return 100.0;
+      double protein = menu.menuProtein / _myChildSLIS['protein'] * 100;
+      if (protein < _graphMaxValue) return protein;
+      return _graphMaxValue;
     } else {
       return 0.0;
     }
@@ -98,13 +114,11 @@ class _DailyMenuState extends State<DailyMenu> {
   /* ビタミン */
   double get _graphMenuVitamin {
     if (_isMenu) {
-      double retinol = menu.menuRetinol / _myChildDRI['retinol'] * 100;
-      double vitaminB1 = menu.menuVitaminB1 / _myChildDRI['vitaminB1'] * 100;
-      double vitaminB2 = menu.menuVitaminB2 / _myChildDRI['vitaminB2'] * 100;
-      double vitaminC = menu.menuVitaminC / _myChildDRI['vitaminC'] * 100;
-      double vitamin = (retinol + vitaminB1 + vitaminB2 + vitaminC) / 4;
-      if (vitamin < 100) return vitamin;
-      return 100.0;
+      double sumVitamin = (menu.menuRetinol / 1000.0) + menu.menuVitaminB1 + menu.menuVitaminB1 + menu.menuVitaminB2 + menu.menuVitaminC;
+      double sumSLIS = (_myChildSLIS['retinol'] / 1000.0) + _myChildSLIS['vitaminB1'] + _myChildSLIS['vitaminB2'] + _myChildSLIS['vitaminC'];
+      double vitamin = sumVitamin / sumSLIS * 100;
+      if (vitamin < _graphMaxValue) return vitamin;
+      return _graphMaxValue;
     } else {
       return 0.0;
     }
@@ -113,13 +127,11 @@ class _DailyMenuState extends State<DailyMenu> {
   /* ミネラル */
   double get _graphMenuMineral {
     if (_isMenu) {
-      double calcium = menu.menuCalcium / _myChildDRI['calcium'] * 100;
-      double iron = menu.menuIron / _myChildDRI['iron'] * 100;
-      double magnesium = menu.menuMagnesium / _myChildDRI['magnesium'] * 100;
-      double zinc = menu.menuZinc / _myChildDRI['zinc'] * 100;
-      double mineral = (calcium + iron + magnesium + zinc) / 4;
-      if (mineral < 100) return mineral;
-      return 100.0;
+      double sumMineral = menu.menuCalcium + menu.menuMagnesium + menu.menuIron + menu.menuZinc;
+      double sumSLIS = _myChildSLIS['calcium'] + _myChildSLIS['magnesium'] + _myChildSLIS['iron'] + _myChildSLIS['zinc'];
+      double mineral = sumMineral / sumSLIS * 100;
+      if (mineral < _graphMaxValue) return mineral;
+      return _graphMaxValue;
     } else {
       return 0.0;
     }
@@ -129,12 +141,9 @@ class _DailyMenuState extends State<DailyMenu> {
   double get _graphMenuCarbohydrate {
     if (_isMenu) {
       double carbohydrate =
-          menu.menuCarbohydrate / _myChildDRI['carbohydrate'] * 100;
-      double dietaryFiber =
-          menu.menuDietaryFiber / _myChildDRI['dietaryFiber'] * 100;
-      double totalCarb = (carbohydrate + dietaryFiber) / 2;
-      if (totalCarb < 100) return totalCarb;
-      return 100.0;
+          menu.menuCarbohydrate / _myChildSLIS['carbohydrate'] * 100;
+      if (carbohydrate < _graphMaxValue) return carbohydrate;
+      return _graphMaxValue;
     } else {
       return 0.0;
     }
@@ -143,9 +152,9 @@ class _DailyMenuState extends State<DailyMenu> {
   /* 脂質 */
   double get _graphMenuLipid {
     if (_isMenu) {
-      double lipid = menu.menuLipid / _myChildDRI['lipid'] * 100;
-      if (lipid < 100) return lipid;
-      return 100.0;
+      double lipid = menu.menuLipid / _myChildSLIS['lipid'] * 100;
+      if (lipid < _graphMaxValue) return lipid;
+      return _graphMaxValue;
     } else {
       return 0.0;
     }
@@ -260,9 +269,9 @@ class _DailyMenuState extends State<DailyMenu> {
   /* 栄養素ラベル */
   Widget _nutrientLabel(
       {@required String name,
-        @required double value,
-        @required String unit,
-        Color color}) {
+      @required double value,
+      @required String unit,
+      Color color}) {
     return Container(
       height: 35.0,
       color: color,
@@ -317,20 +326,22 @@ class _DailyMenuState extends State<DailyMenu> {
           // レーダーチャート
           labelWidth: 200,
           values: [
-            _graphMenuProtein,
+            _graphMenuEnergy,
             _graphMenuLipid,
-            _graphMenuCarbohydrate,
-            _graphMenuVitamin,
+            _graphMenuProtein,
             _graphMenuMineral,
+            _graphMenuVitamin,
+            _graphMenuCarbohydrate,
           ],
           labels: [
-            'タンパク質\n(' + _graphMenuProtein.toStringAsFixed(0) + '％)',
-            '脂質\n(' + _graphMenuLipid.toStringAsFixed(0) + '％)',
-            '炭水化物\n(' + _graphMenuCarbohydrate.toStringAsFixed(0) + '％)',
-            'ビタミン\n(' + _graphMenuVitamin.toStringAsFixed(0) + '％)',
-            'ミネラル\n(' + _graphMenuMineral.toStringAsFixed(0) + '％)',
+            'エネルギー\n(' + _graphMenuEnergy.toStringAsFixed(1) + '％)',
+            '脂質\n(' + _graphMenuLipid.toStringAsFixed(1) + '％)',
+            'タンパク質\n(' + _graphMenuProtein.toStringAsFixed(1) + '％)',
+            'ミネラル\n(' + _graphMenuMineral.toStringAsFixed(1) + '％)',
+            'ビタミン\n(' + _graphMenuVitamin.toStringAsFixed(1) + '％)',
+            '炭水化物\n(' + _graphMenuCarbohydrate.toStringAsFixed(1) + '％)',
           ],
-          maxValue: 100, // グラフの最大値は100
+          maxValue: _graphMaxValue, // グラフの最大値
           fillColor: Colors.orange, // グラフの色はオレンジで塗ります
           animate: false, // アニメーションはつけない
         ),
