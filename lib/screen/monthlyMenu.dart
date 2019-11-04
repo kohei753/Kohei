@@ -7,6 +7,7 @@ import 'package:sample/data/child.dart';
 import 'package:sample/data/dri.dart';
 import 'package:sample/data/slis.dart';
 import 'package:sample/screen/home.dart';
+import 'package:sample/data/strings.dart';
 
 /* 献立表画面 */
 class MonthlyMenu extends StatefulWidget {
@@ -25,6 +26,7 @@ class _MonthlyMenuState extends State<MonthlyMenu> {
   DateTime pickDate; // 選択した日を格納する変数
   List<String> formattedDate = []; //日付をフォーマットしたのを格納する変数
   List<DateTime> dateArray = [];
+  List<Color> _mainDetailColors = MenuStrings.mainDetailColors;
 
   final Map<DateTime, Menu> _menus; //引き継いでる変数から持ってきた
   final Child _child;
@@ -39,7 +41,7 @@ class _MonthlyMenuState extends State<MonthlyMenu> {
     super.initState();
 
     //pickDate = selectedDay;
-    pickDate = DateTime(2019, 8, 19);
+    pickDate = DateTime(2019, 8, 1);
 
     int count = 0;
     for (var i = 1 - pickDate.weekday; i < 6 - pickDate.weekday; i++) {
@@ -50,6 +52,8 @@ class _MonthlyMenuState extends State<MonthlyMenu> {
   }
 
   //TODO: dateを受け取った際に配列に格納して曜日を管理する
+  //TODO: 休日の処理(難しい...)
+  //TODO: 週を遷移させるのがきつい...
 
   /* ホームへの遷移 */
   void handleToHome(DateTime selectDay) {
@@ -68,10 +72,19 @@ class _MonthlyMenuState extends State<MonthlyMenu> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
-          Icon(
-            Icons.keyboard_arrow_left,
-            color: Colors.black87,
-            size: 48.0,
+          IconButton(
+            icon: Icon(
+              Icons.keyboard_arrow_left,
+              color: Colors.black87,
+              size: 48.0,
+            ),
+            onPressed: (){
+              formattedDate = [];
+              dateArray = [];
+              pickDate = DateTime(pickDate.year, pickDate.month, pickDate.day - 7);
+              initState();
+              build(context);
+            },
           ),
           Text(
             formattedDate[0] + '〜' + formattedDate[4] +'の献立',
@@ -89,47 +102,82 @@ class _MonthlyMenuState extends State<MonthlyMenu> {
   /* 献立をリスト表示する */
   Widget _menuList(size) {
     return SizedBox(
-        width: size.width,
-        height: size.height,
+        width: size.width * 19/20,
+        height: size.height * 3/5,
         child: ListView.builder(
             itemCount: 5,
             itemBuilder: (BuildContext context, int index1){
-              return Card(
-                child:Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20.0),
-                  child: InkWell(
-                    onTap: (){
-                      handleToHome(dateArray[index1]);
-                    },
-                    child: Row(
-                      children: <Widget>[
-                        Text(
-                          formattedDate[index1],
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 30.0),
-                          child: Container(
-                            width: 1,
-                            height: 100,
-                            color: Colors.grey,
+              if(_menus[dateArray[index1]] == null) {
+                return Card(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20.0),
+                    child: Center(
+                      child: RichText(
+                        textAlign: TextAlign.center,
+                        text: TextSpan(
+                          style: TextStyle(
+                            fontSize: 24.0,
+                            color: Colors.black45,
                           ),
+                          children: [
+                            TextSpan(text: formattedDate[index1] + 'の給食は'),
+                            TextSpan(text: 'お休み',
+                              style: TextStyle(
+                                decoration: TextDecoration.underline,
+                                decorationColor: Theme.of(context).primaryColor,
+                                decorationStyle: TextDecorationStyle.dashed,
+                              ),
+                            ),
+                            TextSpan(text: 'です.'),
+                          ],
                         ),
-                        Expanded(
-                          child: ListView.builder(
-                            itemCount: _menus[dateArray[index1]].menu.length,
-                            shrinkWrap: true,
-                            itemBuilder: (BuildContext context, int index){
-                              return Text(
-                                _menus[dateArray[index1]].menu[index].name,
-                              );
-                            },
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
                   ),
-                ),
-              );
+                );
+              } else {
+                return Card(
+                  child:Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20.0),
+                    child: InkWell(
+                      onTap: (){
+                        handleToHome(dateArray[index1]);
+                      },
+                      child: Row(
+                        children: <Widget>[
+                          Text(
+                            formattedDate[index1],
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 30.0),
+                            child: Container(
+                              width: 1,
+                              height: 70,
+                              color: Colors.grey,
+                            ),
+                          ),
+                          Expanded(
+                            child: Wrap(
+                              spacing: 10.0,
+                              runSpacing: 5.0,
+                              children: List.generate(_menus[dateArray[index1]].menu.length, (int index) {
+                                return Text(
+                                  _menus[dateArray[index1]].menu[index].name,
+                                  style: TextStyle(
+                                    decoration: TextDecoration.underline,
+                                    decorationThickness: 3.0,
+                                    decorationColor: _mainDetailColors[index],
+                                  ),
+                                );
+                              }),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              }
             }
         ),
     );
@@ -139,6 +187,7 @@ class _MonthlyMenuState extends State<MonthlyMenu> {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size; // 端末の画面を取得
     return Scaffold(
+      backgroundColor: Color(0xFFffead6),
       body: Column(
         children: <Widget>[
           _changeWeek(size),
