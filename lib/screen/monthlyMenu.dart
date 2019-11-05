@@ -24,8 +24,8 @@ class MonthlyMenu extends StatefulWidget {
 
 class _MonthlyMenuState extends State<MonthlyMenu> {
   DateTime pickDate; // 選択した日を格納する変数
-  List<String> formattedDate = []; //日付をフォーマットしたのを格納する変数
-  List<DateTime> dateArray = [];
+  List<String> formattedDate; //日付をフォーマットしたのを格納する変数
+  List<DateTime> dateArray;
   List<Color> _mainDetailColors = MenuStrings.mainDetailColors;
 
   final Map<DateTime, Menu> _menus; //引き継いでる変数から持ってきた
@@ -41,18 +41,21 @@ class _MonthlyMenuState extends State<MonthlyMenu> {
     super.initState();
 
     //pickDate = selectedDay;
-    pickDate = DateTime(2019, 8, 1);
+    pickDate = DateTime(2019, 8, 19);
+    dateUpdate(pickDate);
+  }
 
+  void dateUpdate(DateTime date) {
     int count = 0;
+    formattedDate = [];
+    dateArray = [];
     for (var i = 1 - pickDate.weekday; i < 6 - pickDate.weekday; i++) {
       dateArray.add(DateTime(pickDate.year, pickDate.month, pickDate.day + i));
-      formattedDate.add(DateFormat('MM月dd日').format(dateArray[count]));
+      formattedDate.add(DateFormat('M/d').format(dateArray[count]));
       count++;
     }
   }
 
-  //TODO: dateを受け取った際に配列に格納して曜日を管理する
-  //TODO: 休日の処理(難しい...)
   //TODO: 週を遷移させるのがきつい...
 
   /* ホームへの遷移 */
@@ -79,15 +82,14 @@ class _MonthlyMenuState extends State<MonthlyMenu> {
               size: 48.0,
             ),
             onPressed: (){
-              formattedDate = [];
-              dateArray = [];
-              pickDate = DateTime(pickDate.year, pickDate.month, pickDate.day - 7);
-              initState();
-              build(context);
+              dateUpdate(DateTime(pickDate.year, pickDate.month, pickDate.day - 7));
             },
           ),
           Text(
             formattedDate[0] + '〜' + formattedDate[4] +'の献立',
+            style: TextStyle(
+              fontSize: 20.0,
+            ),
           ),
           Icon(
               Icons.keyboard_arrow_right,
