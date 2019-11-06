@@ -24,9 +24,11 @@ class MonthlyMenu extends StatefulWidget {
 
 class _MonthlyMenuState extends State<MonthlyMenu> {
   DateTime pickDate; // 選択した日を格納する変数
+  DateTime today;
   List<String> formattedDate; //日付をフォーマットしたのを格納する変数
   List<DateTime> dateArray;
   List<Color> _mainDetailColors = MenuStrings.mainDetailColors;
+  Map<DateTime, Menu> allMenu;
 
   final Map<DateTime, Menu> _menus; //引き継いでる変数から持ってきた
   final Child _child;
@@ -39,22 +41,26 @@ class _MonthlyMenuState extends State<MonthlyMenu> {
   @override
   void initState() {
     super.initState();
-
-    //pickDate = selectedDay;
     pickDate = DateTime(2019, 8, 19);
     dateUpdate(pickDate);
+
   }
 
   void dateUpdate(DateTime date) {
     int count = 0;
+    today = date;
     formattedDate = [];
     dateArray = [];
-    for (var i = 1 - pickDate.weekday; i < 6 - pickDate.weekday; i++) {
-      dateArray.add(DateTime(pickDate.year, pickDate.month, pickDate.day + i));
+    for (var i = 1 - date.weekday; i < 8 - date.weekday; i++) {
+      dateArray.add(DateTime(date.year, date.month, date.day + i));
       formattedDate.add(DateFormat('M/d').format(dateArray[count]));
       count++;
     }
   }
+
+
+
+
 
   //TODO: 週を遷移させるのがきつい...
 
@@ -82,7 +88,9 @@ class _MonthlyMenuState extends State<MonthlyMenu> {
               size: 48.0,
             ),
             onPressed: (){
-              dateUpdate(DateTime(pickDate.year, pickDate.month, pickDate.day - 7));
+                setState(() {
+                  dateUpdate(DateTime(today.year, today.month, today.day - 7));
+                });
             },
           ),
           Text(
@@ -91,10 +99,17 @@ class _MonthlyMenuState extends State<MonthlyMenu> {
               fontSize: 20.0,
             ),
           ),
-          Icon(
+          IconButton(
+            icon: Icon(
               Icons.keyboard_arrow_right,
               color: Colors.black87,
               size: 48.0,
+            ),
+            onPressed: (){
+                setState(() {
+                  dateUpdate(DateTime(today.year, today.month, today.day + 7));
+                });
+            },
           ),
         ],
       ),
@@ -105,12 +120,13 @@ class _MonthlyMenuState extends State<MonthlyMenu> {
   Widget _menuList(size) {
     return SizedBox(
         width: size.width * 19/20,
-        height: size.height * 3/5,
+        height: size.height * 13/20,
         child: ListView.builder(
             itemCount: 5,
             itemBuilder: (BuildContext context, int index1){
               if(_menus[dateArray[index1]] == null) {
                 return Card(
+                  margin: EdgeInsets.symmetric(vertical: size.height/10),
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20.0),
                     child: Center(
@@ -154,7 +170,7 @@ class _MonthlyMenuState extends State<MonthlyMenu> {
                             padding: EdgeInsets.symmetric(horizontal: 30.0),
                             child: Container(
                               width: 1,
-                              height: 70,
+                              height: 85,
                               color: Colors.grey,
                             ),
                           ),
