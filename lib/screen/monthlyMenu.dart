@@ -43,7 +43,6 @@ class _MonthlyMenuState extends State<MonthlyMenu> {
     super.initState();
     pickDate = DateTime(2019, 8, 19);
     dateUpdate(pickDate);
-
   }
 
   void dateUpdate(DateTime date) {
@@ -126,7 +125,7 @@ class _MonthlyMenuState extends State<MonthlyMenu> {
             itemBuilder: (BuildContext context, int index1){
               if(_menus[dateArray[index1]] == null) {
                 return Card(
-                  margin: EdgeInsets.symmetric(vertical: size.height/10),
+                  margin: EdgeInsets.symmetric(vertical: size.height/100),
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20.0),
                     child: Center(
